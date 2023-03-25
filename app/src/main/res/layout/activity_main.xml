@@ -22,28 +22,39 @@
             android:background="#B4E5FF"
             android:minHeight="?attr/actionBarSize">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="지금 여기 어때"
+                android:layout_gravity="center"
+                android:id="@+id/toolbar_title"
+                android:textSize="30sp"
+                />
+
+            <ImageButton
+                android:id="@+id/btn_setting"
+                android:layout_width="50sp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_baseline_settings_24"
+                android:backgroundTint="#B4E5FF"
+                />
+
+
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             >
 
-            <fragment
-                xmlns:map="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/googleMap"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                map:cameraTilt="0"
-                map:cameraZoom="16"
-                map:mapType="normal"
-                map:uiCompass="false"
-                map:uiRotateGestures="true"
-                map:uiScrollGestures="false"
-                map:uiTiltGestures="true"
-                map:uiZoomControls="false"
-                map:uiZoomGestures="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="카탈로그? 장소추천?"
+                tools:ignore="MissingConstraints" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

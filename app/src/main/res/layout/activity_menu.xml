@@ -69,7 +69,7 @@
 
 
     <LinearLayout
-    android:id="@+id/btn_cardMenu"
+    android:id="@+id/btn_userInfo"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -78,7 +78,7 @@
     android:background="@color/white">
 
     <ImageView
-        android:id="@+id/image_card"
+        android:id="@+id/imageView_userInfo"
         android:layout_marginLeft="20sp"
         android:layout_width="30sp"
         android:layout_height="30sp"
@@ -87,7 +87,7 @@
         />
 
     <TextView
-        android:id="@+id/text_card"
+        android:id="@+id/textView_userInfo"
         android:layout_marginLeft="20sp"
         android:layout_marginTop="5sp"
         android:layout_width="wrap_content"
@@ -139,7 +139,7 @@
     android:layout_height="30sp"/>
 
     <LinearLayout
-    android:id="@+id/btn_myinfo"
+    android:id="@+id/btn_myplan"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -148,7 +148,7 @@
     android:background="@color/white">
 
     <ImageView
-        android:id="@+id/image_myinfo"
+        android:id="@+id/image_myplan"
         android:layout_marginLeft="20sp"
         android:layout_width="30sp"
         android:layout_height="30sp"
@@ -157,7 +157,7 @@
         />
 
     <TextView
-        android:id="@+id/text_myinfo"
+        android:id="@+id/text_myplan"
         android:layout_marginLeft="20sp"
         android:layout_marginTop="5sp"
         android:layout_width="wrap_content"
@@ -215,7 +215,7 @@
     android:layout_height="30sp"/>
 
     <LinearLayout
-        android:id="@+id/btn_gps"
+        android:id="@+id/btn_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -224,7 +224,7 @@
         android:background="@color/white">
 
         <ImageView
-            android:id="@+id/image_gps"
+            android:id="@+id/image_map"
             android:layout_marginLeft="20sp"
             android:layout_width="30sp"
             android:layout_height="30sp"
@@ -233,7 +233,7 @@
             />
 
         <TextView
-            android:id="@+id/text_gps"
+            android:id="@+id/text_map"
             android:layout_marginLeft="20sp"
             android:layout_marginTop="5sp"
             android:layout_width="wrap_content"

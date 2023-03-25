@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <Preference
+        android:title="환경 설정"
+        android:selectable="false"
+        android:icon="@drawable/ic_baseline_settings_24"
+        />
+
+
+    <CheckBoxPreference
+        android:title="체크박스"
+        android:summary="체크가능 입니다."
+        android:key="checkbox"
+        android:defaultValue="true"/>
+    />
+
+    <PreferenceCategory android:title="글꼴 지정">
+
+        <ListPreference
+            android:title="글꼴"
+            android:summary="글꼴을 변경합니다."
+            android:key="key_style"
+            android:defaultValue="ko"
+            android:entries="@array/language_user"
+            android:entryValues="@array/language_saved"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"/>
+
+        <ListPreference
+            android:title="글자 크기"
+            android:summary="글자 크기를 변경합니다."
+            android:key="key_size"
+            android:defaultValue="100"
+            android:entries="@array/language_size"
+            android:entryValues="@array/language_sizesaved"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"/>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="테마 지정">
+
+        <SwitchPreference
+            android:title="다크 모드"
+            android:summaryOn="테마를 라이트 모드로 변경합니다."
+            android:summaryOff="테마를 다크 모드로 변경합니다."
+            android:key="key_lightmode"
+            android:defaultValue="false" />
+
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="기타 ">
+
+        <Preference
+            android:title="어플 정보"
+            android:key="key_info">
+
+
+
+        </Preference>
+
+        <Preference
+            android:summary="개발자에게 메일을 보냅니다"
+            android:title="메일 보내기"
+            android:key="key_mail">
+            <intent
+                android:action="android.intent.action.SENDTO"
+                android:data="mailto:stpmalfoy@gmail.com"/>
+        </Preference>
+
+
+    </PreferenceCategory>
+
+
+
+
+
+
+</PreferenceScreen>
