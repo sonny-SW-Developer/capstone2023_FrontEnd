@@ -1,5 +1,6 @@
 package com.example.a23__project_1;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.os.Handler;
 import com.airbnb.lottie.LottieAnimationView;
 
 import android.os.Looper;
+import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.animation.Animator;
@@ -24,9 +26,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -37,6 +43,15 @@ public class MainActivity extends AppCompatActivity{
     private LinearLayout layout_main;
     private TextView txtTitle, txtSubtitle;
     private FrameLayout layout_slidingRootNav;
+
+    //Fragment
+    private FragmentManager fragmentManager = getSupportFragmentManager();
+    private FragmentFirst fragmentFirst = new FragmentFirst();
+    private FragmentSecond fragmentSecond = new FragmentSecond();
+    private FragmentThird fragmentThird = new FragmentThird();
+    private FragmentForth fragmentForth = new FragmentForth();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +90,17 @@ public class MainActivity extends AppCompatActivity{
          *  main 액티비티 동작
          * ********************************************************/
 
+        //툴바 옆, setting 관련 코드
+        ImageButton btn_setting = (ImageButton) findViewById(R.id.btn_setting);
+        btn_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, com.example.a23__project_1.SettingActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fadein_right, R.anim.stay);
+
+            }
+        });
 
         //menu 관련 코드
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,6 +114,8 @@ public class MainActivity extends AppCompatActivity{
                 .withMenuOpened(false)
                 .withMenuLayout(R.layout.activity_menu)
                 .inject();
+
+
 
         //사용자 정보 확인
         LinearLayout btn_userInfo = (LinearLayout) findViewById(R.id.btn_userInfo);
@@ -143,18 +171,13 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        //setting 관련 코드
-        ImageButton btn_setting = (ImageButton) findViewById(R.id.btn_setting);
-        btn_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, com.example.a23__project_1.SettingActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fadein_right, R.anim.stay);
+        //화면 추가할 프래그먼트 추가
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frameLayout_main, fragmentFirst).commitAllowingStateLoss();
 
-            }
-        });
-
+        //메뉴클릭 리스너 등록
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
 
         //animation listener
@@ -244,6 +267,31 @@ public class MainActivity extends AppCompatActivity{
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+            switch(menuItem.getItemId())
+            {
+                case R.id.firstItem:
+                    transaction.replace(R.id.frameLayout_main, fragmentFirst).commitAllowingStateLoss();
+                    break;
+                case R.id.secondItem:
+                    transaction.replace(R.id.frameLayout_main, fragmentSecond).commitAllowingStateLoss();
+                    break;
+                case R.id.thirdItem:
+                    transaction.replace(R.id.frameLayout_main, fragmentThird).commitAllowingStateLoss();
+                    break;
+
+                case R.id.forthItem:
+                        transaction.replace(R.id.frameLayout_main, fragmentForth).commitAllowingStateLoss();
+                    break;
+            }
+            return true;
+        }
     }
 
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <item
+            android:id="@+id/firstItem"
+            android:icon="@drawable/ic_baseline_person_outline_24"
+            android:iconTint="@color/black"
+            android:title="First"
+            />
+<!--        -->
+        <item
+            android:id="@+id/secondItem"
+            android:icon="@drawable/ic_baseline_map_24"
+            android:title="Second"
+            />
+<!--        android:title="Second"-->
+        <item
+            android:id="@+id/thirdItem"
+            android:icon="@drawable/ic_baseline_face_24"
+            android:title="Third"
+            />
+<!--        android:title="Third"-->
+
+        <item
+            android:id="@+id/forthItem"
+            android:icon="@drawable/ic_baseline_history_24"
+            android:title="Forth"
+            />
+<!--        -->
+</menu>
