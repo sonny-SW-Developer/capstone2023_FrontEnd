@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Handler;
 import com.airbnb.lottie.LottieAnimationView;
 
-import android.os.Looper;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -32,8 +31,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
-import java.util.Map;
-
 
 public class MainActivity extends AppCompatActivity{
 
@@ -49,7 +46,7 @@ public class MainActivity extends AppCompatActivity{
     private FragmentFirst fragmentFirst = new FragmentFirst();
     private FragmentSecond fragmentSecond = new FragmentSecond();
     private FragmentThird fragmentThird = new FragmentThird();
-    private FragmentForth fragmentForth = new FragmentForth();
+    private FragmentFourth fragmentFourth = new FragmentFourth();
 
 
 
@@ -165,7 +162,6 @@ public class MainActivity extends AppCompatActivity{
             //@RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(MainActivity.this, MapActivity.class);
                 startActivity(intent);
             }
@@ -173,10 +169,11 @@ public class MainActivity extends AppCompatActivity{
 
         //화면 추가할 프래그먼트 추가
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frameLayout_main, fragmentFirst).commitAllowingStateLoss();
+        transaction.replace(R.id.frameLayout_main, fragmentSecond).commitAllowingStateLoss();
 
         //메뉴클릭 리스너 등록
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
+        bottomNavigationView.setSelectedItemId(R.id.secondItem);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
 
@@ -276,18 +273,18 @@ public class MainActivity extends AppCompatActivity{
 
             switch(menuItem.getItemId())
             {
-                case R.id.firstItem:
-                    transaction.replace(R.id.frameLayout_main, fragmentFirst).commitAllowingStateLoss();
-                    break;
                 case R.id.secondItem:
                     transaction.replace(R.id.frameLayout_main, fragmentSecond).commitAllowingStateLoss();
+                    break;
+                case R.id.firstItem:
+                    transaction.replace(R.id.frameLayout_main, fragmentFirst).commitAllowingStateLoss();
                     break;
                 case R.id.thirdItem:
                     transaction.replace(R.id.frameLayout_main, fragmentThird).commitAllowingStateLoss();
                     break;
 
-                case R.id.forthItem:
-                        transaction.replace(R.id.frameLayout_main, fragmentForth).commitAllowingStateLoss();
+                case R.id.fourthItem:
+                        transaction.replace(R.id.frameLayout_main, fragmentFourth).commitAllowingStateLoss();
                     break;
             }
             return true;
