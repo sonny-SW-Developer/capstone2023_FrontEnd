@@ -53,11 +53,7 @@
                 android:id="@+id/frameLayout_main"
                 >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="카탈로그? 장소추천?"
-                    tools:ignore="MissingConstraints" />
+
 
             </FrameLayout>
 

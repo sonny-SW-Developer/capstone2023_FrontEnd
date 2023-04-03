@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity{
     private FragmentSecond fragmentSecond = new FragmentSecond();
     private FragmentThird fragmentThird = new FragmentThird();
     private FragmentFourth fragmentFourth = new FragmentFourth();
+    private FragmentFifth fragmentFifth = new FragmentFifth();
 
 
 
@@ -169,11 +170,11 @@ public class MainActivity extends AppCompatActivity{
 
         //화면 추가할 프래그먼트 추가
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frameLayout_main, fragmentSecond).commitAllowingStateLoss();
+        transaction.replace(R.id.frameLayout_main, fragmentThird).commitAllowingStateLoss();
 
         //메뉴클릭 리스너 등록
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
-        bottomNavigationView.setSelectedItemId(R.id.secondItem);
+        bottomNavigationView.setSelectedItemId(R.id.thirdItem);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
 
@@ -273,12 +274,14 @@ public class MainActivity extends AppCompatActivity{
 
             switch(menuItem.getItemId())
             {
-                case R.id.secondItem:
-                    transaction.replace(R.id.frameLayout_main, fragmentSecond).commitAllowingStateLoss();
-                    break;
                 case R.id.firstItem:
                     transaction.replace(R.id.frameLayout_main, fragmentFirst).commitAllowingStateLoss();
                     break;
+
+                case R.id.secondItem:
+                    transaction.replace(R.id.frameLayout_main, fragmentSecond).commitAllowingStateLoss();
+                    break;
+
                 case R.id.thirdItem:
                     transaction.replace(R.id.frameLayout_main, fragmentThird).commitAllowingStateLoss();
                     break;
@@ -286,6 +289,11 @@ public class MainActivity extends AppCompatActivity{
                 case R.id.fourthItem:
                         transaction.replace(R.id.frameLayout_main, fragmentFourth).commitAllowingStateLoss();
                     break;
+
+                case R.id.fifthItem:
+                    transaction.replace(R.id.frameLayout_main, fragmentFifth).commitAllowingStateLoss();
+                    break;
+
             }
             return true;
         }

@@ -12,13 +12,13 @@
 <!--        -->
         <item
             android:id="@+id/secondItem"
-            android:icon="@drawable/ic_baseline_map_24"
+            android:icon="@drawable/ic_baseline_face_24"
             android:title="Second"
             />
 <!--        android:title="Second"-->
         <item
             android:id="@+id/thirdItem"
-            android:icon="@drawable/ic_baseline_face_24"
+            android:icon="@drawable/ic_baseline_map_24"
             android:title="Third"
             />
 <!--        android:title="Third"-->
@@ -26,7 +26,13 @@
         <item
             android:id="@+id/fourthItem"
             android:icon="@drawable/ic_baseline_history_24"
-            android:title="Forth"
+            android:title="Fourth"
+            />
+
+        <item
+            android:id="@+id/fifthItem"
+            android:icon="@drawable/baseline_support_agent_24"
+            android:title="Fifth"
             />
 <!--        -->
 </menu>

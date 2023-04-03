@@ -1,16 +1,335 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserinfoActivity">
+    tools:context=".FragmentFifth">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="userinfo"
-        android:textSize="30sp"
-        tools:ignore="MissingConstraints" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="40sp"/>
+
+        <ImageView
+            android:id="@+id/iv_profile"
+            android:layout_gravity="center"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <LinearLayout
+            android:layout_marginTop="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="반갑습니다."/>
+
+                <TextView
+                    android:id="@+id/text_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15sp"
+                    android:text="Default"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="님"/>
+
+                <ImageButton
+                    android:id="@+id/btn_settingUserInfo"
+                    android:layout_width="20dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_baseline_chevron_right_24"
+                    android:background="@android:color/transparent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20sp"
+                        android:textSize="20sp"
+                        android:text="회원 정보"/>
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="10sp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="2sp"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginRight="5sp"
+                        android:background="@color/black"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:layout_marginLeft="20sp"
+                    android:textSize="15sp"
+                    android:text="이름"/>
+
+                <Space
+                    android:layout_width="255sp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/info_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:text="Default"/>
+
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:layout_marginLeft="20sp"
+                    android:textSize="15sp"
+                    android:text="전화 번호"/>
+
+                <Space
+                    android:layout_width="200sp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/info_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:text="010 - 1234 - 5678"/>
+
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:layout_marginLeft="20sp"
+                    android:textSize="15sp"
+                    android:text="생년 월일"/>
+
+                <Space
+                    android:layout_width="210sp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/info_brith"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:text="22 / 08 / 21"/>
+
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20sp"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:background="#696969"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:textSize="17sp"
+                android:text="운임 정보"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10sp"/>
+
+            <Space
+                android:layout_width="275sp"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:layout_marginLeft="20sp"
+                    android:textSize="15sp"
+                    android:text="나의 탑승 요금"/>
+
+                <Space
+                    android:layout_width="202sp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/info_mycharge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:text="1,000"/>
+
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:layout_marginLeft="40sp"
+                    android:textSize="15sp"
+                    android:text="+ 소득분위"/>
+
+                <Space
+                    android:layout_width="206sp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/info_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:text="1,000"/>
+
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10sp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:layout_marginLeft="40sp"
+                    android:textSize="15sp"
+                    android:text="+ 증가비용"/>
+
+                <Space
+                    android:layout_width="206sp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/info_extracharge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:textSize="15sp"
+                    android:gravity="right"
+                    android:text="1,000"/>
+
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:background="#696969"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
