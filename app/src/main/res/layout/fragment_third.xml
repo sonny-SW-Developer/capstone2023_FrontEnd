@@ -7,12 +7,45 @@
     android:layout_height="match_parent"
     tools:context=".FragmentThird">
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@android:color/transparent">
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:text="위치 확인"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="한글 주소 입력"
+                android:inputType="textPersonName"
+                android:background="@android:color/transparent"/>
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="2dp"
+                android:text="확인"
+                android:layout_marginRight="2dp" />
+
+
+        </LinearLayout>
 
         <fragment
             android:layout_width="match_parent"
