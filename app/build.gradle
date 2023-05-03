@@ -42,6 +42,18 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.yarolegovich:sliding-root-nav:1.1.1' //root navigation 사용
 
+    // ViewPager2
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    //viewpager2
+    implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
+    //circle indicator
+    implementation 'me.relex:circleindicator:2.1.4'
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    //CardView
+    implementation "androidx.cardview:cardview:1.0.0"
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 }
