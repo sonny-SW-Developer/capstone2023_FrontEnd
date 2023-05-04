@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.ScrollView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import androidx.viewpager2.widget.ViewPager2;
 
 
@@ -28,6 +32,8 @@ import me.relex.circleindicator.CircleIndicator3;
 public class FragmentFirst extends Fragment implements View.OnClickListener{
 
     protected ViewPager2 viewPager2;
+    protected RecyclerView recyclerView_place;
+    protected RecyclerFragFirstPlaceAdapter placeAdapter;
     protected Button btnToggle;
 //    protected LinearLayout layout_menu;
     protected ScrollView layout_menu;
@@ -93,11 +99,57 @@ public class FragmentFirst extends Fragment implements View.OnClickListener{
         animationView1_6.playAnimation();
         animationView1_6.setRepeatCount(Anim_Rotate_num);
 
+//        //장소별 모아보기 RecyclerView
+//        recyclerView_place = view.findViewById(R.id.recycler_frag_first_layout);
+//        ArrayList<DataPage> list_place = new ArrayList<>();
+//
+//        list_place.add(new DataPage(getResources().getDrawable(R.drawable.junggu),"중구"));
+//        list_place.add(new DataPage(getResources().getDrawable(R.drawable.jongro), "종로구"));
+//        list_place.add(new DataPage(getResources().getDrawable(R.drawable.songpa), "송파구"));
+//        list_place.add(new DataPage(getResources().getDrawable(R.drawable.gangnam), "강남구"));
+//        list_place.add(new DataPage(getResources().getDrawable(R.drawable.yeouido), "영등포구"));
 
+
+//        recyclerView_place.setAdapter(new RecyclerFragFirstPlaceAdapter(list_place));
+//        recyclerView_place.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
         // Return view
         return view;
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerView_place = view.findViewById(R.id.recycler_frag_first_place);
+        ArrayList<DataPlace> list_place = new ArrayList<>();
+
+        list_place.add(new DataPlace("중구",R.drawable.junggu));
+        list_place.add(new DataPlace("종로구",R.drawable.jongro ));
+        list_place.add(new DataPlace("송파구",R.drawable.songpa ));
+        list_place.add(new DataPlace("강남구",R.drawable.gangnam ));
+        list_place.add(new DataPlace("영등포구",R.drawable.yeouido ));
+        recyclerView_place.setAdapter(new RecyclerFragFirstPlaceAdapter(getActivity(),list_place));
+        //recyclerView_place.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView_place.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
+
+        SnapHelper snapHelper = new PagerSnapHelper();
+        if (recyclerView_place.getOnFlingListener() == null)
+            snapHelper.attachToRecyclerView(recyclerView_place);
+
+        recyclerView_place.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager =
+                        LinearLayoutManager.class.cast(recyclerView.getLayoutManager());
+            }
+        });
     }
 
     @Override

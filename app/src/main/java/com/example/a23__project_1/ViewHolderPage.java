@@ -29,12 +29,6 @@ public class ViewHolderPage extends RecyclerView.ViewHolder {
 
         viewpager_title.setText(data.getText());
         viewpager_image.setBackground(data.getImage());
-//        Glide.with(viewpager_layout)
-//                .load(data.getImage())
-//                .placeholder(R.drawable.load_fail)
-//                .error(R.drawable.load_fail)
-//                .fallback(R.drawable.load_fail)
-//                .into(viewpager_image);
 
     }
 }
