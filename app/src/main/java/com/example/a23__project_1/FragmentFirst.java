@@ -1,5 +1,6 @@
 package com.example.a23__project_1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +47,9 @@ public class FragmentFirst extends Fragment implements View.OnClickListener{
     private LottieAnimationView animationView1_5;
     private LottieAnimationView animationView1_6;
     private int Anim_Rotate_num;
+
+    private LinearLayout layout_btn_moreInfo;
+    private LinearLayout layout_btn_placeInfo;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Initialize view
@@ -99,22 +103,12 @@ public class FragmentFirst extends Fragment implements View.OnClickListener{
         animationView1_6.playAnimation();
         animationView1_6.setRepeatCount(Anim_Rotate_num);
 
-//        //장소별 모아보기 RecyclerView
-//        recyclerView_place = view.findViewById(R.id.recycler_frag_first_layout);
-//        ArrayList<DataPage> list_place = new ArrayList<>();
-//
-//        list_place.add(new DataPage(getResources().getDrawable(R.drawable.junggu),"중구"));
-//        list_place.add(new DataPage(getResources().getDrawable(R.drawable.jongro), "종로구"));
-//        list_place.add(new DataPage(getResources().getDrawable(R.drawable.songpa), "송파구"));
-//        list_place.add(new DataPage(getResources().getDrawable(R.drawable.gangnam), "강남구"));
-//        list_place.add(new DataPage(getResources().getDrawable(R.drawable.yeouido), "영등포구"));
+        layout_btn_moreInfo = (LinearLayout) view.findViewById(R.id.layout_btn_moreInfo);
+        layout_btn_moreInfo.setOnClickListener(this);
 
+        layout_btn_placeInfo = (LinearLayout) view.findViewById(R.id.layout_btn_placeInfo);
+        layout_btn_placeInfo.setOnClickListener(this);
 
-//        recyclerView_place.setAdapter(new RecyclerFragFirstPlaceAdapter(list_place));
-//        recyclerView_place.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
-        // Return view
         return view;
     }
     @Override
@@ -152,39 +146,28 @@ public class FragmentFirst extends Fragment implements View.OnClickListener{
         });
     }
 
+    private Intent intent;
     @Override
     public void onClick(View view) {
+
         switch(view.getId()){
 
-//            case R.id.btnToggle:
-//
-//                if (viewPager2.getOrientation() == ViewPager2.ORIENTATION_VERTICAL) {
-//                    btnToggle.setText("가로로 슬라이드");
-//
-//                }else {
-//                    btnToggle.setText("세로로 슬라이드");
-//                    viewPager2.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
-//                }
-//
-//                break;
+            case R.id.layout_btn_moreInfo:
+                Log.d("frag","카테고리 더보기");
+                intent = new Intent(getActivity(),FirstFragInfo.class);
+                intent.putExtra("elements","more_category");
+                startActivity(intent);
+                break;
 
-//            case R.id.btn_close:
-//
-//                if (layout_ctr == 1) {
-//
-//                    anim = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
-//                            R.anim.nfc2_anim); //애니메이션설정파일
-//                    layout_menu.startAnimation(anim);
-//
-//                    layout_menu.setVisibility(View.GONE);
-//                    layout_backgroundmenu.setVisibility(View.GONE);
-//
-//                    menu_btn.setVisibility(View.VISIBLE);
-//                    menu_btn.setClickable(true);
-//                    layout_ctr = 0;
-//                }
-//                break;
+            case R.id.layout_btn_placeInfo:
+                Log.d("frag","장소 더보기");
+                intent = new Intent(getActivity(),FirstFragInfo.class);
+                intent.putExtra("elements","more_place");
+                startActivity(intent);
+                break;
 
         }
+
+
     }
 }

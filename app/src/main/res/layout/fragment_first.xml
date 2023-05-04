@@ -68,7 +68,7 @@
                         android:fontFamily="@font/the_jamsil_2"/>
 
                     <LinearLayout
-                        android:id="@+id/layout_moreInfo"
+                        android:id="@+id/layout_btn_moreInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -437,7 +437,7 @@
                         android:fontFamily="@font/the_jamsil_2"/>
 
                     <LinearLayout
-                        android:id="@+id/layout_placeInfo"
+                        android:id="@+id/layout_btn_placeInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
