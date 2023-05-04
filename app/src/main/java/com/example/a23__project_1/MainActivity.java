@@ -9,10 +9,15 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Build;
 import android.os.Handler;
 import com.airbnb.lottie.LottieAnimationView;
 
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -29,7 +34,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.kakao.sdk.user.UserApiClient;
+import com.kakao.sdk.user.model.Account;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+
+import java.security.MessageDigest;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -57,6 +66,8 @@ public class MainActivity extends AppCompatActivity{
         setTheme(R.style.Theme_Main);
         setContentView(R.layout.activity_main);
 
+        // kakao getHash
+        Log.d("keyHash", getKeyHash());
         txtTitle = (TextView)findViewById(R.id.txt_title);
         txtSubtitle = (TextView)findViewById(R.id.txt_subtitle);
         layout_loading = (ConstraintLayout)findViewById(R.id.layout_mainloading);
@@ -144,6 +155,21 @@ public class MainActivity extends AppCompatActivity{
                 Intent intent = new Intent(MainActivity.this, MyplanActivity.class);
                 //intent.putExtra("profile", image_profile);
                 startActivity(intent);
+            }
+        });
+
+        // 현석 - 카카오 계정 로그인하기
+        ImageButton imgBtn_kakao_login = (ImageButton) findViewById(R.id.btn_kakao_login);
+        imgBtn_kakao_login.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(MainActivity.this)) {
+                    login();
+                }
+                else {
+                    accountLogin();
+                }
             }
         });
 
@@ -299,4 +325,70 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    //kakao get key Hash
+    private String getKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String something = new String(Base64.encode(md.digest(), 0));
+                Log.e("Hash key", something);
+                return something;
+            }
+        } catch (Exception e) {
+            Log.e("name not found", e.toString());
+        }
+        return "";
+    }
+
+    // 카카오 계정이 있는 경우 바로 로그인
+    public void login(){
+        String TAG = "login()";
+        UserApiClient.getInstance().loginWithKakaoTalk(MainActivity.this,(oAuthToken, error) -> {
+            if (error != null) {
+                Log.e(TAG, "로그인 실패", error);
+            } else if (oAuthToken != null) {
+                Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
+                getUserInfo();
+            }
+            return null;
+        });
+    }
+
+    // 없는 경우 직접 계정으로 로그인
+    public void accountLogin(){
+        String TAG = "accountLogin()";
+        UserApiClient.getInstance().loginWithKakaoAccount(MainActivity.this,(oAuthToken, error) -> {
+            if (error != null) {
+                Log.e(TAG, "로그인 실패", error);
+            } else if (oAuthToken != null) {
+                Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
+                getUserInfo();
+            }
+            return null;
+        });
+    }
+
+    //유저 정보 받아오기
+    public void getUserInfo(){
+        String TAG = "getUserInfo()";
+        UserApiClient.getInstance().me((user, meError) -> {
+            if (meError != null) {
+                Log.e(TAG, "사용자 정보 요청 실패", meError);
+            } else {
+                System.out.println("로그인 완료");
+                Log.i(TAG, user.toString());
+                {
+                    Log.i(TAG, "사용자 정보 요청 성공" +
+                            "\n회원 : "+user.getId() +
+                            "\n이메일: "+user.getKakaoAccount().getEmail());
+                }
+                Account user1 = user.getKakaoAccount();
+                System.out.println("사용자 계정" + user1);
+            }
+            return null;
+        });
+    }
 }

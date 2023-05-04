@@ -22,8 +22,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
@@ -56,4 +56,8 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    //kakaotalk
+    implementation "com.kakao.sdk:v2-user:2.8.3" // 카카오 로그인
+    implementation "com.kakao.sdk:v2-talk:2.8.3" // 친구, 메시지(카카오톡)
+    implementation "com.kakao.sdk:v2-navi:2.8.3" // 카카오내비
 }
