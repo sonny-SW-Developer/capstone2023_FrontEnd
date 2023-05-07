@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.23Project1">
         <activity
-            android:name=".FirstFragInfo"
+            android:name=".FirstFragInfoActivity"
             android:exported="false" />
         <activity
             android:name=".MapActivity"

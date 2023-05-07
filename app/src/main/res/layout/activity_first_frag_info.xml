@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FirstFragInfo">
+    tools:context=".FirstFragInfoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,19 +14,10 @@
         android:visibility="visible">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/activity_first_info_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize">
-
-            <ImageButton
-                android:id="@+id/btn_first_frag_back"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_gravity="left"
-                android:src="@drawable/baseline_keyboard_arrow_gray_left_24"
-                android:background="@color/white"
-                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -54,25 +45,22 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:text="test"
             android:id="@+id/testText"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_activity_first_fragment_menu"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:background="@color/white"
-            android:id="@+id/recycler_activity_firstfrag"
-            >
+            android:scrollbars="none" />
 
-
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-
-
-<!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
+        <!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
 <!--            android:id="@+id/navigationView"-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="wrap_content"-->
