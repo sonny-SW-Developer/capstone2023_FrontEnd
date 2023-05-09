@@ -32,6 +32,5 @@ public class RecyclerFragFirstMoreInfoPage extends RecyclerView.ViewHolder {
         txtTitle.setText(data.getTitle());
         txtBody.setText(data.getBody());
         imageView.setImageResource(data.getImage_path());
-
     }
 }

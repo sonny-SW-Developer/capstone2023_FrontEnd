@@ -365,6 +365,7 @@ public class MainActivity extends AppCompatActivity{
                 Log.e(TAG, "로그인 실패", error);
             } else if (oAuthToken != null) {
                 Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
+//                Log.i(TAG, "로그인 성공(토큰정보보기) : " + oAuthToken.ac);
                 getUserInfo();
             }
             return null;
