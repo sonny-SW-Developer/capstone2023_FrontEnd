@@ -39,6 +39,7 @@ import com.kakao.sdk.user.model.Account;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -75,7 +76,8 @@ public class MainActivity extends AppCompatActivity{
         animationView = (LottieAnimationView) findViewById(R.id.lottie);
         //layout_slidingRootNav = (FrameLayout) findViewById(R.id.activity_slidingRootNav);
 
-
+        //해시키 받아오기
+        getHashKey();
 
         animFlip = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.flip);
@@ -392,4 +394,28 @@ public class MainActivity extends AppCompatActivity{
             return null;
         });
     }
+
+    //해시키 받아오기
+    private void getHashKey(){
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (packageInfo == null)
+            Log.e("KeyHash", "KeyHash:null");
+
+        for (Signature signature : packageInfo.signatures) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            } catch (NoSuchAlgorithmException e) {
+                Log.e("KeyHash", "Unable to get MessageDigest. signature=" + signature, e);
+            }
+        }
+    }
+
+
 }
