@@ -30,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import net.daum.mf.map.api.CameraUpdateFactory;
+import net.daum.mf.map.api.MapCircle;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPointBounds;
@@ -38,6 +39,7 @@ import net.daum.mf.map.api.MapView;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 
 public class MapActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
@@ -48,6 +50,7 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
     private double nlatitude;
     private double nlongitude;
     private ImageButton nowOnMap;
+    private MapPOIItem[] mCustomMarker;
 
     private static final String LOG_TAG = "MainActivity";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
@@ -141,6 +144,23 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 //        int padding = 100; // px
 //        mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
 
+        // 혼잡도 표시 원 추가
+        Places[] places = new Places[5];
+        places[0] = new Places("강남역","혼잡",37.497952,127.027619,"null","역");
+        places[1] = new Places("롯데월드","보통",37.51114877018953, 127.09793885391981,"null","공원");
+        places[2] = new Places("경복궁","한적",37.578158285970645, 126.97637354819015 ,"null","관광");
+        places[3] = new Places("이태원","보통",37.53912917638327,126.99190986859745 ,"null","음식점");
+        places[4] = new Places("김포공항","혼잡", 37.565378514599345,126.80070932089309 ,"null","공항");
+
+        Log.d("places0",places[0].getName());
+        Log.d("places1",places[1].getName());
+        Log.d("places2",places[2].getName());
+        Log.d("places3",places[3].getName());
+        Log.d("places4",places[4].getName());
+
+        addCircles(places);
+        addMarkers(places);
+
         // 현재 내 위치 찾기
         nowOnMap = findViewById(R.id.btn_now);
         nowOnMap.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +171,9 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
                 mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(nlatitude, nlongitude), 1, true);
             }
         });
+
+
+
     }
 
     @Override
@@ -241,6 +264,64 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 
     }
 
+    private void addCircles(Places[] places) {
+
+        MapCircle[] circle = new MapCircle[5];
+
+        for(int i =0; i<places.length; i++){
+            circle[i] = new MapCircle(
+                    MapPoint.mapPointWithGeoCoord(places[i].getLatitude(), places[i].getLongitude()), // center
+                    400, // radius
+                    Color.argb(128, 0, 0, 0), // strokeColor
+                    Color.argb(128, 0, 255, 0) // fillColor
+            );
+
+            if( "혼잡".equals(places[i].getCongestion()) ) { circle[i].setFillColor(0x60FF0000); }
+            else if( "보통".equals(places[i].getCongestion()) ) { circle[i].setFillColor(0x60FFFF00); }
+            else{ circle[i].setFillColor(0x60008000);}
+            circle[i].setTag(i);
+            mapView.addCircle(circle[i]);
+
+        }
+
+        // 지도뷰의 중심좌표와 줌레벨을 Circle이 모두 나오도록 조정.
+//        MapPointBounds[] mapPointBoundsArray = { circle.getBound(), circle2.getBound() };
+//        MapPointBounds mapPointBounds = new MapPointBounds(mapPointBoundsArray);
+//        int padding = 50; // px
+//        mMapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
+    }
+
+    private void addMarkers(Places[] places) {
+
+        mCustomMarker = new MapPOIItem[5];
+
+        for(int i =0; i<places.length; i++){
+
+            mCustomMarker[i] = new MapPOIItem();
+            mCustomMarker[i].setItemName(places[i].getName());
+            mCustomMarker[i].setMarkerType(MapPOIItem.MarkerType.CustomImage);
+            mCustomMarker[i].setTag(i);
+            mCustomMarker[i].setMapPoint(MapPoint.mapPointWithGeoCoord(places[i].getLatitude(), places[i].getLongitude()));
+            mCustomMarker[i].setCustomImageAutoscale(true); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+            mCustomMarker[i].setCustomImageAnchor(0.0f, 0.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+
+            if( "공항".equals(places[i].getTheme()) ) { mCustomMarker[i].setCustomImageResourceId(R.drawable.icon_airplane);  }
+            else if( "음식점".equals(places[i].getTheme()) ) { mCustomMarker[i].setCustomImageResourceId(R.drawable.custom_marker_red); }
+            else if( "공원".equals(places[i].getTheme()) ) { mCustomMarker[i].setCustomImageResourceId(R.drawable.custom_marker_red); }
+            else if( "역".equals(places[i].getTheme()) ) { mCustomMarker[i].setCustomImageResourceId(R.drawable.custom_marker_red); }
+            else if( "관광".equals(places[i].getTheme()) ) { mCustomMarker[i].setCustomImageResourceId(R.drawable.icon_ancient); }
+            else{ }
+
+            mapView.addPOIItem(mCustomMarker[i]);
+
+        }
+
+        // 지도뷰의 중심좌표와 줌레벨을 Circle이 모두 나오도록 조정.
+//        MapPointBounds[] mapPointBoundsArray = { circle.getBound(), circle2.getBound() };
+//        MapPointBounds mapPointBounds = new MapPointBounds(mapPointBoundsArray);
+//        int padding = 50; // px
+//        mMapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
+    }
     /*
      * ActivityCompat.requestPermissions를 사용한 퍼미션 요청의 결과를 리턴받는 메소드입니다.
      */
