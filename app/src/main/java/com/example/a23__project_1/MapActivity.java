@@ -26,7 +26,11 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import net.daum.mf.map.api.CameraUpdateFactory;
@@ -51,45 +55,51 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
     private double nlongitude;
     private ImageButton nowOnMap;
     private MapPOIItem[] mCustomMarker;
+    private int ITEMNUMS = 5;
+    private int layout_ctr = 0;
 
     private static final String LOG_TAG = "MainActivity";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION};
 
+    private LinearLayout layout_menu;
+    private LinearLayout layout_background;
+
+    private ImageButton map_close;
+    private RelativeLayout map;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        layout_menu = (LinearLayout) findViewById(R.id.layout_menu_map);
+        layout_background = (LinearLayout) findViewById(R.id.layout_background_map);
+        map_close = (ImageButton) findViewById(R.id.btn_map_close);
+        map = (RelativeLayout)findViewById(R.id.map_view);
 
-        int permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.INTERNET);
+        map_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.nfc2_anim); //애니메이션설정파일
+                layout_menu.startAnimation(anim);
+                layout_menu.setVisibility(View.GONE);
+                layout_background.setVisibility(View.GONE);
 
-        int permission2 = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
+                //menu_btn.setVisibility(View.VISIBLE);
+                map.setClickable(true);
+                layout_ctr = 0;
 
-        int permission3 = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION);
-
-        // 권한이 열려있는지 확인
-        if (permission == PackageManager.PERMISSION_DENIED || permission2 == PackageManager.PERMISSION_DENIED || permission3 == PackageManager.PERMISSION_DENIED) {
-            // 마쉬멜로우 이상버전부터 권한을 물어본다
-            if (VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                // 권한 체크(READ_PHONE_STATE의 requestCode를 1000으로 세팅
-                requestPermissions(
-                        new String[]{Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                        1000);
             }
-            return;
-        }
+        });
+
 
         mapView = new MapView(this);
         mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
         mapView.setMapViewEventListener(this);
-        // 현위치 트래킹 이벤트를 통보
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+
         // POIItemEventListener interface 리스너
         mapView.setPOIItemEventListener(this);
         // 고해상도 지도 타일 사용
@@ -114,30 +124,7 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 //        mapView.setCurrentLocationRadiusFillColor(0xFFFFFF);
 //        mapView.setCurrentLocationRadiusStrokeColor(0xFFFFFF);
 
-        /* 마커를 표시하자 */
-        MapPOIItem customMarker = new MapPOIItem();
-        MapPoint mapPoint= MapPoint.mapPointWithGeoCoord(37.480426, 126.900177); //마커 표시할 위도경도
-        customMarker.setItemName("우리집 근처당");
-        customMarker.setTag(1);
-        customMarker.setMapPoint(mapPoint);
-        customMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-        customMarker.setCustomImageResourceId(R.drawable.custom_marker_red); // 마커 이미지.
-        customMarker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-        customMarker.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
- //       mapView.addPOIItem(customMarker);
 
-//        /* 폴리라인을 그리자 */
-//        MapPolyline polyline = new MapPolyline();
-//        polyline.setTag(1000);
-//        polyline.setLineColor(Color.argb(128, 255, 51, 0)); // Polyline 컬러 지정.
-//
-//        // Polyline 좌표 지정.
-//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.479928, 126.900169));
-//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.480624,126.900735));
-//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.481667,126.900713));
-//
-//        // Polyline 지도에 올리기.
-//        mapView.addPolyline(polyline);
 //
 //        // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
 //        MapPointBounds mapPointBounds = new MapPointBounds(polyline.getMapPoints());
@@ -145,7 +132,7 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 //        mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
 
         // 혼잡도 표시 원 추가
-        Places[] places = new Places[5];
+        Places[] places = new Places[ITEMNUMS];
         places[0] = new Places("강남역","혼잡",37.497952,127.027619,"null","역");
         places[1] = new Places("롯데월드","보통",37.51114877018953, 127.09793885391981,"null","공원");
         places[2] = new Places("경복궁","한적",37.578158285970645, 126.97637354819015 ,"null","관광");
@@ -161,14 +148,19 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
         addCircles(places);
         addMarkers(places);
 
+
         // 현재 내 위치 찾기
         nowOnMap = findViewById(R.id.btn_now);
         nowOnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // 현위치 트래킹 이벤트를 통보
+                mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
                 //MapPoint.GeoCoordinate mapPointGeo = mapPoint.getMapPointGeoCoord();
+                //Log.d("현재위치",Double.toString(mapView.));
                 //현재 좌표 따오는거 필요
-                mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(nlatitude, nlongitude), 1, true);
+                //mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(nlatitude, nlongitude), 1, true);
             }
         });
 
@@ -216,36 +208,42 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
-
+        Log.d("menu","singleTouch");
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
     }
 
     @Override
     public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
-
+        Log.d("menu","DoubleTouch");
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
     }
 
     @Override
     public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
-
+        Log.d("menu","LongTouch");
     }
 
     @Override
     public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
-
+        Log.d("menu","DragStarted");
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
     }
 
     @Override
     public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
-
+        Log.d("menu","DragEnded");
     }
 
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
-
+        Log.d("menu","DragFinished");
     }
 
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+        Log.d("tag","clicked");
+        String name = mapPOIItem.getItemName();
+        showDialogMenu(name,mapView,mapPOIItem);
 
     }
 
@@ -266,7 +264,7 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 
     private void addCircles(Places[] places) {
 
-        MapCircle[] circle = new MapCircle[5];
+        MapCircle[] circle = new MapCircle[ITEMNUMS];
 
         for(int i =0; i<places.length; i++){
             circle[i] = new MapCircle(
@@ -293,7 +291,7 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 
     private void addMarkers(Places[] places) {
 
-        mCustomMarker = new MapPOIItem[5];
+        mCustomMarker = new MapPOIItem[ITEMNUMS];
 
         for(int i =0; i<places.length; i++){
 
@@ -304,6 +302,7 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
             mCustomMarker[i].setMapPoint(MapPoint.mapPointWithGeoCoord(places[i].getLatitude(), places[i].getLongitude()));
             mCustomMarker[i].setCustomImageAutoscale(true); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
             mCustomMarker[i].setCustomImageAnchor(0.0f, 0.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+            mCustomMarker[i].setShowCalloutBalloonOnTouch(false);
 
             if( "공항".equals(places[i].getTheme()) ) { mCustomMarker[i].setCustomImageResourceId(R.drawable.icon_airplane);  }
             else if( "음식점".equals(places[i].getTheme()) ) { mCustomMarker[i].setCustomImageResourceId(R.drawable.custom_marker_red); }
@@ -315,6 +314,7 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
             mapView.addPOIItem(mCustomMarker[i]);
 
         }
+
 
         // 지도뷰의 중심좌표와 줌레벨을 Circle이 모두 나오도록 조정.
 //        MapPointBounds[] mapPointBoundsArray = { circle.getBound(), circle2.getBound() };
@@ -370,12 +370,29 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 
         }
     }
+    private Animation anim;
+    private void showDialogMenu(String name,MapView mapView, MapPOIItem mapPOIItem){
+
+        if (layout_ctr == 0) {
+            layout_menu.setVisibility(View.VISIBLE);
+            layout_background.setVisibility(View.VISIBLE);
+
+            anim = AnimationUtils.loadAnimation(this, R.anim.nfc_anim); //애니메이션설정파일
+            layout_menu.startAnimation(anim);
+
+            map.setClickable(false);
+
+            layout_ctr = 1;
+            Log.d("layout counter : ", Integer.toString(layout_ctr));
+        }
+
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-        mMapView.setShowCurrentLocationMarker(false);
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+        mapView.setShowCurrentLocationMarker(false);
     }
 
 
@@ -394,7 +411,7 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 
 
             // 3.  위치 값을 가져올 수 있음
-//            mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+//            mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
 
 
         } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
@@ -404,7 +421,7 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 
                 // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
                 Toast.makeText(MapActivity.this, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
-                // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                // 3-3. 사용자에rp 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
                 ActivityCompat.requestPermissions(MapActivity.this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
 
