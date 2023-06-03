@@ -4,12 +4,12 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btn_food"
+        android:id="@+id/btn_category"
         android:layout_width="80dp"
         android:layout_height="40dp"
         android:background="@drawable/round_selector"
         android:backgroundTint="@android:color/transparent"
-        android:text="음식점"
+        android:text="카테고리"
         android:textColor="@color/secondary_grey_black_14"
         android:fontFamily="@font/pretendard_semi_bold" />
 

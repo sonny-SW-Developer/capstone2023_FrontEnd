@@ -38,12 +38,12 @@
             android:layout_marginTop="55dp"
             android:layout_marginLeft="8dp" />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager1"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@id/et_input" />
+            android:layout_below="@id/et_input"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btn_food"
@@ -95,6 +95,31 @@
             android:textColor="@color/secondary_grey_black_14"
             android:fontFamily="@font/pretendard_semi_bold" />
     </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/fix_relative"
+        android:layout_marginTop="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:nestedScrollingEnabled="false"/>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

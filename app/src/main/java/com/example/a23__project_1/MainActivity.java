@@ -33,6 +33,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import com.example.a23__project_1.response.LoginResponse;
+import com.example.a23__project_1.retrofit.RetrofitAPI;
+import com.example.a23__project_1.retrofit.RetrofitClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.Account;
@@ -41,8 +44,14 @@ import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity{
+    private static final String TAG = "MainActivity";
+    private RetrofitAPI apiService;
 
     private LottieAnimationView animationView;
     private Animation animFlip;
@@ -67,17 +76,17 @@ public class MainActivity extends AppCompatActivity{
         setTheme(R.style.Theme_Main);
         setContentView(R.layout.activity_main);
 
-        // kakao getHash
-        Log.d("keyHash", getKeyHash());
+        // API 통신
+        apiService = RetrofitClient.getApiService();
+
+        // 해시키 값 확인
+        Log.d("keyHash : ", getKeyHash());
         txtTitle = (TextView)findViewById(R.id.txt_title);
         txtSubtitle = (TextView)findViewById(R.id.txt_subtitle);
         layout_loading = (ConstraintLayout)findViewById(R.id.layout_mainloading);
         layout_main=(LinearLayout) findViewById(R.id.layout_main);
         animationView = (LottieAnimationView) findViewById(R.id.lottie);
         //layout_slidingRootNav = (FrameLayout) findViewById(R.id.activity_slidingRootNav);
-
-        //해시키 받아오기
-        getHashKey();
 
         animFlip = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.flip);
@@ -117,7 +126,6 @@ public class MainActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
 
-
         setSupportActionBar(toolbar);
 
         new SlidingRootNavBuilder(this)
@@ -125,8 +133,6 @@ public class MainActivity extends AppCompatActivity{
                 .withMenuOpened(false)
                 .withMenuLayout(R.layout.activity_menu)
                 .inject();
-
-
 
         //사용자 정보 확인
         LinearLayout btn_userInfo = (LinearLayout) findViewById(R.id.btn_userInfo);
@@ -353,7 +359,8 @@ public class MainActivity extends AppCompatActivity{
                 Log.e(TAG, "로그인 실패", error);
             } else if (oAuthToken != null) {
                 Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
-                getUserInfo();
+                /** API 요청 실행 **/
+                loginAPI(oAuthToken.getAccessToken());
             }
             return null;
         });
@@ -367,54 +374,33 @@ public class MainActivity extends AppCompatActivity{
                 Log.e(TAG, "로그인 실패", error);
             } else if (oAuthToken != null) {
                 Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
-//                Log.i(TAG, "로그인 성공(토큰정보보기) : " + oAuthToken.ac);
-                getUserInfo();
+                /** API 요청 수행 **/
+                loginAPI(oAuthToken.getAccessToken());
             }
             return null;
         });
     }
 
-    //유저 정보 받아오기
-    public void getUserInfo(){
-        String TAG = "getUserInfo()";
-        UserApiClient.getInstance().me((user, meError) -> {
-            if (meError != null) {
-                Log.e(TAG, "사용자 정보 요청 실패", meError);
-            } else {
-                System.out.println("로그인 완료");
-                Log.i(TAG, user.toString());
-                {
-                    Log.i(TAG, "사용자 정보 요청 성공" +
-                            "\n회원 : "+user.getId() +
-                            "\n이메일: "+user.getKakaoAccount().getEmail());
+    public void loginAPI(String token) {
+        Call<LoginResponse> call = apiService.kakaoLogin(token);
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if(response.isSuccessful()) {
+                    LoginResponse.Result data = response.body().getResult();
+                    String accessToken = data.getAccessToken();
+                    String refreshToken = data.getRefreshToken();
+                    Log.d(TAG, "accessToken : " + accessToken);
+                    Log.d(TAG, "refreshToken : " + refreshToken);
+                    Toast.makeText(getApplicationContext(), "로그인 성공!", Toast.LENGTH_SHORT).show();
                 }
-                Account user1 = user.getKakaoAccount();
-                System.out.println("사용자 계정" + user1);
             }
-            return null;
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Log.d(TAG, "로그인 연동 실패  ... ");
+            }
         });
-    }
-
-    //해시키 받아오기
-    private void getHashKey(){
-        PackageInfo packageInfo = null;
-        try {
-            packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (packageInfo == null)
-            Log.e("KeyHash", "KeyHash:null");
-
-        for (Signature signature : packageInfo.signatures) {
-            try {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            } catch (NoSuchAlgorithmException e) {
-                Log.e("KeyHash", "Unable to get MessageDigest. signature=" + signature, e);
-            }
-        }
     }
 
 
