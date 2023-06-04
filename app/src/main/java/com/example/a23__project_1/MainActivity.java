@@ -33,16 +33,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import com.example.a23__project_1.placeList.FragmentSecond;
 import com.example.a23__project_1.response.LoginResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kakao.sdk.user.UserApiClient;
-import com.kakao.sdk.user.model.Account;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import retrofit2.Call;
 import retrofit2.Callback;

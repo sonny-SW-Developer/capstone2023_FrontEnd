@@ -41,59 +41,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_category"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/et_input"
-            android:visibility="gone"/>
+            android:layout_height="50dp"
+            android:layout_below="@id/et_input" />
 
-        <Button
-            android:id="@+id/btn_food"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/et_input"
-            android:background="@drawable/round_selector"
-            android:backgroundTint="@android:color/transparent"
-            android:text="음식점"
-            android:textColor="@color/secondary_grey_black_14"
-            android:fontFamily="@font/pretendard_semi_bold" />
-
-        <Button
-            android:id="@+id/btn_shopping"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_toRightOf="@id/btn_food"
-            android:layout_below="@+id/et_input"
-            android:background="@drawable/round_selector"
-            android:backgroundTint="@android:color/transparent"
-            android:layout_marginLeft="4dp"
-            android:text="쇼핑"
-            android:textColor="@color/secondary_grey_black_14"
-            android:fontFamily="@font/pretendard_semi_bold" />
-
-        <Button
-            android:id="@+id/btn_cafe"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_toRightOf="@id/btn_shopping"
-            android:layout_below="@+id/et_input"
-            android:background="@drawable/round_selector"
-            android:backgroundTint="@android:color/transparent"
-            android:layout_marginLeft="4dp"
-            android:text="카페"
-            android:textColor="@color/secondary_grey_black_14"
-            android:fontFamily="@font/pretendard_semi_bold" />
-
-        <Button
-            android:id="@+id/btn_study"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_toRightOf="@id/btn_cafe"
-            android:layout_below="@+id/et_input"
-            android:background="@drawable/round_selector"
-            android:backgroundTint="@android:color/transparent"
-            android:layout_marginLeft="4dp"
-            android:text="공부"
-            android:textColor="@color/secondary_grey_black_14"
-            android:fontFamily="@font/pretendard_semi_bold" />
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
