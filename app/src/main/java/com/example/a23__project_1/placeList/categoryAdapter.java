@@ -17,16 +17,16 @@ import java.util.List;
 public class categoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context mainContext;
 
-    // 클릭 아이템 리스너
-    private OnItemClickListener onItemClickListener = null;
-    // 클릭 리스너 인터페이스
-    public interface OnItemClickListener {
-        void onItemClick(int pos);
-    }
+   /** 리사이클러뷰 버튼 클릭 리스너 **/
+   private categoryClickListener clickListener;
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.onItemClickListener = listener;
-    }
+   public interface categoryClickListener {
+       void OnCategoryClickListener(int pos);
+   }
+
+   public void setOnCategoryClickListener(categoryClickListener listener) {
+       this.clickListener = listener;
+   }
 
     private List<String> dataList;
     /** 리스트 추가 예정 **/
@@ -61,14 +61,13 @@ public class categoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
 
             button = itemView.findViewById(R.id.btn_category);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = getAbsoluteAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION) {
-                        // 리스너 객체 메서드 호출
-                        if(onItemClickListener != null) {
-                            onItemClickListener.onItemClick(pos);
+                    if(clickListener != null) {
+                        int pos = getAbsoluteAdapterPosition();
+                        if(pos != RecyclerView.NO_POSITION) {
+                            clickListener.OnCategoryClickListener(pos);
                         }
                     }
                 }
