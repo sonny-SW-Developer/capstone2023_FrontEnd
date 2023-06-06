@@ -56,21 +56,12 @@ public class FragmentSecond extends Fragment {
         themaIdList = new ArrayList<>();
         themaList = new ArrayList<>();
 
-        /** 테스트 데이터 추가 **/
-//        List<String> categoryList = new ArrayList<>();
-//        categoryList.add("음식점");
-//        categoryList.add("카페");
-//        categoryList.add("관광지");
-//        categoryList.add("쇼핑몰");
-//        categoryList.add("음식점");
-//        categoryList.add("공부");
-//        categoryList.add("여행");
-
         getCategoryList();
         recycler_category.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
         return view;
     }
 
+    /** 카테고리 가져오는 API 통신 **/
     private void getCategoryList() {
         apiService = RetrofitClient.getApiService();
         allThemaCall = apiService.getAllThema();
@@ -105,7 +96,7 @@ public class FragmentSecond extends Fragment {
 
             @Override
             public void onFailure(Call<ThemaAllResponse> call, Throwable t) {
-                Log.d(TAG, "onFalilure .. 카테고리 불러오기 연동 실패 ...");
+                Log.d(TAG, "onFalilure .. 카테고리 불러오기 연동 실패 ..., 메세지 : " + t.getMessage());
             }
         });
     }
