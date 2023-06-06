@@ -15,7 +15,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class RetrofitClient {
 
     // BASE_URL
-    private static final String BASE_URL = "http://3.39.14.147";
+    private static final String BASE_URL = "http://13.124.202.241:8080";
     // Timeout 시간 (20초)
     private static final long CONNECT_TIMEOUT_SEC = 20L;
     private static Retrofit retrofit = null;
