@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a23__project_1.R;
+import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.ThemaAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
@@ -33,13 +34,16 @@ public class FragmentSecond extends Fragment {
     private static final String TAG = "FragmentSecond";
     EditText input;
     ImageButton search;
-    RecyclerView recycler_category;
+    RecyclerView recycler_category, recycler_place;
     private Context context;
     private categoryAdapter categoryAdapter;
+    private PlaceListAdapter placeListAdapter;
     private Call<ThemaAllResponse> allThemaCall;
+    private Call<PlaceAllResponse> allPlaceCall;
     private RetrofitAPI apiService;
     private List<Long> themaIdList;
     private List<String> themaList;
+    private List<PlaceAllResponse.Result> placeList; // 모든 장소 리스트
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -51,13 +55,16 @@ public class FragmentSecond extends Fragment {
 
         input = view.findViewById(R.id.et_input);
         search = view.findViewById(R.id.btn_search);
+        // 카테고리 리스트 가져오기
         recycler_category = view.findViewById(R.id.recycler_category);
-
+        // 카테고리 모든 장소 가져오기
+        recycler_place = view.findViewById(R.id.recycler_place);
         themaIdList = new ArrayList<>();
         themaList = new ArrayList<>();
+        placeList = new ArrayList<>();
 
         getCategoryList();
-        recycler_category.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
+        getPlaceList();
         return view;
     }
 
@@ -87,7 +94,7 @@ public class FragmentSecond extends Fragment {
                     });
 
                     recycler_category.setAdapter(categoryAdapter);
-
+                    recycler_category.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
                 }
                 else {
                     Log.d(TAG, "에러 발생 ..." + response.message());
@@ -96,6 +103,31 @@ public class FragmentSecond extends Fragment {
 
             @Override
             public void onFailure(Call<ThemaAllResponse> call, Throwable t) {
+                Log.d(TAG, "onFalilure .. 카테고리 불러오기 연동 실패 ..., 메세지 : " + t.getMessage());
+            }
+        });
+    }
+
+    /** 모든 장소 가져오기 API **/
+    public void getPlaceList() {
+        apiService = RetrofitClient.getApiService();
+        allPlaceCall = apiService.getAllPlace();
+        allPlaceCall.enqueue(new Callback<PlaceAllResponse>() {
+            @Override
+            public void onResponse(Call<PlaceAllResponse> call, Response<PlaceAllResponse> response) {
+                if(response.isSuccessful()) {
+                    placeList = response.body().getResult();
+                    placeListAdapter = new PlaceListAdapter(requireContext(), placeList);
+                    recycler_place.setAdapter(placeListAdapter);
+                    recycler_place.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                }
+                else {
+                    Log.d(TAG, "에러발생 .." + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PlaceAllResponse> call, Throwable t) {
                 Log.d(TAG, "onFalilure .. 카테고리 불러오기 연동 실패 ..., 메세지 : " + t.getMessage());
             }
         });

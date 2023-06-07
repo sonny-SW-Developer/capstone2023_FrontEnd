@@ -1,6 +1,7 @@
 package com.example.a23__project_1.retrofit;
 
 import com.example.a23__project_1.response.LoginResponse;
+import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.ThemaAllResponse;
 
 import retrofit2.Call;
@@ -14,4 +15,7 @@ public interface RetrofitAPI {
 
     @GET("/thema")
     Call<ThemaAllResponse> getAllThema();
+
+    @GET("/place")
+    Call<PlaceAllResponse> getAllPlace();
 }
