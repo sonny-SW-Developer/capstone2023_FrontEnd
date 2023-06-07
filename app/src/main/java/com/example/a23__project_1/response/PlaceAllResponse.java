@@ -16,18 +16,21 @@ public class PlaceAllResponse {
     public class Result {
         private String name;
         private Long placeId;
-        private String thema;
+        private List<String> thema;
         private int likeYn;
         private String picture;
         private Integer popular;
+        private String cctv;
 
-        public Result(String name, Long placeId, String thema, int likeYn, String picture, Integer popular) {
+        public Result(String name, Long placeId, List<String> thema, int likeYn,
+                      String picture, Integer popular, String cctv) {
             this.name = name;
             this.placeId = placeId;
             this.thema = thema;
             this.likeYn = likeYn;
             this.picture = picture;
             this.popular = popular;
+            this.cctv = cctv;
         }
 
         public String getName() {
@@ -38,7 +41,7 @@ public class PlaceAllResponse {
             return placeId;
         }
 
-        public String getThema() {
+        public List<String> getThema() {
             return thema;
         }
 
@@ -52,6 +55,10 @@ public class PlaceAllResponse {
 
         public Integer getPopular() {
             return popular;
+        }
+
+        public String getCctv() {
+            return cctv;
         }
     }
 }

@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -67,13 +69,22 @@ public class MainActivity extends AppCompatActivity{
     private FragmentFourth fragmentFourth = new FragmentFourth();
     private FragmentFifth fragmentFifth = new FragmentFifth();
 
-
-
+    private SharedPreferences sharedPreferences;
+    private static final String PREF_NAME = "userInfo";
+    private ImageButton imgBtn_kakao_login;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_Main);
         setContentView(R.layout.activity_main);
+
+        // user 정보 저장
+        sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        // 처음에는 값을 지운다.
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("name");
+        editor.remove("email");
+        editor.remove("profile");
 
         // API 통신
         apiService = RetrofitClient.getApiService();
@@ -166,7 +177,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
         // 현석 - 카카오 계정 로그인하기
-        ImageButton imgBtn_kakao_login = (ImageButton) findViewById(R.id.btn_kakao_login);
+        imgBtn_kakao_login = (ImageButton) findViewById(R.id.btn_kakao_login);
         imgBtn_kakao_login.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -359,7 +370,8 @@ public class MainActivity extends AppCompatActivity{
             } else if (oAuthToken != null) {
                 Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
                 /** API 요청 실행 **/
-                loginAPI(oAuthToken.getAccessToken());
+                //loginAPI(oAuthToken.getAccessToken());
+                getUserInfo();
             }
             return null;
         });
@@ -374,12 +386,14 @@ public class MainActivity extends AppCompatActivity{
             } else if (oAuthToken != null) {
                 Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
                 /** API 요청 수행 **/
-                loginAPI(oAuthToken.getAccessToken());
+                //loginAPI(oAuthToken.getAccessToken());
+                getUserInfo();
             }
             return null;
         });
     }
 
+    /** 로그인 연동 API **/
     public void loginAPI(String token) {
         Call<LoginResponse> call = apiService.kakaoLogin(token);
         call.enqueue(new Callback<LoginResponse>() {
@@ -402,5 +416,22 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
-
+    /** 사용자 정보 불러오기 **/
+    public void getUserInfo() {
+        UserApiClient.getInstance().me((user, meError) -> {
+            if(meError != null) {
+                Log.e(TAG, "사용자 정보 요청 실패", meError);
+            }
+            else {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("name", user.getKakaoAccount().getName());
+                editor.putString("email", user.getKakaoAccount().getEmail());
+                editor.putString("profile", user.getKakaoAccount().getProfile().getProfileImageUrl());
+                editor.apply();
+                Toast.makeText(getApplicationContext(), "로그인이 성공적으로 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                imgBtn_kakao_login.setVisibility(View.GONE);
+            }
+            return null;
+        });
+    }
 }

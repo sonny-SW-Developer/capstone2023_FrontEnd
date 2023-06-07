@@ -10,6 +10,7 @@
         android:background="@drawable/round_selector"
         android:backgroundTint="@android:color/transparent"
         android:text="카테고리"
+        android:textSize="12dp"
         android:textColor="@color/secondary_grey_black_14"
         android:fontFamily="@font/pretendard_semi_bold"
         android:layout_marginRight="8dp"/>
