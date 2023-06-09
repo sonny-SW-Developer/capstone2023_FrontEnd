@@ -1,6 +1,9 @@
 package com.example.a23__project_1.placeList;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,9 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private final Context mainContext;
     private List<PlaceAllResponse.Result> resultList;
     private List<String> themaList = new ArrayList<>();
+    private SharedPreferences sharedPreferences;
+    private static final String PREF_NAME = "userInfo";
+
 
     /** cctv 버튼 클릭 리스너 **/
     private cctvClickListener ccl;
@@ -109,11 +115,13 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 break;
         }
         int like_rate = resultList.get(position).getLikeYn();
+
         if (like_rate == 1) {
             vh.like.setBackgroundResource(R.drawable.ic_heart_fill);
         }
-        else
+        else {
             vh.like.setBackgroundResource(R.drawable.ic_heart_no_fill);
+        }
 
         /** CCTV 링크 없는 경우 **/
         if(resultList.get(position).getCctv().equals("")) {
@@ -149,6 +157,16 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             category = itemView.findViewById(R.id.tv_content);
             traffic = itemView.findViewById(R.id.tv_traffic);
             like = itemView.findViewById(R.id.iv_heart);
+
+            /** 로그인 여부 확인 **/
+//            sharedPreferences = mainContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+//            String email = sharedPreferences.getString("email", "null");
+//            Log.d("Adapter", email);
+//            // 로그인하지 않은 경우
+//            if (email.equals("null"))
+//                like.setVisibility(View.INVISIBLE);
+//            else
+//                like.setVisibility(View.VISIBLE);
 
             /** cctv 버튼 클릭 리스너 **/
             cctv.setOnClickListener(new View.OnClickListener() {

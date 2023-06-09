@@ -1,5 +1,7 @@
 package com.example.a23__project_1.response;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class PlaceAllResponse {
@@ -15,6 +17,7 @@ public class PlaceAllResponse {
 
     public class Result {
         private String name;
+        @SerializedName("place_id")
         private Long placeId;
         private List<String> thema;
         private int likeYn;
@@ -47,6 +50,10 @@ public class PlaceAllResponse {
 
         public int getLikeYn() {
             return likeYn;
+        }
+
+        public void setLikeYn(int likeYn) {
+            this.likeYn = likeYn;
         }
 
         public String getPicture() {

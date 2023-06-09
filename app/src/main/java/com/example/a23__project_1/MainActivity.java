@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity{
         editor.remove("name");
         editor.remove("email");
         editor.remove("profile");
+        editor.apply();
 
         // API 통신
         apiService = RetrofitClient.getApiService();
@@ -424,7 +425,7 @@ public class MainActivity extends AppCompatActivity{
             }
             else {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("name", user.getKakaoAccount().getName());
+                editor.putString("name", user.getKakaoAccount().getProfile().getNickname());
                 editor.putString("email", user.getKakaoAccount().getEmail());
                 editor.putString("profile", user.getKakaoAccount().getProfile().getProfileImageUrl());
                 editor.apply();

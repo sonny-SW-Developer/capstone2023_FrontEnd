@@ -3,8 +3,10 @@ package com.example.a23__project_1.placeList;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -24,10 +26,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a23__project_1.R;
+import com.example.a23__project_1.request.LikeRequest;
+import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.ThemaAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
@@ -55,8 +61,14 @@ public class FragmentSecond extends Fragment {
     private List<Long> themaIdList;
     private List<String> themaList;
     private List<PlaceAllResponse.Result> placeList, searchList; // 모든 장소 리스트 및 검색 리스트
+    private List<Long> placeIdList;
+
+    private Call<LikeResponse> likeCall;
 
     private Dialog cctvDialog;
+    private SharedPreferences sharedPreferences;
+    private static final String PREF_NAME = "userInfo";
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -79,17 +91,28 @@ public class FragmentSecond extends Fragment {
         themaList = new ArrayList<>();
         placeList = new ArrayList<>();
         searchList = new ArrayList<>();
+        placeIdList = new ArrayList<>();
 
         // cctv 모달
         cctvDialog = new Dialog(requireContext());
         cctvDialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
         cctvDialog.setContentView(R.layout.dialog_cctv_webview);
 
+        // sharedPreference로 로그인 여부 판단.
+        sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         getCategoryList();
         getPlaceList();
 
         editsetTextWatcher(input);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getCategoryList();
+        getPlaceList();
     }
 
     /** 검색 버튼 클릭 시 **/
@@ -189,6 +212,10 @@ public class FragmentSecond extends Fragment {
                     placeList = response.body().getResult();
                     placeListAdapter = new PlaceListAdapter(requireContext(), placeList);
 
+                    for (PlaceAllResponse.Result result : placeList) {
+                        placeIdList.add(result.getPlaceId());
+                    }
+
                     /** CCTV 버튼 클릭 리스너 설정 **/
                     placeListAdapter.setOnCCTVClickListener(new PlaceListAdapter.cctvClickListener() {
                         @Override
@@ -207,6 +234,9 @@ public class FragmentSecond extends Fragment {
                         @Override
                         public void likeButtonClick(int position) {
                             // 버튼 클릭했을 때 API 통신
+                            Long placeId = placeList.get(position).getPlaceId();
+                            Log.d(TAG, "place_id 값1 : " + placeId);
+                            postLike(position, placeId);
                         }
                     });
 
@@ -226,8 +256,54 @@ public class FragmentSecond extends Fragment {
     }
 
     /** 찜 버튼 API 통신 **/
-    public void postLike() {
+    public void postLike(int pos, Long place_id) {
+        apiService = RetrofitClient.getApiService();
+        String email = sharedPreferences.getString("email", "null");
+        if (email.equals("null")) {
+            /** 다이얼로그 출력해주기 **/
+            Toast.makeText(requireContext(), "로그인을 먼저 진행해주세요...", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        Log.d(TAG, "place_id 값2 : " + place_id);
+        LikeRequest.Member member = new LikeRequest.Member(email);
+        LikeRequest.Place place = new LikeRequest.Place(place_id);
+        LikeRequest request = new LikeRequest(member, place);
+        likeCall = apiService.doLike(request);
+        likeCall.enqueue(new Callback<LikeResponse>() {
+            @Override
+            public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
+                if(response.isSuccessful()) {
+                    /** 요청에 성공했을 때 **/
+                    if(response.body().getCode() == 200 && response.body().getMessage().contains("성공")) {
+                        // 지우기가 성공했을 때
+                        if(response.body().getResult().equals("delete")) {
+                            Toast.makeText(requireContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                            placeList.get(pos).setLikeYn(0);
+                            Log.d(TAG, String.valueOf(placeList.get(pos).getLikeYn()));
+                            /** 변경 감지 **/
+                            placeListAdapter.notifyDataSetChanged();
+                        }
+                        else {
+                            Toast.makeText(requireContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                            placeList.get(pos).setLikeYn(1);
+                            Log.d(TAG, String.valueOf(placeList.get(pos).getLikeYn()));
+                            placeListAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+                else {
+                    Log.d(TAG, "찜 버튼 연동 실패...");
+                    Log.d(TAG, "오류 메세지 : " + response.errorBody().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LikeResponse> call, Throwable t) {
+                Log.d(TAG, "찜 버튼 연동 실패2...");
+                Log.d(TAG, "오류 메세지2 : " + t.getMessage());
+            }
+        });
     }
 
     /** CCTV 모달 띄우기 **/

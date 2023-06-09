@@ -1,5 +1,7 @@
 package com.example.a23__project_1.retrofit;
 
+import com.example.a23__project_1.request.LikeRequest;
+import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.LoginResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.ThemaAllResponse;
@@ -18,4 +20,7 @@ public interface RetrofitAPI {
 
     @GET("/place")
     Call<PlaceAllResponse> getAllPlace();
+
+    @POST("/like")
+    Call<LikeResponse> doLike(@Body LikeRequest likeRequest);
 }
