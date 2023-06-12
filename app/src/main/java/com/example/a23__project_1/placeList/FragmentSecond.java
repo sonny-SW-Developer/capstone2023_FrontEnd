@@ -236,6 +236,7 @@ public class FragmentSecond extends Fragment {
                             // 버튼 클릭했을 때 API 통신
                             Long placeId = placeList.get(position).getPlaceId();
                             Log.d(TAG, "place_id 값1 : " + placeId);
+                            Log.d(TAG, "position " + position);
                             postLike(position, placeId);
                         }
                     });
