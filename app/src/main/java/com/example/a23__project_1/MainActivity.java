@@ -35,7 +35,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 
-import com.example.a23__project_1.placeList.FragmentSecond;
+import com.example.a23__project_1.Fifth.FragmentFifth;
+import com.example.a23__project_1.Second.FragmentSecond;
 import com.example.a23__project_1.response.LoginResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;

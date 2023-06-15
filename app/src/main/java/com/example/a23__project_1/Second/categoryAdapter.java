@@ -1,11 +1,9 @@
-package com.example.a23__project_1.placeList;
+package com.example.a23__project_1.Second;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;

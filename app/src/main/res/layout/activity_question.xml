@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fifth.QuestionActivity">
+
+    <LinearLayout
+        android:id="@+id/lin1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/baseline_keyboard_arrow_gray_left_24"
+            android:background="@null" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="문의 사항 작성하기"
+            android:textSize="24dp"
+            android:textColor="@color/secondary_grey_black_14"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:layout_marginLeft="70dp"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/lin1"
+        android:id="@+id/lin2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="24dp"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="문의사항 제목 작성"
+            android:textSize="16dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/secondary_grey_black_13"/>
+
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:hint="문의사항 제목을 작성하세요."
+            android:textColorHint="@color/secondary_grey_black_10"
+            android:background="@color/secondary_grey_black_4"
+            android:textSize="14dp"
+            android:gravity="start" />
+
+        <TextView
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="문의사항 내용 작성"
+            android:textSize="16dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/secondary_grey_black_13"/>
+
+        <EditText
+            android:id="@+id/et_question"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="8dp"
+            android:hint="내용을 작성하세요."
+            android:textColorHint="@color/secondary_grey_black_11"
+            android:background="@color/secondary_grey_black_4"
+            android:textSize="14dp"
+            android:gravity="start" />
+
+        <android.widget.Button
+            android:id="@+id/make_question"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/secondary_grey_black_7"
+            android:text="문의사항 생성"
+            android:textSize="16dp"
+            android:textColor="@color/secondary_grey_black_9"
+            android:fontFamily="@font/pretendard_medium" />
+
+    </LinearLayout>
+</RelativeLayout>
