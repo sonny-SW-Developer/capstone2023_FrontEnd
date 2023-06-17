@@ -64,31 +64,48 @@
                 android:layout_weight="1"
                 >
 
-                <TextView
-                    android:id="@+id/recycler_activity_first_place_title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/the_jamsil_3"
-                    android:textSize="40sp"
-                    tools:text="item" />
+
+                    <TextView
+                        android:id="@+id/recycler_activity_first_place_title"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/the_jamsil_3"
+                        android:textSize="20sp"
+                        tools:text="item" />
 
                 <TextView
                     android:id="@+id/recycler_activity_first_place_body"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/the_jamsil_3"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     tools:text="item" />
+
+
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_popular"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="popular0.json"
+                    app:lottie_loop="true" />
+
 
             </LinearLayout>
 

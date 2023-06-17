@@ -22,22 +22,22 @@
             android:name=".Fifth.QuestionActivity"
             android:exported="false" />
         <activity
-            android:name=".FirstFragInfoActivity"
+            android:name=".firstFragment.FragFirstInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".MapActivity"
+            android:name=".leftMenuBar.MapActivity"
             android:exported="false" />
         <activity
-            android:name=".MyplanActivity"
+            android:name=".leftMenuBar.MyplanActivity"
             android:exported="false" />
         <activity
-            android:name=".HistoryActivity"
+            android:name=".leftMenuBar.HistoryActivity"
             android:exported="false" />
         <activity
-            android:name=".UserinfoActivity"
+            android:name=".leftMenuBar.UserinfoActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingActivity"
+            android:name=".leftMenuBar.SettingActivity"
             android:exported="false" />
 
         <meta-data
