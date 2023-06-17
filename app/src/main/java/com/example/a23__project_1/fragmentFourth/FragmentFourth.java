@@ -64,6 +64,7 @@ public class FragmentFourth extends Fragment {
         tv_name = view.findViewById(R.id.tv_name);
         tv_login = view.findViewById(R.id.tv_login);
         btn_cal = view.findViewById(R.id.btn_calendar);
+        btn_cal.setOnClickListener(checkPlanClickListener);
 
         // sharedPreferences
         sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -103,6 +104,12 @@ public class FragmentFourth extends Fragment {
 
         return view;
     }
+
+    /** 일정 확인하기 버튼 클릭 시 **/
+    View.OnClickListener checkPlanClickListener = v -> {
+        Intent intent = new Intent(getActivity(), PlanListActivity.class);
+        startActivity(intent);
+    };
 
     /** 찜리스트 가져오기 API **/
     public void getLikePlace() {
@@ -203,6 +210,7 @@ public class FragmentFourth extends Fragment {
             public void onClick(View v) {
                 infoDialog.dismiss();
                 Intent intent = new Intent(getActivity(), MakePlanActivity.class);
+                intent.putExtra("name", name);
                 startActivity(intent);
             }
         });
