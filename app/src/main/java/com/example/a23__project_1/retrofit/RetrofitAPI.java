@@ -14,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface RetrofitAPI {
@@ -38,4 +39,12 @@ public interface RetrofitAPI {
     /** 문의사항 생성하기 **/
     @POST("/inquiry")
     Call<CommonResponse> doInquiry(@Body InquiryRequest request);
+
+    /** 찜리스트 가져오기 **/
+    @GET("/like/all/{member_id}")
+    Call<PlaceAllResponse> getAllLikes(@Query("member_id") String memberId);
+
+    /** 로그인 되어있을 때 모든 장소 리스트 가져오기 **/
+    @GET("/place/member")
+    Call<PlaceAllResponse> getLoginPlaceList(@Query("member_id") String memberId);
 }

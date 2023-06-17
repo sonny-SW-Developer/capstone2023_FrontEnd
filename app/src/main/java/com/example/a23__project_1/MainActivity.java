@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity{
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "userInfo";
     private ImageButton imgBtn_kakao_login;
+    BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -269,7 +271,7 @@ public class MainActivity extends AppCompatActivity{
         transaction.replace(R.id.frameLayout_main, fragmentThird).commitAllowingStateLoss();
 
         //메뉴클릭 리스너 등록
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
+        bottomNavigationView = findViewById(R.id.navigationView);
         bottomNavigationView.setSelectedItemId(R.id.thirdItem);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
@@ -393,6 +395,14 @@ public class MainActivity extends AppCompatActivity{
             }
             return true;
         }
+    }
+
+    public void navigateToFragment(Fragment fragment, int menuItemId) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frameLayout_main, fragment).commitAllowingStateLoss();
+
+        // 바텀 네비게이션 메뉴 변경
+        bottomNavigationView.setSelectedItemId(menuItemId);
     }
 
     //kakao get key Hash

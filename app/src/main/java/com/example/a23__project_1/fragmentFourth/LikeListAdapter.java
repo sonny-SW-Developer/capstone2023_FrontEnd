@@ -1,56 +1,63 @@
-package com.example.a23__project_1.fragmentSecond;
+package com.example.a23__project_1.fragmentFourth;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a23__project_1.R;
+import com.example.a23__project_1.fragmentSecond.PlaceListAdapter;
 import com.example.a23__project_1.response.PlaceAllResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class LikeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context mainContext;
     private List<PlaceAllResponse.Result> resultList;
     private List<String> themaList = new ArrayList<>();
 
-    /** cctv 버튼 클릭 리스너 **/
-    private cctvClickListener ccl;
+    /**
+     * cctv 버튼 클릭 리스너
+     **/
+    private PlaceListAdapter.cctvClickListener ccl;
 
     public interface cctvClickListener {
         void cctvButtonClick(List<PlaceAllResponse.Result> resultList, int position);
     }
-    public void setOnCCTVClickListener(cctvClickListener listener) {
+
+    public void setOnCCTVClickListener(PlaceListAdapter.cctvClickListener listener) {
         this.ccl = listener;
     }
 
-    /** 찜 리스트 버튼 클릭 리스너 **/
-    private likeClickListener lcl;
+    /**
+     * 찜 리스트 버튼 클릭 리스너
+     **/
+    private PlaceListAdapter.likeClickListener lcl;
+
     public interface likeClickListener {
         void likeButtonClick(List<PlaceAllResponse.Result> resultList, int position);
     }
-    public void setOnLikeClickListener(likeClickListener listener) {
+
+    public void setOnLikeClickListener(PlaceListAdapter.likeClickListener listener) {
         this.lcl = listener;
     }
 
-    /** 지도로 보기 버튼 클릭 리스너 **/
-    private mapClickListener mcl;
+    /** 자세히 보기 버튼 클릭 리스너 **/
+    private PlaceListAdapter.mapClickListener mcl;
     public interface mapClickListener {
         void mapButtonClick(List<PlaceAllResponse.Result> resultList, int position);
     }
-    public void setOnMapClickListener(mapClickListener listener) { this.mcl = listener;}
+    public void setOnMapClickListener(PlaceListAdapter.mapClickListener listener) { this.mcl = listener;}
 
-    public PlaceListAdapter(Context mainContext, List<PlaceAllResponse.Result> result) {
+    public LikeListAdapter(Context mainContext, List<PlaceAllResponse.Result> result) {
         this.mainContext = mainContext;
         this.resultList = result;
     }
@@ -60,13 +67,14 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.recycler_second_place_list, parent, false);
-        return new PlaceViewHolder(view);
+        return new LikePlaceViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        PlaceViewHolder vh = (PlaceViewHolder) holder;
+        LikePlaceViewHolder vh = (LikePlaceViewHolder) holder;
 
+        vh.like.setBackgroundResource(R.drawable.ic_heart_fill);
         // 이름, 타이틀, 좋아요 수, 이미지, 붐빔도 설정
         vh.title.setText(resultList.get(position).getName());
         themaList = resultList.get(position).getThema();
@@ -74,7 +82,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         for (String thema : themaList) {
             cate += thema + ", ";
         }
-        cate = cate.substring(0, cate.length()-2); // 카테고리 문자열로 출력
+        cate = cate.substring(0, cate.length() - 2); // 카테고리 문자열로 출력
 
         vh.category.setText(cate);
         if (cate.contains("상업"))
@@ -118,9 +126,15 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 break;
         }
 
+        /** CCTV 링크 없는 경우 **/
+        if (resultList.get(position).getCctv().equals("")) {
+            vh.cctv.setVisibility(View.GONE);
+        } else {
+            vh.cctv.setVisibility(View.VISIBLE);
+        }
+
         /** 찜 리스트 여부 설정 **/
         int like_rate = resultList.get(position).getLikeYn();
-
         if (like_rate == 1) {
             vh.like.setBackgroundResource(R.drawable.ic_heart_fill);
         }
@@ -128,13 +142,10 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             vh.like.setBackgroundResource(R.drawable.ic_heart_no_fill);
         }
 
-        /** CCTV 링크 없는 경우 **/
-        if(resultList.get(position).getCctv().equals("")) {
-            vh.cctv.setVisibility(View.GONE);
-        }
-        else {
-            vh.cctv.setVisibility(View.VISIBLE);
-        }
+        /** map은 따로 보여주도록 한다. **/
+        vh.map.setText("자세히 보기");
+        int color = ContextCompat.getColor(mainContext, R.color.teal_700);
+        vh.map.setTextColor(color);
     }
 
     @Override
@@ -142,18 +153,12 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return resultList.size();
     }
 
-    /** 데이터 변경 감지 **/
-    public void setItems(List<PlaceAllResponse.Result> list) {
-        resultList = list;
-        notifyDataSetChanged();
-    }
-
-    public class PlaceViewHolder extends RecyclerView.ViewHolder {
+    public class LikePlaceViewHolder extends RecyclerView.ViewHolder {
         private ImageView image;
         private TextView title, category, traffic, map;
         private ImageButton like, cctv;
 
-        public PlaceViewHolder(@NonNull View itemView) {
+        public LikePlaceViewHolder(@NonNull View itemView) {
             super(itemView);
 
             image = itemView.findViewById(R.id.image);
@@ -168,9 +173,9 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             cctv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(ccl != null) {
+                    if (ccl != null) {
                         int position = getBindingAdapterPosition();
-                        if(position != RecyclerView.NO_POSITION) {
+                        if (position != RecyclerView.NO_POSITION) {
                             ccl.cctvButtonClick(resultList, position);
                         }
                     }
@@ -181,16 +186,16 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(lcl != null) {
+                    if (lcl != null) {
                         int position = getBindingAdapterPosition();
-                        if(position != RecyclerView.NO_POSITION) {
+                        if (position != RecyclerView.NO_POSITION) {
                             lcl.likeButtonClick(resultList, position);
                         }
                     }
                 }
             });
 
-            /** 지도로 보기 버튼 클릭 리스너 **/
+            /** 자세히 보기 버튼 클릭 리스너 **/
             map.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -202,7 +207,6 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 }
             });
-
         }
     }
 }

@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.a23__project_1.MainActivity;
 import com.example.a23__project_1.R;
 import com.example.a23__project_1.request.LikeRequest;
 import com.example.a23__project_1.response.LikeResponse;
@@ -33,6 +34,7 @@ import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.ThemaAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
+import com.example.a23__project_1.thirdFragment.FragmentThird;
 
 import java.util.*;
 
@@ -61,6 +63,7 @@ public class FragmentSecond extends Fragment {
     private Dialog cctvDialog;
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "userInfo";
+    private String email = "";
     private HashMap<Long, String> themaIdNameMap;
 
 
@@ -93,10 +96,22 @@ public class FragmentSecond extends Fragment {
         cctvDialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
         cctvDialog.setContentView(R.layout.dialog_cctv_webview);
 
+
         // sharedPreference로 로그인 여부 판단.
         sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        email = sharedPreferences.getString("email", "null");
+        /** 로그인이 되어있는지 여부 판단 **/
+        // 로그인 되어있지 않은 경우
+        if(email.equals("null")) {
+            getPlaceList();
+        }
+        // 로그인 되어있는 경우
+        else {
+            getLoginCategoryList();
+        }
         getCategoryList();
-        getPlaceList();
+
+        Log.d(TAG, "로그인 이메일 : " + email);
 
         editsetTextWatcher(input);
         return view;
@@ -148,7 +163,7 @@ public class FragmentSecond extends Fragment {
         search.setClickable(true);
     }
 
-    /** 카테고리 가져오는 API 통신 **/
+    /**  카테고리 가져오는 API 통신 **/
     private void getCategoryList() {
         apiService = RetrofitClient.getApiService();
         allThemaCall = apiService.getAllThema();
@@ -209,7 +224,85 @@ public class FragmentSecond extends Fragment {
         });
     }
 
-    /** 모든 장소 가져오기 API **/
+    /** 로그인 되어있을 때 카테고리 가져오는 API 통신 **/
+    private void getLoginCategoryList() {
+        apiService = RetrofitClient.getApiService();
+        Call<PlaceAllResponse> call = apiService.getLoginPlaceList(email);
+        call.enqueue(new Callback<PlaceAllResponse>() {
+            @Override
+            public void onResponse(Call<PlaceAllResponse> call, Response<PlaceAllResponse> response) {
+                if(response.isSuccessful()) {
+                    placeList = response.body().getResult();
+                    placeListAdapter = new PlaceListAdapter(requireContext(), placeList);
+
+                    for (PlaceAllResponse.Result result : placeList) {
+                        // thema
+                        themaIdNameMap.put(result.getPlaceId(), result.getName());
+                    }
+
+                    /** CCTV 버튼 클릭 리스너 설정 **/
+                    placeListAdapter.setOnCCTVClickListener(new PlaceListAdapter.cctvClickListener() {
+                        @Override
+                        public void cctvButtonClick(List<PlaceAllResponse.Result> list ,int position) {
+                            /** 모달 띄우기 **/
+                            String url = list.get(position).getCctv();
+                            showCCTV(url);
+                        }
+                    });
+
+                    /** 찜 버튼 클릭 리스너 설정 **/
+                    placeListAdapter.setOnLikeClickListener(new PlaceListAdapter.likeClickListener() {
+                        @Override
+                        public void likeButtonClick(List<PlaceAllResponse.Result> list, int position) {
+                            // 버튼 클릭했을 때 API 통신
+                            String placeName = list.get(position).getName();
+                            Log.d(TAG, "placeName : " + placeName);
+                            // Position 반환
+                            Long placeId = searchPlaceId(themaIdNameMap, placeName);
+                            Log.d(TAG, "place_id 값1 : " + placeId);
+
+                            postLike(list, position, placeId);
+                        }
+                    });
+
+                    /** 지도로 보기 버튼 클릭 리스너 설정 **/
+                    placeListAdapter.setOnMapClickListener(new PlaceListAdapter.mapClickListener() {
+                        @Override
+                        public void mapButtonClick(List<PlaceAllResponse.Result> list, int position) {
+                            String placeName = list.get(position).getName();
+
+                            /** 이름 값 전달 **/
+                            Bundle bundle = new Bundle();
+                            bundle.putString("placeName", placeName);
+
+                            // 3번째 프레그먼트로 값 전달
+                            FragmentThird fragment = new FragmentThird();
+                            fragment.setArguments(bundle);
+
+                            /** 프래그먼트 이동 **/
+                            MainActivity mainActivity = (MainActivity) requireActivity();
+                            // 프래그먼트 이동 및 바텀 네비게이션 메뉴 변경
+                            mainActivity.navigateToFragment(fragment, R.id.thirdItem);
+                        }
+                    });
+
+                    //placeListAdapter.notifyDataSetChanged();
+                    recycler_place.setAdapter(placeListAdapter);
+                    recycler_place.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                }
+                else {
+                    Log.d(TAG, "에러발생(로그인) .." + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PlaceAllResponse> call, Throwable t) {
+                Log.d(TAG, "onFalilure .. 로그인 시 장소리스트 연동 실패 ..., 메세지 : " + t.getMessage());
+            }
+        });
+    }
+
+    /** 로그인 되어있지 않을 때 모든 장소 가져오기 API **/
     public void getPlaceList() {
         apiService = RetrofitClient.getApiService();
         allPlaceCall = apiService.getAllPlace();
@@ -250,6 +343,27 @@ public class FragmentSecond extends Fragment {
                         }
                     });
 
+                    /** 지도로 보기 버튼 클릭 리스너 설정 **/
+                    placeListAdapter.setOnMapClickListener(new PlaceListAdapter.mapClickListener() {
+                        @Override
+                        public void mapButtonClick(List<PlaceAllResponse.Result> list, int position) {
+                            String placeName = list.get(position).getName();
+
+                            /** 이름 값 전달 **/
+                            Bundle bundle = new Bundle();
+                            bundle.putString("placeName", placeName);
+
+                            // 3번째 프레그먼트로 값 전달
+                            FragmentThird fragment = new FragmentThird();
+                            fragment.setArguments(bundle);
+
+                            /** 프래그먼트 이동 **/
+                            MainActivity mainActivity = (MainActivity) requireActivity();
+                            // 프래그먼트 이동 및 바텀 네비게이션 메뉴 변경
+                            mainActivity.navigateToFragment(fragment, R.id.thirdItem);
+                        }
+                    });
+
                     recycler_place.setAdapter(placeListAdapter);
                     recycler_place.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
                 }
@@ -260,7 +374,7 @@ public class FragmentSecond extends Fragment {
 
             @Override
             public void onFailure(Call<PlaceAllResponse> call, Throwable t) {
-                Log.d(TAG, "onFalilure .. 카테고리 불러오기 연동 실패 ..., 메세지 : " + t.getMessage());
+                Log.d(TAG, "onFalilure .. 모든 장소 불러오기 연동 실패 ..., 메세지 : " + t.getMessage());
             }
         });
     }
@@ -307,8 +421,7 @@ public class FragmentSecond extends Fragment {
                                 Toast.makeText(requireContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
                                 list.get(pos).setLikeYn(0);
                                 Log.d(TAG, String.valueOf(list.get(pos).getLikeYn()));
-                                /** 변경 감지 **/
-                                placeListAdapter.notifyDataSetChanged();
+
                             }
                         }
                         else {
@@ -316,8 +429,9 @@ public class FragmentSecond extends Fragment {
                             Toast.makeText(requireContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();
                             list.get(pos).setLikeYn(1);
                             Log.d(TAG, String.valueOf(list.get(pos).getLikeYn()));
-                            placeListAdapter.notifyDataSetChanged();
                         }
+                        /** 변경 감지 **/
+                        placeListAdapter.notifyDataSetChanged();
                     }
                 }
                 else {

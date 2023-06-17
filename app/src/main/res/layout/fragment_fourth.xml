@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -8,25 +9,61 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="손현석"
-        android:textSize="22dp"
+        android:fontFamily="@font/pretendard_semi_bold"
         android:textColor="@color/black"
-        android:fontFamily="@font/pretendard_semi_bold"/>
+        android:textSize="22dp"
+        android:text="test"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <android.widget.Button
+        android:id="@+id/btn_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="일정 확인하기"
+        android:textSize="18dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:background="@color/secondary_grey_black_5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginHorizontal="16dp"/>
 
     <TextView
-        android:id="@+id/tv1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="님의 찜 리스트 항목"
-        android:textSize="22dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/pretendard_semi_bold"
-        android:layout_toRightOf="@+id/tv_name"
-        android:layout_marginLeft="4dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_like"
+        android:id="@+id/tv_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="로그인 이후 사용 가능한 화면입니다.\n 상단 좌측 메뉴에서 로그인 후 이용해주세요!"
+        android:textColor="@color/secondary_grey_black_13"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+        app:layout_constraintBottom_toTopOf="@+id/btn_calendar"
+        android:layout_marginVertical="16dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_likePlace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
