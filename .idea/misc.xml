@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
@@ -26,10 +27,14 @@
         <entry key="..\:/Users/stpma/AndroidStudioProjects/capstone_FrontEnd/app/src/main/res/layout/recycler_fragment_first_place_item.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/stpma/AndroidStudioProjects/capstone_FrontEnd/app/src/main/res/layout/recycler_second_view_row.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/stpma/AndroidStudioProjects/capstone_FrontEnd/app/src/main/res/layout/switch_item.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/stpma/AndroidStudioProjects/capstone_Frontend/capstone_FrontEnd/app/src/main/res/layout/activity_map.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/stpma/AndroidStudioProjects/capstone_Frontend/capstone_FrontEnd/app/src/main/res/layout/activity_menu.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/stpma/AndroidStudioProjects/capstone_Frontend/capstone_FrontEnd/app/src/main/res/layout/recycler_map_back.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/stpma/AndroidStudioProjects/capstone_Frontend/capstone_FrontEnd/app/src/main/res/layout/recylcer_map_menu.xml" value="0.24947916666666667" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -1,4 +1,4 @@
-package com.example.a23__project_1.fragmentFirst;
+package com.example.a23__project_1.leftMenuBar;
 
 import android.view.View;
 import android.widget.ImageButton;
@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a23__project_1.R;
 import com.example.a23__project_1.data.DataMoreInfo;
 
-// 안쓰이는 것 같은데 ,,,,
 
 public class RecyclerMapMenuPage extends RecyclerView.ViewHolder {
 

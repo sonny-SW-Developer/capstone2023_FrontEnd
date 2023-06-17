@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a23__project_1.data.DataMoreInfo;
 import com.example.a23__project_1.R;
 
-// 안쓰이는 것 같은데 ,,,,
 
 public class RecyclerFragFirstThemePage extends RecyclerView.ViewHolder {
 
