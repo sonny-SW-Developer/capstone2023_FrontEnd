@@ -73,17 +73,17 @@ public class RecyclerMapMenuAdapter extends RecyclerView.Adapter {
         myViewHolder.back_title.setText(dataModels.get(position).getTitle());
         myViewHolder.back_popular.setText(dataModels.get(position).getPopularStr());
         if(dataModels.get(position).getPopular() == 1){
-            myViewHolder.menu_popular.setTextColor(0x008000);
-            myViewHolder.back_popular.setTextColor(0x008000);
+            myViewHolder.menu_popular.setTextColor(0xFF008000);
+            myViewHolder.back_popular.setTextColor(0xFF008000);
         }else if(dataModels.get(position).getPopular() == 2){
-            myViewHolder.menu_popular.setTextColor(0xFFFF00);
-            myViewHolder.back_popular.setTextColor(0xFFFF00);
+            myViewHolder.menu_popular.setTextColor(0xFFFFEA00);
+            myViewHolder.back_popular.setTextColor(0xFFFFEA00);
         }else if(dataModels.get(position).getPopular() == 3){
-            myViewHolder.menu_popular.setTextColor(0xFF8000);
-            myViewHolder.back_popular.setTextColor(0xFF8000);
+            myViewHolder.menu_popular.setTextColor(0xFFFF8000);
+            myViewHolder.back_popular.setTextColor(0xFFFF8000);
         }else if(dataModels.get(position).getPopular() == 4){
-            myViewHolder.menu_popular.setTextColor(0xFF0000);
-            myViewHolder.back_popular.setTextColor(0xFF0000);
+            myViewHolder.menu_popular.setTextColor(0xFFFF0000);
+            myViewHolder.back_popular.setTextColor(0xFFFF0000);
         }
         setImage(myViewHolder,position);
         //setCart(dataModels.get(position).getBoolean_cart(), myViewHolder);
@@ -206,208 +206,196 @@ public class RecyclerMapMenuAdapter extends RecyclerView.Adapter {
             case 32:
                 myViewHolder.menu_image.setImageResource(R.drawable.lottemall_gimpo);
                 break;
-//            case 33:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 34:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 35:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 36:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 37:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 38:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 39:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 40:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 1:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 2:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 3:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 4:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 5:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 6:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 7:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 8:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 9:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 10:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 1:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 2:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 3:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 4:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 5:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 6:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 7:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 8:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 9:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 10:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;case 1:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 2:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 3:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 4:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 5:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 6:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 7:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 8:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 9:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 10:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 1:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 2:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 3:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 4:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 5:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 6:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 7:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 8:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 9:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 10:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;case 1:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 2:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 3:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 4:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 5:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 6:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 7:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 8:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 9:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 10:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 1:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 2:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 3:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 4:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 5:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 6:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 7:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 8:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 9:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
-//            case 10:
-//                myViewHolder.imageView.setImageResource(R.drawable);
-//                break;
+            case 33:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_gn);
+                break;
+            case 34:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_starcity);
+                break;
+            case 35:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_gwanak);
+                break;
+            case 36:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_gimpo);
+                break;
+            case 37:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_nowon);
+                break;
+            case 38:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_mia);
+                break;
+            case 39:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_bon);
+                break;
+            case 40:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_avenuel_bon);
+                break;
+            case 41:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_avenuel_world);
+                break;
+            case 42:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_ydp);
+                break;
+            case 43:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_jamsil);
+                break;
+            case 44:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_ch);
+                break;
+            case 45:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_worldmall);
+                break;
+            case 46:
+                myViewHolder.menu_image.setImageResource(R.drawable.lotte_world);
+                break;
+            case 47:
+                myViewHolder.menu_image.setImageResource(R.drawable.mario1);
+                break;
+            case 48:
+                myViewHolder.menu_image.setImageResource(R.drawable.mario3);
+                break;
+            case 49:
+                myViewHolder.menu_image.setImageResource(R.drawable.mangwon_park);
+                break;
+            case 50:
+                myViewHolder.menu_image.setImageResource(R.drawable.myongdong_tuk);
+                break;
+            case 51:
+                myViewHolder.menu_image.setImageResource(R.drawable.banpo_hangang);
+                break;
+            case 52:
+                myViewHolder.menu_image.setImageResource(R.drawable.dream_sup);
+                break;
+            case 53:
+                myViewHolder.menu_image.setImageResource(R.drawable.bukchon);
+                break;
+            case 54:
+                myViewHolder.menu_image.setImageResource(R.drawable.seoul_bigpark);
+                break;
+            case 55:
+                myViewHolder.menu_image.setImageResource(R.drawable.seoul_sup);
+                break;
+            case 56:
+                myViewHolder.menu_image.setImageResource(R.drawable.stn_seoul);
+                break;
+            case 57:
+                myViewHolder.menu_image.setImageResource(R.drawable.stn_seolleung);
+                break;
+            case 58:
+                myViewHolder.menu_image.setImageResource(R.drawable.seungsu_cafe);
+                break;
+            case 59:
+                myViewHolder.menu_image.setImageResource(R.drawable.suuyou_mukkja);
+                break;
+            case 60:
+                myViewHolder.menu_image.setImageResource(R.drawable.stn_sindorim);
+                break;
+            case 61:
+                myViewHolder.menu_image.setImageResource(R.drawable.stn_sillim);
+                break;
+            case 62:
+                myViewHolder.menu_image.setImageResource(R.drawable.shin_gn);
+                break;
+            case 63:
+                myViewHolder.menu_image.setImageResource(R.drawable.shin_bon);
+                break;
+            case 64:
+                myViewHolder.menu_image.setImageResource(R.drawable.shin_timesquare);
+                break;
+            case 65:
+                myViewHolder.menu_image.setImageResource(R.drawable.shinchon_edae);
+                break;
+            case 66:
+                myViewHolder.menu_image.setImageResource(R.drawable.ssangmundong);
+                break;
+            case 67:
+                myViewHolder.menu_image.setImageResource(R.drawable.apgujang_rodeo_load);
+                break;
+            case 68:
+                myViewHolder.menu_image.setImageResource(R.drawable.kid_big_park);
+                break;
+            case 69:
+                myViewHolder.menu_image.setImageResource(R.drawable.yeouido_park);
+                break;
+            case 70:
+                myViewHolder.menu_image.setImageResource(R.drawable.yeoksam_station);
+                break;
+            case 71:
+                myViewHolder.menu_image.setImageResource(R.drawable.yeonsinnae_station);
+                break;
+            case 72:
+                myViewHolder.menu_image.setImageResource(R.drawable.time_square);
+                break;
+            case 73:
+                myViewHolder.menu_image.setImageResource(R.drawable.wangsimli_station);
+                break;
+            case 74:
+                myViewHolder.menu_image.setImageResource(R.drawable.yongsan_station);
+                break;
+            case 75:
+                myViewHolder.menu_image.setImageResource(R.drawable.worldcuppark);
+                break;
+            case 76:
+                myViewHolder.menu_image.setImageResource(R.drawable.ichon_hangang_park);
+                break;
+            case 77:
+                myViewHolder.menu_image.setImageResource(R.drawable.itaewon_special_gu);
+                break;
+            case 78:
+                myViewHolder.menu_image.setImageResource(R.drawable.insadong);
+                break;
+            case 79:
+                myViewHolder.menu_image.setImageResource(R.drawable.iksundong);
+                break;
+            case 80:
+                myViewHolder.menu_image.setImageResource(R.drawable.jamsil_tour_special_gu);
+                break;
+            case 81:
+                myViewHolder.menu_image.setImageResource(R.drawable.jamsil_total_stadium);
+                break;
+            case 82:
+                myViewHolder.menu_image.setImageResource(R.drawable.jamsil_hangang_park);
+                break;
+            case 83:
+                myViewHolder.menu_image.setImageResource(R.drawable.jongro_chunggye);
+                break;
+            case 84:
+                myViewHolder.menu_image.setImageResource(R.drawable.changduckgung);
+                break;
+            case 85:
+                myViewHolder.menu_image.setImageResource(R.drawable.waterkingdom);
+                break;
+            case 86:
+                myViewHolder.menu_image.setImageResource(R.drawable.hangbok);
+                break;
+            case 87:
+                myViewHolder.menu_image.setImageResource(R.drawable.hyundae_dcubecity);
+                break;
+            case 88:
+                myViewHolder.menu_image.setImageResource(R.drawable.hyundae_mokdong);
+                break;
+            case 89:
+                myViewHolder.menu_image.setImageResource(R.drawable.hyundae_trade_center);
+                break;
+            case 90:
+                myViewHolder.menu_image.setImageResource(R.drawable.hyundae_mia);
+                break;
+            case 91:
+                myViewHolder.menu_image.setImageResource(R.drawable.hyundae_sinchon);
+                break;
+            case 92:
+                myViewHolder.menu_image.setImageResource(R.drawable.hyundae_apgujeung);
+                break;
+            case 93:
+                myViewHolder.menu_image.setImageResource(R.drawable.hyundae_cheonho);
+                break;
+            case 94:
+                myViewHolder.menu_image.setImageResource(R.drawable.hyundae_gasan);
+                break;
+            case 95:
+                myViewHolder.menu_image.setImageResource(R.drawable.hongdae);
+                break;
+
 
         }
 

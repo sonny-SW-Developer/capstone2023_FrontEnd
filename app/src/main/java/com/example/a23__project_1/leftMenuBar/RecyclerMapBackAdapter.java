@@ -71,14 +71,16 @@ public class RecyclerMapBackAdapter extends RecyclerView.Adapter {
 
         myViewHolder.menu_title.setText(dataModels.get(position).getTitle());
         myViewHolder.menu_popular.setText(dataModels.get(position).getPopularStr());
+
+        Log.d("RecyclerMapBack",dataModels.get(position).getPopularStr());
         if(dataModels.get(position).getPopular() == 1){
-            myViewHolder.menu_popular.setTextColor(0x008000);
+            myViewHolder.menu_popular.setTextColor(0xFF008000);
         }else if(dataModels.get(position).getPopular() == 2){
-            myViewHolder.menu_popular.setTextColor(0xFFFF00);
+            myViewHolder.menu_popular.setTextColor(0xFFFFEA00);
         }else if(dataModels.get(position).getPopular() == 3){
-            myViewHolder.menu_popular.setTextColor(0xFF8000);
+            myViewHolder.menu_popular.setTextColor(0xFFFF8000);
         }else if(dataModels.get(position).getPopular() == 4){
-            myViewHolder.menu_popular.setTextColor(0xFF0000);
+            myViewHolder.menu_popular.setTextColor(0xFFFF0000);
         }
         //setCart(dataModels.get(position).getBoolean_cart(), myViewHolder);
         setLottie(myViewHolder,position);

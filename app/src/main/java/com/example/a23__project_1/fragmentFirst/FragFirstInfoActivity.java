@@ -262,81 +262,81 @@ public class FragFirstInfoActivity extends AppCompatActivity {
             popular = resultListIndex.getPopular();
             switch(position){
                 case 0: // 중구
-                    if(name.equals("국립중앙박물관·용산가족공원")){
+                     if(name.equals("국립중앙박물관·용산가족공원")){
                         list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
+                    }else if(name.equals("남산공원")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.namsan_park, false, popular, placeid));
+                    }else if(name.equals("명동 관광특구")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.myongdong_tuk, false, popular, placeid));
+                    }else if(name.equals("서울역")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.stn_seoul, false, popular, placeid));
+                    }else if(name.equals("신세계백화점본점신관")) {
+                    list_place.add(new DataMoreInfo(name, "아이템", R.drawable.shin_bon, false, popular, placeid));
                     }
                     break;
                 case 1: // 종로구
-                    if(name.equals("더현대서울")){
-                        list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
+                    if(name.equals("경복궁·서촌마을")){
+                        list_place.add(new DataMoreInfo(name,"아이템",R.drawable.gbkkung ,false,popular,placeid));
+                    }else if(name.equals("광화문·덕수궁")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.duksu, false, popular, placeid));
+                    }else if(name.equals("북촌한옥마을")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.bukchon, false, popular, placeid));
+                    }else if(name.equals("종로·청계 관광특구")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.jongro_chunggye, false, popular, placeid));
+                    }else if(name.equals("창덕궁·종묘")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.changduckgung, false, popular, placeid));
                     }
                     break;
                 case 2: // 송파구
-                    if(name.equals("NC백화점송파점")){
-                        list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
+                    if(name.equals("가든파이브툴")){
+                        list_place.add(new DataMoreInfo(name,"아이템",R.drawable.gardenfive ,false,popular,placeid));
+                    }else if(name.equals("롯데월드잠실점")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.lotte_world, false, popular, placeid));
+                    }else if(name.equals("잠실 관광특구")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.jamsil_tour_special_gu, false, popular, placeid));
+                    }else if(name.equals("잠실종합운동장")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.jamsil_total_stadium, false, popular, placeid));
+                    }else if(name.equals("잠실한강공원")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.jamsil_hangang_park, false, popular, placeid));
                     }
                     break;
                 case 3: // 강남구
-                    if(name.equals("강남역")){
-                        list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
+                    if(name.equals("가로수길")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.garosu, false, popular, placeid));
+                    }else if(name.equals("강남 MICE 관광특구")){
+                        list_place.add(new DataMoreInfo(name,"아이템",R.drawable.gn_mice ,false,popular,placeid));
+                    }else if(name.equals("강남역")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.stn_gn, false, popular, placeid));
+                    }else if(name.equals("롯데백화점강남점")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.lotte_gn, false, popular, placeid));
+                    }else if(name.equals("신세계백화점강남점")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.shin_gn, false, popular, placeid));
                     }
                     break;
                 case 4: // 영등포구
-                    if(name.equals("가로수길")){
-                        list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
+                    if(name.equals("IFC몰")){
+                        list_place.add(new DataMoreInfo(name,"아이템",R.drawable.ifc ,false,popular,placeid));
+                    }else if(name.equals("롯데백화점영등포점")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.lotte_ydp, false, popular, placeid));
+                    }else if(name.equals("신세계백화점타임스퀘어점")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.shin_timesquare, false, popular, placeid));
+                    }else if(name.equals("여의도공원")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido_park, false, popular, placeid));
+                    }else if(name.equals("영등포 타임스퀘어")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.time_square, false, popular, placeid));
                     }
                     break;
                 case 5: // 금천구
-                    if(name.equals("갤러리아백화점명품관EAST")){
-                        list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
-                    }else if(name.equals("쇼핑몰")) {
-                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
+                    if(name.equals("W몰")){
+                        list_place.add(new DataMoreInfo(name,"아이템",R.drawable.wmall ,false,popular,placeid));
+                    }else if(name.equals("가산디지털단지역")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.stn_gadi, false, popular, placeid));
+                    }else if(name.equals("마리오아울렛1관")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.mario1, false, popular, placeid));
+                    }else if(name.equals("마리오아울렛3관")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.mario3, false, popular, placeid));
+                    }else if(name.equals("현대시티아울렛가산점")) {
+                        list_place.add(new DataMoreInfo(name, "아이템", R.drawable.hyundae_gasan, false, popular, placeid));
                     }
                     break;
 

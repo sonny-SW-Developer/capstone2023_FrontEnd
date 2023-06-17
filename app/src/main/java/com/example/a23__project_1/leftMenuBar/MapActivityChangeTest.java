@@ -16,9 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +43,8 @@ import com.example.a23__project_1.MainActivity;
 import com.example.a23__project_1.R;
 import com.example.a23__project_1.data.DataMoreInfo;
 import com.example.a23__project_1.fragmentFirst.RecyclerFragFirstThemeAdapter;
+import com.example.a23__project_1.fragmentSecond.FragmentSecond;
+import com.example.a23__project_1.fragmentThird.FragmentThird;
 import com.example.a23__project_1.response.PositionResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
@@ -92,8 +97,10 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
     private ImageButton map_close1;
     private ImageButton map_close2;
     private RecyclerView recyclerViewMenu;
-    private LinearLayout map;
+    private RelativeLayout map;
+    private TextView btn_trdTosec;
     private LinearLayout linear_map_back_origin;
+    private EditText editText1;
 
 
 
@@ -108,13 +115,16 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
         layout_card = (CardView)rootView.findViewById(R.id.cardview_activity_map);
         map_close1 = (ImageButton) rootView.findViewById(R.id.btn_map_close1);
         map_close2 = (ImageButton) rootView.findViewById(R.id.btn_map_close2);
-        map = (LinearLayout)rootView.findViewById(R.id.layout_map_main);
+        map = (RelativeLayout)rootView.findViewById(R.id.layout_map_main);
+        btn_trdTosec = (TextView)rootView.findViewById(R.id.btn_thirdToSecond);
         recycler_under_background= (RecyclerView) rootView.findViewById(R.id.recycler_map_back_origin);
         recyclerViewMenu = (RecyclerView)rootView.findViewById(R.id.recycler_map_menu_origin);
         linear_map_back_origin = (LinearLayout)rootView.findViewById(R.id.linear_map_back_origin);
 
+
         positionList = new ArrayList<>();
         positionIdList = new ArrayList<>();
+
 
 
         map_close1.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +153,20 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
 
             }
         });
+
+        btn_trdTosec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                FragmentSecond fragment = new FragmentSecond();
+//                /** 프래그먼트 이동 **/
+//                MainActivity mainActivity = (MainActivity) requireActivity();
+//                // 프래그먼트 이동 및 바텀 네비게이션 메뉴 변경
+//                mainActivity.navigateToFragment(fragment, R.id.secondItem);
+                Log.d("MapActivityChangeTest","btnclicked");
+
+            }
+        });
+
 
         map_close2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,11 +220,21 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
             }
         });
 
+
+
         Activity activity = getActivity();
         if (activity != null) {
             mapView = new MapView(getActivity());
         } else {
             Log.d("MapActivityChangeTest","error");
+        }
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String value = bundle.getString("placeName");
+            Log.d("hi",value);
+
+
         }
         mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
@@ -210,6 +244,31 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
         mapView.setPOIItemEventListener(this);
         // 고해상도 지도 타일 사용
         mapView.setHDMapTileEnabled(true);
+
+//        Bundle bundle = getArguments();
+//
+//        if (activity != null) {
+//            if(bundle == null){
+//                mapView = new MapView(getActivity());
+//                mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map_view);
+//                mapViewContainer.addView(mapView);
+//                mapView.setMapViewEventListener(this);
+//
+//                // POIItemEventListener interface 리스너
+//                mapView.setPOIItemEventListener(this);
+//                // 고해상도 지도 타일 사용
+//                mapView.setHDMapTileEnabled(true);
+//            }else{
+//                String value = bundle.getString("placeName");
+//                Log.d("hi",value);
+//            }
+//
+//        } else {
+//            Log.d("MapActivityChangeTest","error");
+//        }
+
+
+
 
         if (!checkLocationServicesStatus()) {
 
@@ -232,6 +291,9 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
                 mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
             }
         });
+
+
+
         return rootView;
     }
 
@@ -443,7 +505,6 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
 
         }
     }
-
 
     @Override
     public void onDestroyView() {
