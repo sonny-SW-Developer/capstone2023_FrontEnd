@@ -68,7 +68,7 @@ public class FragFirstInfoActivity extends AppCompatActivity {
                 getPositionList("카테고리더보기",list_place);
                 break;
             case "more_place":
-                //testText.setText("장소더보기");
+                getPositionList("카테고리더보기",list_place);
                 break;
             case "cardview1":
                 getPositionList("쇼핑몰",list_place);
@@ -352,6 +352,7 @@ public class FragFirstInfoActivity extends AppCompatActivity {
         long placeid;
         Integer popular;
         PositionResponse.Result resultListIndex;
+        long placeid_before = -1;
 
         for (index = 0; index < resultList.size(); index++) {
             resultListIndex = resultList.get(index);
@@ -359,36 +360,38 @@ public class FragFirstInfoActivity extends AppCompatActivity {
             themaName = resultListIndex.getThema();
             placeid = resultListIndex.getPlaceId();
             popular = resultListIndex.getPopular();
-
-            if(theme_id.equals("카테고리더보기")){
-                list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("쇼핑몰")&&(themaName.equals("쇼핑몰")||themaName.equals("백화점"))){
-                list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("지하철·기차역")&&themaName.equals("지하철")){
-                list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("음식점")&&themaName.equals("음식점")){
-                list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("공원")&&themaName.equals("공원")){
-                list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("공항")&&themaName.equals("공항")){
-                list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("카페")&&themaName.equals("카페")){
-                list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("관광")&&themaName.equals("관광지")){
-                list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("거리")&&themaName.equals("골목 및 거리")){
-                list_place.add(new DataMoreInfo(name,"아이템 입니다.",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("상업지구")&&themaName.equals("상업지구")){
-                list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("스파")&&themaName.equals("스파")){
-                list_place.add(new DataMoreInfo(name,"아이템 입니다.",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("놀이공원")&&themaName.equals("놀이공원")){
-                list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-            }else if(theme_id.equals("마트")&&themaName.equals("마트")){
-                list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
-            }else{
-                Log.d("fragfirstinfo","placeid: "+placeid+", theme_id: "+theme_id+", themeName: "+themaName);
+            if(placeid!=placeid_before){
+                if(theme_id.equals("카테고리더보기")){
+                    list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("쇼핑몰")&&(themaName.equals("쇼핑몰")||themaName.equals("백화점"))){
+                    list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("지하철·기차역")&&themaName.equals("지하철")){
+                    list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("음식점")&&themaName.equals("음식점")){
+                    list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("공원")&&themaName.equals("공원")){
+                    list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("공항")&&themaName.equals("공항")){
+                    list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("카페")&&themaName.equals("카페")){
+                    list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("관광")&&themaName.equals("관광지")){
+                    list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("거리")&&themaName.equals("골목 및 거리")){
+                    list_place.add(new DataMoreInfo(name,"아이템 입니다.",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("상업지구")&&themaName.equals("상업지구")){
+                    list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("스파")&&themaName.equals("스파")){
+                    list_place.add(new DataMoreInfo(name,"아이템 입니다.",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("놀이공원")&&themaName.equals("놀이공원")){
+                    list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
+                }else if(theme_id.equals("마트")&&themaName.equals("마트")){
+                    list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
+                }else{
+                    Log.d("fragfirstinfo","placeid: "+placeid+", theme_id: "+theme_id+", themeName: "+themaName);
+                }
             }
+            placeid_before = placeid;
 
             Log.d("fragfirstinfo", "placeID: " + placeid + ", Popular: " + popular + ", Name: " + name + ", ThemaName: " + themaName);
         }

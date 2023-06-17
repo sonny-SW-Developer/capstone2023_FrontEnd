@@ -1,22 +1,16 @@
 package com.example.a23__project_1.leftMenuBar;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +21,19 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.a23__project_1.MainActivity;
@@ -52,7 +59,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MapActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
+public class MapActivityChangeTest extends Fragment implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
     private static final String TAG = "MapActivity";
     private MapView mapView;
     private ViewGroup mapViewContainer;
@@ -88,81 +95,38 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
     private LinearLayout map;
     private LinearLayout linear_map_back_origin;
 
-    private TextView menu_title;
-    private TextView menu_popular;
-    private LottieAnimationView menu_popular_lottie;
-    private TextView back_title;
-    private TextView back_popular;
-    private LottieAnimationView menu_back_lottie;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-        Log.d(TAG, "onCreate");
-        layout_menu = (LinearLayout) findViewById(R.id.layout_menu_map);
-        layout_background = (FrameLayout) findViewById(R.id.layout_background_map);
-        layout_card = (CardView)findViewById(R.id.cardview_activity_map);
-        map_close1 = (ImageButton) findViewById(R.id.btn_map_close1);
-        map_close2 = (ImageButton) findViewById(R.id.btn_map_close2);
-        map = (LinearLayout)findViewById(R.id.layout_map_main);
-        recycler_under_background= (RecyclerView) findViewById(R.id.recycler_map_back_origin);
-        recyclerViewMenu = (RecyclerView)findViewById(R.id.recycler_map_menu_origin);
-        linear_map_back_origin = (LinearLayout)findViewById(R.id.linear_map_back_origin);
-//        menu_title = (TextView) findViewById(R.id.activity_map_place_title);
-//        menu_popular = (TextView)findViewById(R.id.activity_first_place_popular) ;
-//        menu_popular_lottie = (LottieAnimationView) findViewById(R.id.lottie_activity_first_place_popular);
-//        back_title = (TextView) findViewById(R.id.activity_map_background_title);
-//        back_popular= (TextView)findViewById(R.id.activity_map_background_popular) ;
-//        menu_back_lottie= (LottieAnimationView) findViewById(R.id.activity_map_background_lottie_popular);
-
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_mapchangetest, container, false);
+        Log.d(TAG, "onCreateView");
+        layout_menu = (LinearLayout) rootView.findViewById(R.id.layout_menu_map);
+        layout_background = (FrameLayout) rootView.findViewById(R.id.layout_background_map);
+        layout_card = (CardView)rootView.findViewById(R.id.cardview_activity_map);
+        map_close1 = (ImageButton) rootView.findViewById(R.id.btn_map_close1);
+        map_close2 = (ImageButton) rootView.findViewById(R.id.btn_map_close2);
+        map = (LinearLayout)rootView.findViewById(R.id.layout_map_main);
+        recycler_under_background= (RecyclerView) rootView.findViewById(R.id.recycler_map_back_origin);
+        recyclerViewMenu = (RecyclerView)rootView.findViewById(R.id.recycler_map_menu_origin);
+        linear_map_back_origin = (LinearLayout)rootView.findViewById(R.id.linear_map_back_origin);
 
         positionList = new ArrayList<>();
         positionIdList = new ArrayList<>();
 
-        /**********************************************************
-         *  액티비티 동작
-         * ********************************************************/
-
-        //툴바 옆, setting 관련 코드
-        ImageButton btn_setting = (ImageButton) findViewById(R.id.btn_setting);
-        btn_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, SettingActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fadein_right, R.anim.stay);
-
-            }
-        });
-
-        //menu 관련 코드
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-
-        setSupportActionBar(toolbar);
-
-        new SlidingRootNavBuilder(this)
-                .withToolbarMenuToggle(toolbar)
-                .withMenuOpened(false)
-                .withMenuLayout(R.layout.activity_menu)
-                .inject();
-
-        //메뉴클릭 리스너 등록
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
-        bottomNavigationView.setSelectedItemId(R.id.thirdItem);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
-
-        /**********************************************************
-         *  여기까지
-         * ********************************************************/
 
         map_close1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.nfc2_anim); //애니메이션설정파일
+                Activity activity = getActivity();
+                if (activity != null) {
+                    anim = AnimationUtils.loadAnimation(getActivity(), R.anim.nfc2_anim); //애니메이션설정파일
+                } else {
+                    Log.d("MapActivityChangeTest","error");
+                }
+
                 layout_background.startAnimation(anim);
                 layout_menu.setClickable(false);
                 layout_menu.setVisibility(View.GONE);
@@ -183,7 +147,12 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
         map_close2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.nfc2_anim); //애니메이션설정파일
+                Activity activity = getActivity();
+                if (activity != null) {
+                    anim = AnimationUtils.loadAnimation(getActivity(), R.anim.nfc2_anim); //애니메이션설정파일
+                } else {
+                    Log.d("MapActivityChangeTest","error");
+                }
                 layout_menu.startAnimation(anim);
                 layout_background.startAnimation(anim);
                 layout_menu.setClickable(false);
@@ -204,13 +173,18 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
         linear_map_back_origin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MapActivity.this,"클릭",Toast.LENGTH_LONG);
+                Toast.makeText(getContext(),"클릭",Toast.LENGTH_LONG);
                 if(main_ctr == 1){
                     layout_background.setClickable(false);
                     layout_background.setVisibility(View.GONE);
                     layout_menu.setClickable(true);
                     layout_menu.setVisibility(View.VISIBLE);
-                    anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.nfc_anim); //애니메이션설정파일
+                    Activity activity = getActivity();
+                    if (activity != null) {
+                        anim = AnimationUtils.loadAnimation(getActivity(), R.anim.nfc_anim); //애니메이션설정파일
+                    } else {
+                        Log.d("MapActivityChangeTest","error");
+                    }
                     layout_menu.startAnimation(anim);
                     map.setClickable(false);
                     main_ctr = 2;
@@ -222,9 +196,13 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
             }
         });
 
-
-        mapView = new MapView(this);
-        mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
+        Activity activity = getActivity();
+        if (activity != null) {
+            mapView = new MapView(getActivity());
+        } else {
+            Log.d("MapActivityChangeTest","error");
+        }
+        mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
         mapView.setMapViewEventListener(this);
 
@@ -243,63 +221,18 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 
         //Map 마커및 혼잡도 원 등록
         getPositionList();
-
+        //mapView.fitMapViewAreaToShowAllPOIItems();
 
         // 현재 내 위치 찾기
-        nowOnMap = findViewById(R.id.btn_now);
+        nowOnMap = rootView.findViewById(R.id.btn_now);
         nowOnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // 현위치 트래킹 이벤트를 통보
                 mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-                //MapPoint.GeoCoordinate mapPointGeo = mapPoint.getMapPointGeoCoord();
-                //Log.d("현재위치",Double.toString(mapView.));
-                //현재 좌표 따오는거 필요
-                //mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(nlatitude, nlongitude), 1, true);
             }
         });
-
-
-
-
-    }
-
-    // 여기도 수정..
-    class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-            Intent intent = new Intent(MapActivity.this, MainActivity.class);
-            switch(menuItem.getItemId())
-            {
-
-                case R.id.firstItem:
-                    intent.putExtra("key", "firstItem");
-                    startActivity(intent);
-                    break;
-
-                case R.id.secondItem:
-                    intent.putExtra("key", "secondItem");
-                    startActivity(intent);
-                    break;
-
-                case R.id.thirdItem:
-                    break;
-
-                case R.id.fourthItem:
-                    intent.putExtra("key", "fourthItem");
-                    startActivity(intent);
-                    break;
-
-                case R.id.fifthItem:
-                    intent.putExtra("key", "fifthItem");
-                    startActivity(intent);
-                    break;
-
-            }
-            return true;
-        }
+        return rootView;
     }
 
     /** 모든 장소 가져오기 API **/
@@ -309,25 +242,27 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
         allPlaceCall = apiService.getAllPosition();
         allPlaceCall.enqueue(new Callback<PositionResponse>() {
 
-
             @Override
             public void onResponse(Call<PositionResponse> call, Response<PositionResponse> response) {
                 if(response.isSuccessful()) {
                     Log.d(TAG, "성공");
                     List<PositionResponse.Result> positionList = response.body().getResult();
-                    mapInit = new MapInit(getApplicationContext(), positionList);
+                    Activity activity = getActivity();
+                    if (activity != null) {
+                        mapInit = new MapInit(getActivity(), positionList);
+                    } else {
+                        Log.d("MapActivityChangeTest","error");
+                    }
 
                     for (PositionResponse.Result result : positionList) {
                         positionIdList.add(result.getPlaceId());
                     }
                     mapInit.init(mapView);
-                    //mapInit.startInit(mapView,0);
                 }
                 else {
                     Log.d(TAG, "에러발생 .." + response.message());
                 }
             }
-
             @Override
             public void onFailure(Call<PositionResponse> call, Throwable t) {
                 Log.d(TAG, "onFalilure .. 카테고리 불러오기 연동 실패 ..., 메세지 : " + t.getMessage());
@@ -355,18 +290,11 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
         marker_ctr += 1;
         mapView.setMapCenterPointAndZoomLevel(mapPOIItem.getMapPoint(), 2, false);
 
-//        menu_title.setText(name);
-//       back_title.setText(name);
-
-
         if(marker_ctr >= 2){
             mapInit.drawMapCircle(mapView);
             getPositionMapMenu(name,list_place);
             showDialogMenu(name,mapView,mapPOIItem);
-
         }
-
-
     }
 
     public ArrayList<DataMoreInfo> getPositionMapMenu(String isName, ArrayList<DataMoreInfo> list_place) {
@@ -375,27 +303,27 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
         allPlaceCall = apiService.getAllPosition();
         allPlaceCall.enqueue(new Callback<PositionResponse>() {
 
-
             @Override
             public void onResponse(Call<PositionResponse> call, Response<PositionResponse> response) {
                 if(response.isSuccessful()) {
                     Log.d(TAG, "성공");
                     List<PositionResponse.Result> positionList = response.body().getResult();
 
-
                     for (PositionResponse.Result result : positionList) {
                         positionIdList.add(result.getPlaceId());
                     }
                     settingMenuPage(positionList, isName);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            recyclerViewMenu.setAdapter(new RecyclerFragFirstThemeAdapter(MapActivity.this, list_place));
-                            recyclerViewMenu.setLayoutManager(new LinearLayoutManager(MapActivity.this, RecyclerView.VERTICAL,false));
-                            recycler_under_background.setAdapter(new RecyclerMapBackAdapter(MapActivity.this, list_place));
-                            recycler_under_background.setLayoutManager(new LinearLayoutManager(MapActivity.this, RecyclerView.VERTICAL,false));
-                        }
-                    });
+                    if(getContext() != null){
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerViewMenu.setAdapter(new RecyclerFragFirstThemeAdapter(getContext(), list_place));
+                                recyclerViewMenu.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
+                                recycler_under_background.setAdapter(new RecyclerMapBackAdapter(getContext(), list_place));
+                                recycler_under_background.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
+                            }
+                        });
+                    }
                 }
                 else {
                     Log.d(TAG, "에러발생 .." + response.message());
@@ -442,7 +370,7 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
         if (background_ctr == 0) {
             layout_background.setClickable(true);
             layout_background.setVisibility(View.VISIBLE);
-            anim = AnimationUtils.loadAnimation(this, R.anim.nfc_anim); //애니메이션설정파일
+            anim = AnimationUtils.loadAnimation(getContext(), R.anim.nfc_anim); //애니메이션설정파일
             layout_background.startAnimation(anim);
             map.setClickable(false);
             background_ctr = 1;
@@ -450,18 +378,6 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
             Log.d("layout counter : ", Integer.toString(background_ctr));
 
         }
-//        if (background_ctr == 0) {
-//            layout_menu.setVisibility(View.VISIBLE);
-//            layout_background.setVisibility(View.VISIBLE);
-//            anim = AnimationUtils.loadAnimation(this, R.anim.nfc_anim); //애니메이션설정파일
-//            layout_menu.startAnimation(anim);
-//            map.setClickable(false);
-//            background_ctr = 1;
-//            main_ctr = 1;
-//            Log.d("layout counter : ", Integer.toString(background_ctr));
-//            mapView.removeAllCircles();
-//        }
-
     }
     @Override
     public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
@@ -487,15 +403,16 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
                                            @NonNull int[] grandResults) {
 
         super.onRequestPermissionsResult(permsRequestCode, permissions, grandResults);
+        Activity activity = getActivity();
+        if(activity == null){
+            return;
+        }
         if (permsRequestCode == PERMISSIONS_REQUEST_CODE && grandResults.length == REQUIRED_PERMISSIONS.length) {
 
             // 요청 코드가 PERMISSIONS_REQUEST_CODE 이고, 요청한 퍼미션 개수만큼 수신되었다면
-
             boolean check_result = true;
 
-
             // 모든 퍼미션을 허용했는지 체크합니다.
-
             for (int result : grandResults) {
                 if (result != PackageManager.PERMISSION_GRANTED) {
                     check_result = false;
@@ -511,15 +428,15 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
             } else {
                 // 거부한 퍼미션이 있다면 앱을 사용할 수 없는 이유를 설명해주고 앱을 종료합니다.2 가지 경우가 있습니다.
 
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(activity, REQUIRED_PERMISSIONS[0])) {
 
-                    Toast.makeText(MapActivity.this, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요.", Toast.LENGTH_LONG).show();
-                    finish();
+                    Toast.makeText(activity, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요.", Toast.LENGTH_LONG).show();
+                    //finish();
 
 
                 } else {
 
-                    Toast.makeText(MapActivity.this, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ", Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -529,8 +446,8 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
         mapView.setShowCurrentLocationMarker(false);
     }
@@ -540,7 +457,12 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 
         //런타임 퍼미션 처리
         // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
-        int hasFineLocationPermission = ContextCompat.checkSelfPermission(MapActivity.this,
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;  // or handle error
+        }
+
+        int hasFineLocationPermission = ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.ACCESS_FINE_LOCATION);
 
 
@@ -557,19 +479,19 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
         } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
 
             // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MapActivity.this, REQUIRED_PERMISSIONS[0])) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, REQUIRED_PERMISSIONS[0])) {
 
                 // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
-                Toast.makeText(MapActivity.this, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(activity, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
                 // 3-3. 사용자에rp 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-                ActivityCompat.requestPermissions(MapActivity.this, REQUIRED_PERMISSIONS,
+                ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
 
 
             } else {
                 // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
                 // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-                ActivityCompat.requestPermissions(MapActivity.this, REQUIRED_PERMISSIONS,
+                ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
             }
 
@@ -579,8 +501,11 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
 
     //여기부터는 GPS 활성화를 위한 메소드들
     private void showDialogForLocationServiceSetting() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+        Activity activity = getActivity();
+        if(activity == null) {
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("위치 서비스 비활성화");
         builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
                 + "위치 설정을 수정하실래요?");
@@ -602,8 +527,9 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
         builder.create().show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
@@ -686,9 +612,14 @@ public class MapActivity extends AppCompatActivity implements MapView.CurrentLoc
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
         Log.d("menu","DragFinished");
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public boolean checkLocationServicesStatus() {
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
+        Activity activity = getActivity();
+        if (activity == null) {
+            // TODO: Handle the case where the fragment is not currently attached to an activity.
+            return false;
+        }
+        LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }

@@ -41,6 +41,7 @@ import com.example.a23__project_1.fragmentFirst.FragmentFirst;
 import com.example.a23__project_1.fragmentFourth.FragmentFourth;
 import com.example.a23__project_1.leftMenuBar.HistoryActivity;
 import com.example.a23__project_1.leftMenuBar.MapActivity;
+import com.example.a23__project_1.leftMenuBar.MapActivityChangeTest;
 import com.example.a23__project_1.leftMenuBar.MyplanActivity;
 import com.example.a23__project_1.leftMenuBar.UserinfoActivity;
 
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity{
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FragmentFirst fragmentFirst = new FragmentFirst();
     private FragmentSecond fragmentSecond = new FragmentSecond();
-    private FragmentThird fragmentThird = new FragmentThird();
+    private MapActivityChangeTest fragmentThird = new MapActivityChangeTest();
     private FragmentFourth fragmentFourth = new FragmentFourth();
     private FragmentFifth fragmentFifth = new FragmentFifth();
 
