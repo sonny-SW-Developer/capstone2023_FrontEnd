@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity{
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FragmentFirst fragmentFirst = new FragmentFirst();
     private FragmentSecond fragmentSecond = new FragmentSecond();
-    private MapActivityChangeTest fragmentThird = new MapActivityChangeTest();
+    //private MapActivityChangeTest fragmentThird = new MapActivityChangeTest(); 원래 코드
+    private FragmentThird fragmentThird = new FragmentThird();  //테스트용 코드
     private FragmentFourth fragmentFourth = new FragmentFourth();
     private FragmentFifth fragmentFifth = new FragmentFifth();
 
