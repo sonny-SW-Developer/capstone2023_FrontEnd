@@ -35,10 +35,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import com.example.a23__project_1.firstFragment.FragmentFirst;
+import com.example.a23__project_1.fourthFragment.FragmentFourth;
+import com.example.a23__project_1.fragmentFifth.FragmentFifth;
+import com.example.a23__project_1.leftMenuBar.HistoryActivity;
+import com.example.a23__project_1.leftMenuBar.MapActivity;
+import com.example.a23__project_1.leftMenuBar.MyplanActivity;
+import com.example.a23__project_1.leftMenuBar.UserinfoActivity;
 import com.example.a23__project_1.placeList.FragmentSecond;
 import com.example.a23__project_1.response.LoginResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
+import com.example.a23__project_1.thirdFragment.FragmentThird;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kakao.sdk.user.UserApiClient;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
@@ -118,6 +126,45 @@ public class MainActivity extends AppCompatActivity{
         startLoading();
 
         /**********************************************************
+         *  수정 필요 코드
+         * ********************************************************/
+//        Intent intent = getIntent();
+//        String messege = "";
+//        FragmentTransaction transaction3 = null;
+//        if(intent.hasExtra("key")){
+//            messege = intent.getStringExtra("key");
+//            //transaction3= fragmentManager.beginTransaction();
+//        }
+//
+//
+//        switch (messege){
+//            case "firstFragment":
+//                fragNum=0;
+//                //transaction3.replace(R.id.frameLayout_main, fragmentFirst).commitAllowingStateLoss();
+//                break;
+//            case "secondFragment":
+//                fragNum=1;
+//                //transaction3.replace(R.id.frameLayout_main, fragmentSecond).commitAllowingStateLoss();
+//                break;
+//            case "thirdFragment":
+//                fragNum=2;
+//                //transaction3.replace(R.id.frameLayout_main, fragmentThird).commitAllowingStateLoss();
+//                break;
+//            case "fourthFragment":
+//                fragNum=3;
+//                //transaction3.replace(R.id.frameLayout_main, fragmentFourth).commitAllowingStateLoss();
+//                break;
+//            case "fifthFragment":
+//                fragNum=4;
+//                //transaction3.replace(R.id.frameLayout_main, fragmentFifth).commitAllowingStateLoss();
+//                break;
+//            default:
+//                isAnim = true;
+//
+//        }
+
+
+        /**********************************************************
          *  main 액티비티 동작
          * ********************************************************/
 
@@ -126,7 +173,7 @@ public class MainActivity extends AppCompatActivity{
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, com.example.a23__project_1.SettingActivity.class);
+                Intent intent = new Intent(MainActivity.this, com.example.a23__project_1.leftMenuBar.SettingActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fadein_right, R.anim.stay);
 
@@ -254,7 +301,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void run() {
                 layout_loading.setVisibility(View.GONE);
- //               layout_slidingRootNav.setVisibility(View.VISIBLE);
+                //               layout_slidingRootNav.setVisibility(View.VISIBLE);
                 layout_main.setVisibility(View.VISIBLE);
 
             }
@@ -332,7 +379,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
 
                 case R.id.fourthItem:
-                        transaction.replace(R.id.frameLayout_main, fragmentFourth).commitAllowingStateLoss();
+                    transaction.replace(R.id.frameLayout_main, fragmentFourth).commitAllowingStateLoss();
                     break;
 
                 case R.id.fifthItem:
