@@ -21,21 +21,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a23__project_1.MainActivity;
 import com.example.a23__project_1.R;
-import com.example.a23__project_1.fragmentSecond.FragmentSecond;
 import com.example.a23__project_1.fragmentSecond.PlaceListAdapter;
 import com.example.a23__project_1.request.LikeRequest;
 import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
-import com.example.a23__project_1.thirdFragment.FragmentThird;
+import com.example.a23__project_1.fragmentThird.FragmentThird;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -220,9 +217,12 @@ public class FragmentFourth extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("placeName", name);
 
-                // 3번째 프레그먼트로 값 전달
+                /** 3번째 프레그먼트로 값 전달 **/
                 FragmentThird fragment = new FragmentThird();
                 fragment.setArguments(bundle);
+                /** 카카오 맵에 값 전달 **/
+//                            MapActivityChangeTest fragment = new MapActivityChangeTest();
+//                            fragment.setArguments(bundle);
 
                 /** 프래그먼트 이동 **/
                 MainActivity mainActivity = (MainActivity) requireActivity();

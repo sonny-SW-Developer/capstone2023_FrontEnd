@@ -1,4 +1,4 @@
-package com.example.a23__project_1.thirdFragment;
+package com.example.a23__project_1.fragmentThird;
 
 import android.os.Bundle;
 

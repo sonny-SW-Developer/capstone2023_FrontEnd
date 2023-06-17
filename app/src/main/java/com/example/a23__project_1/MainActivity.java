@@ -42,14 +42,13 @@ import com.example.a23__project_1.fragmentFirst.FragmentFirst;
 import com.example.a23__project_1.fragmentFourth.FragmentFourth;
 import com.example.a23__project_1.leftMenuBar.HistoryActivity;
 import com.example.a23__project_1.leftMenuBar.MapActivity;
-import com.example.a23__project_1.leftMenuBar.MapActivityChangeTest;
 import com.example.a23__project_1.leftMenuBar.MyplanActivity;
 import com.example.a23__project_1.leftMenuBar.UserinfoActivity;
 
 import com.example.a23__project_1.response.LoginResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
-import com.example.a23__project_1.thirdFragment.FragmentThird;
+import com.example.a23__project_1.fragmentThird.FragmentThird;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kakao.sdk.user.UserApiClient;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;

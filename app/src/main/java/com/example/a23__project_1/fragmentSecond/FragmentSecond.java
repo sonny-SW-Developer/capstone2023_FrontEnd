@@ -28,13 +28,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a23__project_1.MainActivity;
 import com.example.a23__project_1.R;
+import com.example.a23__project_1.leftMenuBar.MapActivityChangeTest;
 import com.example.a23__project_1.request.LikeRequest;
 import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.ThemaAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
-import com.example.a23__project_1.thirdFragment.FragmentThird;
+import com.example.a23__project_1.fragmentThird.FragmentThird;
 
 import java.util.*;
 
@@ -275,9 +276,12 @@ public class FragmentSecond extends Fragment {
                             Bundle bundle = new Bundle();
                             bundle.putString("placeName", placeName);
 
-                            // 3번째 프레그먼트로 값 전달
+                            /** 3번째 프레그먼트로 값 전달 **/
                             FragmentThird fragment = new FragmentThird();
                             fragment.setArguments(bundle);
+                            /** 카카오 맵에 값 전달 **/
+//                            MapActivityChangeTest fragment = new MapActivityChangeTest();
+//                            fragment.setArguments(bundle);
 
                             /** 프래그먼트 이동 **/
                             MainActivity mainActivity = (MainActivity) requireActivity();
@@ -353,9 +357,13 @@ public class FragmentSecond extends Fragment {
                             Bundle bundle = new Bundle();
                             bundle.putString("placeName", placeName);
 
-                            // 3번째 프레그먼트로 값 전달
+                            /** 3번째 프레그먼트로 값 전달 **/
                             FragmentThird fragment = new FragmentThird();
                             fragment.setArguments(bundle);
+                            /** 카카오 맵에 값 전달 **/
+//                            MapActivityChangeTest fragment = new MapActivityChangeTest();
+//                            fragment.setArguments(bundle);
+
 
                             /** 프래그먼트 이동 **/
                             MainActivity mainActivity = (MainActivity) requireActivity();
