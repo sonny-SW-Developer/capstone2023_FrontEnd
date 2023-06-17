@@ -1,4 +1,4 @@
-package com.example.a23__project_1.firstFragment;
+package com.example.a23__project_1.fragmentFirst;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

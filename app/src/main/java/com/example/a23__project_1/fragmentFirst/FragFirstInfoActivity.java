@@ -1,4 +1,4 @@
-package com.example.a23__project_1.firstFragment;
+package com.example.a23__project_1.fragmentFirst;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,7 +18,6 @@ import android.widget.ImageButton;
 import com.example.a23__project_1.data.DataMoreInfo;
 import com.example.a23__project_1.R;
 import com.example.a23__project_1.leftMenuBar.SettingActivity;
-import com.example.a23__project_1.placeList.PlaceListAdapter;
 import com.example.a23__project_1.response.PositionResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
@@ -42,8 +41,8 @@ public class FragFirstInfoActivity extends AppCompatActivity {
     private RetrofitAPI apiService;
     private Call<PositionResponse> allPlaceCall;
     private List<Long> positionIdList;
-    private com.example.a23__project_1.placeList.categoryAdapter categoryAdapter;
-    private PlaceListAdapter placeListAdapter;
+    private com.example.a23__project_1.fragmentSecond.categoryAdapter categoryAdapter;
+    private com.example.a23__project_1.fragmentSecond.PlaceListAdapter placeListAdapter;
     private List<PositionResponse.Result> resultList = new ArrayList<>();
     private static final String TAG = "FragmentFirstInfo";
 

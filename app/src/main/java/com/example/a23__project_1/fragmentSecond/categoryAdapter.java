@@ -1,4 +1,4 @@
-package com.example.a23__project_1.Second;
+package com.example.a23__project_1.fragmentSecond;
 
 import android.content.Context;
 import android.view.LayoutInflater;

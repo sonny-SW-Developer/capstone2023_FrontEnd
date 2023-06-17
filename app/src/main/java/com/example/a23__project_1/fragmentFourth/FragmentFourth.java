@@ -1,4 +1,4 @@
-package com.example.a23__project_1.fourthFragment;
+package com.example.a23__project_1.fragmentFourth;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -34,18 +34,15 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
-
-import com.example.a23__project_1.Fifth.FragmentFifth;
-import com.example.a23__project_1.Second.FragmentSecond;
-
-import com.example.a23__project_1.firstFragment.FragmentFirst;
-import com.example.a23__project_1.fourthFragment.FragmentFourth;
 import com.example.a23__project_1.fragmentFifth.FragmentFifth;
+import com.example.a23__project_1.fragmentSecond.FragmentSecond;
+
+import com.example.a23__project_1.fragmentFirst.FragmentFirst;
+import com.example.a23__project_1.fragmentFourth.FragmentFourth;
 import com.example.a23__project_1.leftMenuBar.HistoryActivity;
 import com.example.a23__project_1.leftMenuBar.MapActivity;
 import com.example.a23__project_1.leftMenuBar.MyplanActivity;
 import com.example.a23__project_1.leftMenuBar.UserinfoActivity;
-import com.example.a23__project_1.placeList.FragmentSecond;
 
 import com.example.a23__project_1.response.LoginResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
