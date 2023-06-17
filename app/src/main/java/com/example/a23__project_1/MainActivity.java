@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity{
     private Animation animFlip;
     private ConstraintLayout layout_loading;
     private LinearLayout layout_main;
-    private TextView txtTitle, txtSubtitle;
+    private TextView txtTitle, txtSubtitle, kakaoName;
     private FrameLayout layout_slidingRootNav;
 
     //Fragment
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity{
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "userInfo";
     private ImageButton imgBtn_kakao_login;
+    BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,6 +197,9 @@ public class MainActivity extends AppCompatActivity{
                 .withMenuLayout(R.layout.activity_menu)
                 .inject();
 
+        // 사용자 이름 받기
+        kakaoName = findViewById(R.id.personal_name);
+
         //사용자 정보 확인
         LinearLayout btn_userInfo = (LinearLayout) findViewById(R.id.btn_userInfo);
         btn_userInfo.setOnClickListener(new View.OnClickListener() {
@@ -268,7 +273,7 @@ public class MainActivity extends AppCompatActivity{
         transaction.replace(R.id.frameLayout_main, fragmentThird).commitAllowingStateLoss();
 
         //메뉴클릭 리스너 등록
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
+        bottomNavigationView = findViewById(R.id.navigationView);
         bottomNavigationView.setSelectedItemId(R.id.thirdItem);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
@@ -394,6 +399,14 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    public void navigateToFragment(Fragment fragment, int menuItemId) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frameLayout_main, fragment).commitAllowingStateLoss();
+
+        // 바텀 네비게이션 메뉴 변경
+        bottomNavigationView.setSelectedItemId(menuItemId);
+    }
+
     //kakao get key Hash
     private String getKeyHash() {
         try {
@@ -476,11 +489,13 @@ public class MainActivity extends AppCompatActivity{
             else {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("name", user.getKakaoAccount().getProfile().getNickname());
+                Log.d(TAG, "name " + user.getKakaoAccount().getProfile().getNickname());
                 editor.putString("email", user.getKakaoAccount().getEmail());
                 editor.putString("profile", user.getKakaoAccount().getProfile().getProfileImageUrl());
                 editor.apply();
                 Toast.makeText(getApplicationContext(), "로그인이 성공적으로 완료되었습니다.", Toast.LENGTH_SHORT).show();
                 imgBtn_kakao_login.setVisibility(View.GONE);
+                kakaoName.setText(user.getKakaoAccount().getProfile().getNickname());
             }
             return null;
         });

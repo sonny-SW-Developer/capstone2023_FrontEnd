@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary_grey_black_7">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/secondary_grey_black_1">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DMC(디지털미디어시티)"
+            android:textSize="24dp"
+            android:textColor="@color/secondary_grey_black_14"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:layout_marginTop="16dp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_rec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:textSize="16dp"
+            android:text="이 장소는 22시~24시에 한가합니다."
+            android:textColor="@color/secondary_grey_black_14"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:gravity="center"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="16dp" />
+
+    </RelativeLayout>
+
+    <android.widget.Button
+        android:id="@+id/btn_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:text="지도로 보기"
+        android:textColor="@color/secondary_grey_black_14"
+        android:textSize="20dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:background="@color/sub_light_1" />
+
+    <android.widget.Button
+        android:id="@+id/btn_plan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:text="일정 생성하기"
+        android:textColor="@color/secondary_grey_black_14"
+        android:textSize="20dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:background="@color/main_white_100" />
+
+    <android.widget.Button
+        android:id="@+id/btn_close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
+        android:text="닫기"
+        android:textColor="@color/secondary_grey_black_14"
+        android:textSize="20dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:background="@color/secondary_grey_black_5" />
+</LinearLayout>

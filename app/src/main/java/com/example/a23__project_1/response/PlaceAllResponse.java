@@ -20,13 +20,15 @@ public class PlaceAllResponse {
         @SerializedName("place_id")
         private Long placeId;
         private List<String> thema;
+        @SerializedName("like_yn")
         private int likeYn;
         private String picture;
         private Integer popular;
         private String cctv;
+        private String rec;
 
         public Result(String name, Long placeId, List<String> thema, int likeYn,
-                      String picture, Integer popular, String cctv) {
+                      String picture, Integer popular, String cctv, String rec) {
             this.name = name;
             this.placeId = placeId;
             this.thema = thema;
@@ -34,6 +36,7 @@ public class PlaceAllResponse {
             this.picture = picture;
             this.popular = popular;
             this.cctv = cctv;
+            this.rec = rec;
         }
 
         public String getName() {
@@ -67,5 +70,7 @@ public class PlaceAllResponse {
         public String getCctv() {
             return cctv;
         }
+
+        public String getRec() { return rec; }
     }
 }
