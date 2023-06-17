@@ -1,10 +1,11 @@
 package com.example.a23__project_1.fragmentSecond;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,14 +23,12 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private final Context mainContext;
     private List<PlaceAllResponse.Result> resultList;
     private List<String> themaList = new ArrayList<>();
-    private SharedPreferences sharedPreferences;
-    private static final String PREF_NAME = "userInfo";
-
 
     /** cctv 버튼 클릭 리스너 **/
     private cctvClickListener ccl;
+
     public interface cctvClickListener {
-        void cctvButtonClick(int position);
+        void cctvButtonClick(List<PlaceAllResponse.Result> resultList, int position);
     }
     public void setOnCCTVClickListener(cctvClickListener listener) {
         this.ccl = listener;
@@ -38,7 +37,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     /** 찜 리스트 버튼 클릭 리스너 **/
     private likeClickListener lcl;
     public interface likeClickListener {
-        void likeButtonClick(int position);
+        void likeButtonClick(List<PlaceAllResponse.Result> resultList, int position);
     }
     public void setOnLikeClickListener(likeClickListener listener) {
         this.lcl = listener;
@@ -69,7 +68,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         for (String thema : themaList) {
             cate += thema + ", ";
         }
-        cate = cate.substring(0, cate.length()-2);
+        cate = cate.substring(0, cate.length()-2); // 카테고리 문자열로 출력
 
         vh.category.setText(cate);
         if (cate.contains("상업"))
@@ -93,7 +92,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         else if (cate.contains("공항"))
             vh.image.setBackgroundResource(R.drawable.ic_airport);
 
-
+        /** 인구밀집도 설정 **/
         int traffic_rate = resultList.get(position).getPopular();
         switch (traffic_rate) {
             case 0:
@@ -112,6 +111,8 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 vh.traffic.setText("매우 붐빔");
                 break;
         }
+
+        /** 찜 리스트 여부 설정 **/
         int like_rate = resultList.get(position).getLikeYn();
 
         if (like_rate == 1) {
@@ -156,24 +157,14 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             traffic = itemView.findViewById(R.id.tv_traffic);
             like = itemView.findViewById(R.id.iv_heart);
 
-            /** 로그인 여부 확인 **/
-//            sharedPreferences = mainContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-//            String email = sharedPreferences.getString("email", "null");
-//            Log.d("Adapter", email);
-//            // 로그인하지 않은 경우
-//            if (email.equals("null"))
-//                like.setVisibility(View.INVISIBLE);
-//            else
-//                like.setVisibility(View.VISIBLE);
-
             /** cctv 버튼 클릭 리스너 **/
             cctv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(ccl != null) {
-                        int position = getAbsoluteAdapterPosition();
+                        int position = getBindingAdapterPosition();
                         if(position != RecyclerView.NO_POSITION) {
-                            ccl.cctvButtonClick(position);
+                            ccl.cctvButtonClick(resultList, position);
                         }
                     }
                 }
@@ -184,9 +175,9 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 @Override
                 public void onClick(View v) {
                     if(lcl != null) {
-                        int position = getAbsoluteAdapterPosition();
+                        int position = getBindingAdapterPosition();
                         if(position != RecyclerView.NO_POSITION) {
-                            lcl.likeButtonClick(position);
+                            lcl.likeButtonClick(resultList, position);
                         }
                     }
                 }

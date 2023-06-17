@@ -3,7 +3,7 @@ package com.example.a23__project_1.response;
 public class LikeResponse {
     private int code;
     private String message;
-    private Result result;
+    private Object result;
 
     public LikeResponse(int code, String message, Result result) {
         this.code = code;
@@ -11,7 +11,7 @@ public class LikeResponse {
         this.result = result;
     }
 
-    public Result getResult() {
+    public Object getResult() {
         return result;
     }
 

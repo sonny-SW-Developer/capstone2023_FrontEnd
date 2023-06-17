@@ -1,6 +1,8 @@
 package com.example.a23__project_1.retrofit;
 
+import com.example.a23__project_1.request.InquiryRequest;
 import com.example.a23__project_1.request.LikeRequest;
+import com.example.a23__project_1.response.CommonResponse;
 import com.example.a23__project_1.response.GetThemeResponse;
 import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.LoginResponse;
@@ -32,4 +34,8 @@ public interface RetrofitAPI {
 
     @GET("/place/thema")
     Call<GetThemeResponse> getThemePlace(@Query("theme_id") int theme_id);
+
+    /** 문의사항 생성하기 **/
+    @POST("/inquiry")
+    Call<CommonResponse> doInquiry(@Body InquiryRequest request);
 }

@@ -34,8 +34,7 @@ import com.example.a23__project_1.response.ThemaAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,14 +54,14 @@ public class FragmentSecond extends Fragment {
     private RetrofitAPI apiService;
     private List<Long> themaIdList;
     private List<String> themaList;
-    private List<PlaceAllResponse.Result> placeList, searchList; // 모든 장소 리스트 및 검색 리스트
-    private List<Long> placeIdList;
+    private List<PlaceAllResponse.Result> placeList, searchList, selectedCategories; // 모든 장소 리스트 및 검색 리스트
 
     private Call<LikeResponse> likeCall;
 
     private Dialog cctvDialog;
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "userInfo";
+    private HashMap<Long, String> themaIdNameMap;
 
 
     @Override
@@ -86,7 +85,8 @@ public class FragmentSecond extends Fragment {
         themaList = new ArrayList<>();
         placeList = new ArrayList<>();
         searchList = new ArrayList<>();
-        placeIdList = new ArrayList<>();
+        selectedCategories = new ArrayList<>();
+        themaIdNameMap = new HashMap<>();
 
         // cctv 모달
         cctvDialog = new Dialog(requireContext());
@@ -100,14 +100,6 @@ public class FragmentSecond extends Fragment {
 
         editsetTextWatcher(input);
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        getCategoryList();
-        getPlaceList();
     }
 
     /** 검색 버튼 클릭 시 **/
@@ -140,16 +132,19 @@ public class FragmentSecond extends Fragment {
         String searchText = et.getText().toString();
         searchList.clear();
 
-        if(searchText.equals(""))
-            placeListAdapter.setItems(placeList);
-        else {
+        // 만약 문장이 존재한다면...
+        if(searchText.length() > 0) {
             for (int i=0; i<placeList.size(); i++) {
                 if(placeList.get(i).getName().contains(searchText)) {
                     searchList.add(placeList.get(i));
                 }
-                placeListAdapter.setItems(searchList);
             }
+            placeListAdapter.setItems(searchList);
         }
+        else {
+            placeListAdapter.setItems(placeList);
+        }
+
         search.setClickable(true);
     }
 
@@ -172,12 +167,30 @@ public class FragmentSecond extends Fragment {
 
                     categoryAdapter = new categoryAdapter(requireContext(), themaList);
                     categoryAdapter.setOnCategoryClickListener(new categoryAdapter.categoryClickListener() {
+                        /** 카테고리 버튼 클릭 시 **/
                         @Override
-                        public void OnCategoryClickListener(int pos) {
-                            String cate = themaList.get(pos);
+                        public void OnCategoryClickListener(List<String> list, int pos) {
+                            /** 리스트는 선택된 리스트들을 의미한다. **/
+                            // 선택된 리스트가 존재할 때
+                            if (list.size() > 0) {
+                                selectedCategories.clear();
 
-
-                            Toast.makeText(getActivity(), pos + "번 아이템 선택..!", Toast.LENGTH_SHORT).show();
+                                // selectedCategories 사용!
+                                // list는 카테고리 String list들을 의미함.
+                                for (PlaceAllResponse.Result result : placeList) {
+                                    for (String category : list) {
+                                        // 카테고리 포함하는 게 있다면 ...
+                                        if(result.getThema().contains(category)) {
+                                            selectedCategories.add(result);
+                                        }
+                                    }
+                                }
+                                placeListAdapter.setItems(selectedCategories);
+                            }
+                            // 선택된 리스트가 존재하지 않을 때
+                            else {
+                                placeListAdapter.setItems(placeList);
+                            }
                         }
                     });
 
@@ -208,31 +221,32 @@ public class FragmentSecond extends Fragment {
                     placeListAdapter = new PlaceListAdapter(requireContext(), placeList);
 
                     for (PlaceAllResponse.Result result : placeList) {
-                        placeIdList.add(result.getPlaceId());
+                        // thema
+                        themaIdNameMap.put(result.getPlaceId(), result.getName());
                     }
 
                     /** CCTV 버튼 클릭 리스너 설정 **/
                     placeListAdapter.setOnCCTVClickListener(new PlaceListAdapter.cctvClickListener() {
                         @Override
-                        public void cctvButtonClick(int position) {
+                        public void cctvButtonClick(List<PlaceAllResponse.Result> list ,int position) {
                             /** 모달 띄우기 **/
-                            String url = placeList.get(position).getCctv();
+                            String url = list.get(position).getCctv();
                             showCCTV(url);
-                            //String url = placeList.get(position).getCctv();
-                            //Intent urlintent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                            //startActivity(urlintent);
                         }
                     });
 
                     /** 찜 버튼 클릭 리스너 설정 **/
                     placeListAdapter.setOnLikeClickListener(new PlaceListAdapter.likeClickListener() {
                         @Override
-                        public void likeButtonClick(int position) {
+                        public void likeButtonClick(List<PlaceAllResponse.Result> list, int position) {
                             // 버튼 클릭했을 때 API 통신
-                            Long placeId = placeList.get(position).getPlaceId();
+                            String placeName = list.get(position).getName();
+                            Log.d(TAG, "placeName : " + placeName);
+                            // Position 반환
+                            Long placeId = searchPlaceId(themaIdNameMap, placeName);
                             Log.d(TAG, "place_id 값1 : " + placeId);
-                            Log.d(TAG, "position " + position);
-                            postLike(position, placeId);
+
+                            postLike(list, position, placeId);
                         }
                     });
 
@@ -251,8 +265,20 @@ public class FragmentSecond extends Fragment {
         });
     }
 
+    /** 해당하는 찜 리스트에 대한 position 가져오는 메서드 **/
+    public Long searchPlaceId(HashMap<Long, String> map, String name) {
+        Set<Map.Entry<Long,String>> entrySet = map.entrySet();
+        for (Map.Entry<Long, String> entry : entrySet) {
+            if (entry.getValue().equals(name)) {
+                return entry.getKey();
+            }
+        }
+        // 해당하는 정보가 없으면 -1 리턴
+        return -1L;
+    }
+
     /** 찜 버튼 API 통신 **/
-    public void postLike(int pos, Long place_id) {
+    public void postLike(List<PlaceAllResponse.Result> list, int pos, Long place_id) {
         apiService = RetrofitClient.getApiService();
         String email = sharedPreferences.getString("email", "null");
         if (email.equals("null")) {
@@ -272,18 +298,24 @@ public class FragmentSecond extends Fragment {
                 if(response.isSuccessful()) {
                     /** 요청에 성공했을 때 **/
                     if(response.body().getCode() == 200 && response.body().getMessage().contains("성공")) {
-                        // 지우기가 성공했을 때
-                        if(response.body().getResult().equals("delete")) {
-                            Toast.makeText(requireContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
-                            placeList.get(pos).setLikeYn(0);
-                            Log.d(TAG, String.valueOf(placeList.get(pos).getLikeYn()));
-                            /** 변경 감지 **/
-                            placeListAdapter.notifyDataSetChanged();
+                        Object result = response.body().getResult();
+                        // 문자열로 온 경우
+                        if (result instanceof String) {
+                            String resultString = (String) result;
+                            // 찜리스트 취소하는 경우
+                            if(resultString.equals("delete")) {
+                                Toast.makeText(requireContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                                list.get(pos).setLikeYn(0);
+                                Log.d(TAG, String.valueOf(list.get(pos).getLikeYn()));
+                                /** 변경 감지 **/
+                                placeListAdapter.notifyDataSetChanged();
+                            }
                         }
                         else {
+                            //찜 리스트 추가하는 경우
                             Toast.makeText(requireContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();
-                            placeList.get(pos).setLikeYn(1);
-                            Log.d(TAG, String.valueOf(placeList.get(pos).getLikeYn()));
+                            list.get(pos).setLikeYn(1);
+                            Log.d(TAG, String.valueOf(list.get(pos).getLikeYn()));
                             placeListAdapter.notifyDataSetChanged();
                         }
                     }

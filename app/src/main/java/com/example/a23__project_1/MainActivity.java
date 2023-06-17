@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity{
     private Animation animFlip;
     private ConstraintLayout layout_loading;
     private LinearLayout layout_main;
-    private TextView txtTitle, txtSubtitle;
+    private TextView txtTitle, txtSubtitle, kakaoName;
     private FrameLayout layout_slidingRootNav;
 
     //Fragment
@@ -192,6 +192,9 @@ public class MainActivity extends AppCompatActivity{
                 .withMenuOpened(false)
                 .withMenuLayout(R.layout.activity_menu)
                 .inject();
+
+        // 사용자 이름 받기
+        kakaoName = findViewById(R.id.personal_name);
 
         //사용자 정보 확인
         LinearLayout btn_userInfo = (LinearLayout) findViewById(R.id.btn_userInfo);
@@ -474,11 +477,13 @@ public class MainActivity extends AppCompatActivity{
             else {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("name", user.getKakaoAccount().getProfile().getNickname());
+                Log.d(TAG, "name " + user.getKakaoAccount().getProfile().getNickname());
                 editor.putString("email", user.getKakaoAccount().getEmail());
                 editor.putString("profile", user.getKakaoAccount().getProfile().getProfileImageUrl());
                 editor.apply();
                 Toast.makeText(getApplicationContext(), "로그인이 성공적으로 완료되었습니다.", Toast.LENGTH_SHORT).show();
                 imgBtn_kakao_login.setVisibility(View.GONE);
+                kakaoName.setText(user.getKakaoAccount().getProfile().getNickname());
             }
             return null;
         });
