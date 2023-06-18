@@ -7,6 +7,7 @@
     tools:context=".fragmentFourth.MakePlanActivity" >
 
     <LinearLayout
+        android:id="@+id/lin_first"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -30,4 +31,126 @@
             android:layout_gravity="center"
             android:layout_marginLeft="90dp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_sec"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/lin_first"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="나만의 일정을 만들어보아요!"
+            android:textColor="@color/secondary_grey_black_13"
+            android:textSize="28dp"
+            android:fontFamily="@font/pretendard_semi_bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="제목(최대 10자 입력 가능)"
+            android:textSize="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/secondary_grey_black_14" />
+
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/secondary_grey_black_4"
+            android:maxLength="10"
+            android:hint="제목을 입력하세요."
+            android:paddingLeft="16dp"
+            android:textSize="20dp"
+            android:textColor="@color/secondary_grey_black_14"
+            android:fontFamily="@font/pretendard_medium"/>
+
+        <TextView
+            android:layout_marginTop="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="장소"
+            android:textSize="24dp"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/secondary_grey_black_14"/>
+
+        <EditText
+            android:id="@+id/et_place"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/secondary_grey_black_4"
+            android:hint="장소를 입력하세요."
+            android:paddingLeft="16dp"
+            android:textSize="20dp"
+            android:textColor="@color/secondary_grey_black_14"
+            android:fontFamily="@font/pretendard_medium" />
+
+        <TextView
+            android:layout_marginTop="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="날짜"
+            android:textSize="24dp"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/secondary_grey_black_14"/>
+
+        <android.widget.Button
+            android:id="@+id/btn_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/secondary_grey_black_4"
+            android:hint="날짜를 선택해주세요."
+            android:textSize="18dp"
+            android:textColor="@color/secondary_grey_black_14"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="left|center"
+            android:paddingLeft="16dp" />
+
+        <TextView
+            android:layout_marginTop="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="시간"
+            android:textSize="24dp"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/secondary_grey_black_14"/>
+
+        <android.widget.Button
+            android:id="@+id/btn_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/secondary_grey_black_4"
+            android:hint="시간을 선택해주세요."
+            android:textSize="18dp"
+            android:textColor="@color/secondary_grey_black_14"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="left|center"
+            android:paddingLeft="16dp" />
+    </LinearLayout>
+
+    <android.widget.Button
+        android:id="@+id/btn_complete"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/lin_sec"
+        android:layout_marginTop="60dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@color/secondary_grey_black_7"
+        android:text="일정 생성 완료하기"
+        android:textSize="20dp"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:textColor="@color/secondary_grey_black_6" />
 </RelativeLayout>

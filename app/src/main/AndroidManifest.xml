@@ -19,6 +19,21 @@
         android:theme="@style/Theme.23Project1"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".fragmentFifth.InquiryInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragmentFifth.InquiryListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragmentFifth.NoticeInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragmentFifth.NoticeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragmentFourth.PlanListActivity"
+            android:exported="false" />
+        <activity
             android:name=".fragmentFourth.MakePlanActivity"
             android:exported="false" />
         <activity

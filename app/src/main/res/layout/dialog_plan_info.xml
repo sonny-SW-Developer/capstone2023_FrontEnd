@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp">
+
+    <TextView
+        android:id="@+id/tv_infodDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dday"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="제목"
+        android:textSize="20dp"
+        android:layout_marginLeft="12dp"
+        android:layout_below="@+id/tv_infodDay"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold"/>
+
+    <TextView
+        android:id="@+id/tv_infoTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv1"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="14dp"
+        android:text="제목"
+        android:textSize="16dp"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="장소"
+        android:textSize="20dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/tv_infoTitle"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold" />
+
+    <TextView
+        android:id="@+id/tv_infoPlace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv2"
+        android:layout_marginLeft="16dp"
+        android:text="장소"
+        android:textSize="16dp"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tv_rec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_infoPlace"
+        android:layout_marginLeft="16dp"
+        android:text="이 장소는 ..."
+        android:textSize="14dp"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:layout_marginTop="4dp" />
+
+    <ImageView
+        android:id="@+id/iv_cate"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_below="@+id/tv_rec"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_baseline_check_circle_24" />
+
+    <TextView
+        android:id="@+id/tv_cate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_cate"
+        android:layout_below="@+id/tv_rec"
+        android:text="카테고리"
+        android:textColor="@color/secondary_grey_black_9"
+        android:fontFamily="@font/pretendard_medium"
+        android:textSize="14dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="날짜"
+        android:textSize="16dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/tv_cate"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv3"
+        android:layout_marginLeft="16dp"
+        android:text="날짜"
+        android:textSize="20dp"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tv4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="예정 시간"
+        android:textSize="20dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/tv_date"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv4"
+        android:layout_marginLeft="16dp"
+        android:text="시간"
+        android:textSize="20dp"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:layout_marginTop="8dp" />
+
+    <android.widget.Button
+        android:id="@+id/btn_close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_time"
+        android:layout_marginTop="24dp"
+        android:text="닫기"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:textSize="20dp"
+        android:background="@color/secondary_grey_black_7"
+        android:layout_marginBottom="24dp"/>
+
+</RelativeLayout>
