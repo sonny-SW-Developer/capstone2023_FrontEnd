@@ -7,17 +7,23 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.a23__project_1.data.DataMoreInfo;
 import com.example.a23__project_1.R;
 import com.example.a23__project_1.leftMenuBar.SettingActivity;
+import com.example.a23__project_1.request.LikeRequest;
+import com.example.a23__project_1.response.LikeResponse;
+import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.PositionResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
@@ -31,6 +37,7 @@ import retrofit2.Response;
 
 
 public class FragFirstInfoActivity extends AppCompatActivity {
+    private static final String TAG = "FragmentFirstInfo";
     private Intent intent;
     private String messege;
     private RecyclerView recyclerView;
@@ -44,13 +51,23 @@ public class FragFirstInfoActivity extends AppCompatActivity {
     private com.example.a23__project_1.fragmentSecond.categoryAdapter categoryAdapter;
     private com.example.a23__project_1.fragmentSecond.PlaceListAdapter placeListAdapter;
     private List<PositionResponse.Result> resultList = new ArrayList<>();
-    private static final String TAG = "FragmentFirstInfo";
 
+    /** 좋아요 기능 구현을 위한 전역변수 선언 **/
+    private SharedPreferences sharedPreferences;
+    private static final String PREF_NAME = "userInfo";
+    private String email = "";
+    private List<PlaceAllResponse.Result> placeList; // 모든 장소 리스트
+    private Call<LikeResponse> likeCall;
+    RecyclerFragFirstThemeAdapter themeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_frag_info);
+
+        // sharedPreference로 로그인 여부 판단.
+        sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        email = sharedPreferences.getString("email", "null");
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler_activity_first_fragment_menu);
         positionIdList = new ArrayList<>();
@@ -160,6 +177,8 @@ public class FragFirstInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
 
     }
+    /** onCreate() 종료 **/
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -192,7 +211,15 @@ public class FragFirstInfoActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            recyclerView.setAdapter(new RecyclerFragFirstThemeAdapter(FragFirstInfoActivity.this, list_place));
+                            themeAdapter = new RecyclerFragFirstThemeAdapter(FragFirstInfoActivity.this, list_place);
+                            /** 찜 버튼 구현 **/
+                            themeAdapter.setOnLikeClickListener(new RecyclerFragFirstThemeAdapter.likeClickListener() {
+                                @Override
+                                public void likeButtonClick(int pos) {
+                                    postLike(pos);
+                                }
+                            });
+                            recyclerView.setAdapter(themeAdapter);
                             recyclerView.setLayoutManager(new LinearLayoutManager(FragFirstInfoActivity.this,RecyclerView.VERTICAL,false));
                         }
                     });
@@ -210,6 +237,7 @@ public class FragFirstInfoActivity extends AppCompatActivity {
         });
         return list_place;
     }
+
     public void getRegionList(ArrayList<DataMoreInfo> list_place,int position){
         apiService = RetrofitClient.getApiService();
         allPlaceCall = apiService.getAllPosition();
@@ -230,7 +258,15 @@ public class FragFirstInfoActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            recyclerView.setAdapter(new RecyclerFragFirstThemeAdapter(FragFirstInfoActivity.this, list_place));
+                            themeAdapter = new RecyclerFragFirstThemeAdapter(FragFirstInfoActivity.this, list_place);
+                            /** 찜 버튼 구현 **/
+                            themeAdapter.setOnLikeClickListener(new RecyclerFragFirstThemeAdapter.likeClickListener() {
+                                @Override
+                                public void likeButtonClick(int pos) {
+                                    postLike(pos);
+                                }
+                            });
+                            recyclerView.setAdapter(themeAdapter);
                             recyclerView.setLayoutManager(new LinearLayoutManager(FragFirstInfoActivity.this,RecyclerView.VERTICAL,false));
                         }
                     });
@@ -247,6 +283,53 @@ public class FragFirstInfoActivity extends AppCompatActivity {
 
         });
     }
+
+    /** 찜 누르기 메서드 구현 **/
+    private void postLike(int pos) {
+        apiService = RetrofitClient.getApiService();
+        if(email.equals("null")) {
+            Toast.makeText(getApplicationContext(), "로그인을 먼저 진행해주세요...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        LikeRequest.Member member = new LikeRequest.Member(email);
+        LikeRequest.Place place = new LikeRequest.Place(positionIdList.get(pos));
+        LikeRequest request = new LikeRequest(member, place);
+        likeCall = apiService.doLike(request);
+        likeCall.enqueue(new Callback<LikeResponse>() {
+            @Override
+            public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
+                /** 요청에 성공했을 때 **/
+                if(response.body().getCode() == 200 && response.body().getMessage().contains("성공")) {
+                    Object result = response.body().getResult();
+                    // 문자열로 온 경우
+                    if (result instanceof String) {
+                        String resultString = (String) result;
+                        // 찜리스트 취소하는 경우
+                        if(resultString.equals("delete")) {
+                            Toast.makeText(getApplicationContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                            list_place.get(pos).setBoolean_cart(false);
+                        }
+                    }
+                    else {
+                        //찜 리스트 추가하는 경우
+                        Toast.makeText(getApplicationContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                        list_place.get(pos).setBoolean_cart(true);
+                    }
+                    /** 변경 감지 **/
+                    themeAdapter.notifyItemChanged(pos);
+                }
+                else
+                    Log.d(TAG, "찜리스트 연동 오류 1.." + response.errorBody().toString());
+            }
+
+            @Override
+            public void onFailure(Call<LikeResponse> call, Throwable t) {
+                Log.d(TAG, "찜리스트 연동 오류 2.." + t.getMessage());
+            }
+        });
+    }
+
     private void getRegionInit(List<PositionResponse.Result> resultList,int position){
         int index;
         String name;
@@ -388,12 +471,12 @@ public class FragFirstInfoActivity extends AppCompatActivity {
                 }else if(theme_id.equals("마트")&&themaName.equals("마트")){
                     list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
                 }else{
-                    Log.d("fragfirstinfo","placeid: "+placeid+", theme_id: "+theme_id+", themeName: "+themaName);
+                 //   Log.d("fragfirstinfo","placeid: "+placeid+", theme_id: "+theme_id+", themeName: "+themaName);
                 }
             }
             placeid_before = placeid;
 
-            Log.d("fragfirstinfo", "placeID: " + placeid + ", Popular: " + popular + ", Name: " + name + ", ThemaName: " + themaName);
+           // Log.d("fragfirstinfo", "placeID: " + placeid + ", Popular: " + popular + ", Name: " + name + ", ThemaName: " + themaName);
         }
 
         return list_place;

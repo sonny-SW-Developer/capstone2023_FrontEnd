@@ -36,6 +36,13 @@ public class RecyclerFragFirstThemeAdapter extends RecyclerView.Adapter {
     ArrayList<DataMoreInfo> dataModels;
     Context context;
 
+    /** 찜 버튼 클릭 리스너 **/
+    private likeClickListener lcl;
+    public interface likeClickListener {
+        void likeButtonClick(int pos);
+    }
+    public void setOnLikeClickListener(likeClickListener listener) {this.lcl = listener;}
+
     //생성자를 통하여 데이터 리스트 context를 받음
     public RecyclerFragFirstThemeAdapter(Context context, ArrayList<DataMoreInfo> dataModels) {
         this.dataModels = dataModels;
@@ -86,21 +93,13 @@ public class RecyclerFragFirstThemeAdapter extends RecyclerView.Adapter {
         setCart(dataModels.get(position).getBoolean_cart(), myViewHolder);
         setLottie(myViewHolder,position);
 
-        myViewHolder.imgButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, position + "번째 텍스트 뷰 클릭", Toast.LENGTH_SHORT).show();
-                if(dataModels.get(position).getBoolean_cart()){
-                    dataModels.get(position).setBoolean_cart(false);
-                }else{
-                    dataModels.get(position).setBoolean_cart(true);
-                }
-                setCart(dataModels.get(position).getBoolean_cart(), myViewHolder);
-            }
-        });
+        boolean like_rate = dataModels.get(position).getBoolean_cart();
+        if(like_rate)
+            myViewHolder.imgButton.setBackgroundResource(R.drawable.ic_heart_fill);
+        else
+            myViewHolder.imgButton.setBackgroundResource(R.drawable.ic_heart_no_fill);
 
-
-
+        setCart(dataModels.get(position).getBoolean_cart(), myViewHolder);
     }
     // Api 사진 로딩 가능할때, 변경해야 하는 함수 => 임의 구현
     public void setImage(MyViewHolder myViewHolder,int position){
@@ -410,9 +409,9 @@ public class RecyclerFragFirstThemeAdapter extends RecyclerView.Adapter {
     }
     public void setCart(boolean isit, MyViewHolder myViewHolder){
         if(isit){
-            myViewHolder.imgButton.setImageResource(R.drawable.baseline_star_rate_24);
+            myViewHolder.imgButton.setImageResource(R.drawable.ic_heart_fill);
         }else{
-            myViewHolder.imgButton.setImageResource(R.drawable.baseline_star_border_24);
+            myViewHolder.imgButton.setImageResource(R.drawable.ic_heart_no_fill);
         }
     }
 
@@ -430,6 +429,19 @@ public class RecyclerFragFirstThemeAdapter extends RecyclerView.Adapter {
             imgButton = itemView.findViewById(R.id.btn_add_cart);
             imageView = itemView.findViewById(R.id.recycler_activity_first_image);
             animationView= itemView.findViewById(R.id.lottie_popular);
+
+            /** 찜 버튼 클릭 리스너 **/
+            imgButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(lcl != null) {
+                        int position = getBindingAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            lcl.likeButtonClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
