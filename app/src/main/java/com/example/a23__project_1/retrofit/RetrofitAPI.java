@@ -64,7 +64,7 @@ public interface RetrofitAPI {
     Call<PlanListResponse> getPlanList(@Query("member_id") String memberId);
 
     /** 장소 이름으로 검색 **/
-    @GET("/place/name/{name}")
+    @GET("/place/name")
     Call<PlaceInfoResponse> getPlaceInfo(@Query("name") String name);
 
     /** 공지사항 **/

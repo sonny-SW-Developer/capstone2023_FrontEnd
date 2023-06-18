@@ -41,7 +41,7 @@ public class PlanListActivity extends AppCompatActivity {
     ImageButton close;
     RecyclerView recyclerView;
     List<PlanListResponse.Result> resultList;
-
+    TextView tv_rec;
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "userInfo";
     private String email = "", cate = "";
@@ -49,7 +49,6 @@ public class PlanListActivity extends AppCompatActivity {
     private PlanListAdapter planListAdapter;
     private Dialog planInfoDialog;
     private List<String> planThemaList;
-    private String recommend = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,18 +132,14 @@ public class PlanListActivity extends AppCompatActivity {
         TextView tv_cate = planInfoDialog.findViewById(R.id.tv_cate);
         TextView tv_date = planInfoDialog.findViewById(R.id.tv_date);
         TextView tv_time = planInfoDialog.findViewById(R.id.tv_time);
-        TextView tv_rec = planInfoDialog.findViewById(R.id.tv_rec);
+        tv_rec = planInfoDialog.findViewById(R.id.tv_rec);
         Button close = planInfoDialog.findViewById(R.id.btn_close);
 
         plan_title.setText(list.get(position).getTitle());
         place.setText(list.get(position).getPlaceName());
 
-        // rec을 받아옴
-        /** API 이상 **/
-        Log.d(TAG, "name : " + list.get(position).getPlaceName());
+        /** 한가한 시간을 추천받는다. **/
         getPlaceInform(list.get(position).getPlaceName());
-        Log.d(TAG, "recommend2 : " + recommend);
-        tv_rec.setText(recommend);
 
         // D-Day 날짜 설정
         String str_date = list.get(position).getStartDate();
@@ -214,16 +209,15 @@ public class PlanListActivity extends AppCompatActivity {
     /** rec 얻기 위해 **/
     private void getPlaceInform(String placeName) {
         apiService = RetrofitClient.getApiService();
-        Log.d(TAG, "연동전 name : " + placeName);
         Call<PlaceInfoResponse> call = apiService.getPlaceInfo(placeName);
+
         call.enqueue(new Callback<PlaceInfoResponse>() {
             @Override
             public void onResponse(Call<PlaceInfoResponse> call, Response<PlaceInfoResponse> response) {
                 if(response.isSuccessful() && response.body().getMessage().contains("성공")) {
                     PlaceInfoResponse.PlaceInfo info = response.body().getResult();
-                    String rec = info.getRec();
-                    Log.d(TAG, "추천글 : " + info.getRec());
-                    Log.d(TAG, "recommend1 : " + recommend);
+
+                    tv_rec.setText(info.getRec());
                 }
                 else {
                     Log.d(TAG, "rec 연동 실패 1..." + response.errorBody().toString());

@@ -81,12 +81,15 @@ public class NoticeActivity extends AppCompatActivity {
                     });
 
                     recyclerView.setAdapter(noticeAdapter);
+                    Log.d(TAG, "공지 연동 성공!");
+
                 }
+                Log.d(TAG, "공지 연동 실패 1..." + response.errorBody().toString());
             }
 
             @Override
             public void onFailure(Call<List<NoticeResponse>> call, Throwable t) {
-
+                Log.d(TAG, "공지 연동 실패 2..." + t.getMessage());
             }
         });
     }
