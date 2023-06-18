@@ -124,11 +124,6 @@ public class PlanListActivity extends AppCompatActivity {
      * 하나의 자세한 일정 조회
      **/
     private void planInfo(List<PlanListResponse.Result> list, int position) {
-        Log.d(TAG, "list 사이즈 : " + String.valueOf(list.size()));
-        Log.d(TAG, "position 값 : " + position);
-        for (PlanListResponse.Result re : list) {
-            Log.d(TAG, "re의 title 값 : " + re.getTitle());
-        }
         planInfoDialog.show();
 
         TextView plan_title = planInfoDialog.findViewById(R.id.tv_infoTitle);
@@ -146,7 +141,8 @@ public class PlanListActivity extends AppCompatActivity {
 
         // rec을 받아옴
         /** API 이상 **/
-        //getPlaceInfo(list.get(position).getPlaceName());
+        Log.d(TAG, "name : " + list.get(position).getPlaceName());
+        getPlaceInform(list.get(position).getPlaceName());
         Log.d(TAG, "recommend2 : " + recommend);
         tv_rec.setText(recommend);
 
@@ -216,19 +212,22 @@ public class PlanListActivity extends AppCompatActivity {
     }
 
     /** rec 얻기 위해 **/
-    private void getPlaceInfo(String placeName) {
+    private void getPlaceInform(String placeName) {
         apiService = RetrofitClient.getApiService();
+        Log.d(TAG, "연동전 name : " + placeName);
         Call<PlaceInfoResponse> call = apiService.getPlaceInfo(placeName);
         call.enqueue(new Callback<PlaceInfoResponse>() {
             @Override
             public void onResponse(Call<PlaceInfoResponse> call, Response<PlaceInfoResponse> response) {
                 if(response.isSuccessful() && response.body().getMessage().contains("성공")) {
                     PlaceInfoResponse.PlaceInfo info = response.body().getResult();
-                    recommend = info.getRec();
+                    String rec = info.getRec();
+                    Log.d(TAG, "추천글 : " + info.getRec());
                     Log.d(TAG, "recommend1 : " + recommend);
                 }
-                else
+                else {
                     Log.d(TAG, "rec 연동 실패 1..." + response.errorBody().toString());
+                }
             }
 
             @Override

@@ -5,13 +5,17 @@ import com.example.a23__project_1.request.LikeRequest;
 import com.example.a23__project_1.request.MakePlanRequest;
 import com.example.a23__project_1.response.CommonResponse;
 import com.example.a23__project_1.response.GetThemeResponse;
+import com.example.a23__project_1.response.InquiryResponse;
 import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.LoginResponse;
+import com.example.a23__project_1.response.NoticeResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.PlaceInfoResponse;
 import com.example.a23__project_1.response.PlanListResponse;
 import com.example.a23__project_1.response.PositionResponse;
 import com.example.a23__project_1.response.ThemaAllResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -60,6 +64,14 @@ public interface RetrofitAPI {
     Call<PlanListResponse> getPlanList(@Query("member_id") String memberId);
 
     /** 장소 이름으로 검색 **/
-    @GET("/place/{name}")
+    @GET("/place/name/{name}")
     Call<PlaceInfoResponse> getPlaceInfo(@Query("name") String name);
+
+    /** 공지사항 **/
+    @GET("/faq/notice")
+    Call<List<NoticeResponse>> getNotice();
+
+    /** 문의사항 목록 **/
+    @GET("inquiry/all/{member_id}")
+    Call<InquiryResponse> getInquiryList(@Query("member_id") String memberId);
 }

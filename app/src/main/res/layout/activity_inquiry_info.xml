@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragmentFifth.InquiryInfoActivity">
+
+    <LinearLayout
+        android:id="@+id/lin1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:src="@drawable/baseline_keyboard_arrow_gray_left_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="90dp"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:text="문의사항 상세"
+            android:textColor="@color/secondary_grey_black_14"
+            android:textSize="24dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="제목"
+        android:paddingLeft="16dp"
+        android:gravity="left|center"
+        android:textSize="24dp"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:layout_below="@+id/lin1"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tv_title" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="16dp">
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/secondary_grey_black_4"
+                android:padding="16dp"
+                android:text="내용입니다."
+                android:textSize="14dp"
+                android:textColor="@color/secondary_grey_black_12"
+                android:fontFamily="@font/pretendard_medium" />
+
+            <TextView
+                android:id="@+id/tv_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/secondary_grey_black_6"
+                android:padding="16dp"
+                android:text="답변입니다."
+                android:layout_marginTop="24dp"
+                android:textColor="@color/secondary_grey_black_14"
+                android:fontFamily="@font/pretendard_semi_bold"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

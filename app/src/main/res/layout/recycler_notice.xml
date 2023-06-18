@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/img_bulb"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_mark"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/img_bulb"
+        android:layout_marginLeft="16dp"
+        android:text="제목입니다."
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginTop="8dp"
+        android:text="내용입니다."
+        android:textColor="@color/secondary_grey_black_9"
+        android:layout_toRightOf="@+id/img_bulb"
+        android:layout_marginLeft="20dp"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2023-05-03"
+        android:textColor="@color/secondary_grey_black_12"
+        android:fontFamily="@font/pretendard_medium"
+        android:textSize="14dp"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>

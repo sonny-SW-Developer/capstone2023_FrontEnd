@@ -3,25 +3,8 @@ package com.example.a23__project_1.response;
 import com.google.gson.annotations.SerializedName;
 
 public class PlaceInfoResponse {
-    @SerializedName("isSuccess")
-    private boolean isSuccess;
-
-    @SerializedName("code")
-    private int code;
-
-    @SerializedName("message")
     private String message;
-
-    @SerializedName("result")
     private PlaceInfo result;
-
-    public boolean isSuccess() {
-        return isSuccess;
-    }
-
-    public int getCode() {
-        return code;
-    }
 
     public String getMessage() {
         return message;

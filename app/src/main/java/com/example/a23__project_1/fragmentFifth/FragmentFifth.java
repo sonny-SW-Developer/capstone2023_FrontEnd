@@ -32,7 +32,7 @@ public class FragmentFifth extends Fragment {
 
     private CircleImageView imgProfile;
     private TextView tv_name, tv_name1,tv_email;
-    private LinearLayout question;
+    private LinearLayout question, notice, answer;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fifth, container, false);
@@ -52,6 +52,12 @@ public class FragmentFifth extends Fragment {
         // 문의사항 남기기
         question = view.findViewById(R.id.layout_question);
         question.setOnClickListener(questionClickListener);
+        //공지사항
+        notice = view.findViewById(R.id.layout_announcement);
+        notice.setOnClickListener(noticeClickListener);
+        //문의사항 확인
+        answer = view.findViewById(R.id.layout_answer);
+        answer.setOnClickListener(answerClickListener);
 
         // 값이 존재한다면
         if (!name.equals("null")) {
@@ -76,6 +82,24 @@ public class FragmentFifth extends Fragment {
         // 로그인이 되어있다면
         if(!name.equals("null")) {
             Intent intent = new Intent(getActivity(), QuestionActivity.class);
+            startActivity(intent);
+        }
+        else {
+            Toast.makeText(requireContext(), "로그인을 먼저 진행해주세요...", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    // 공지사항 버튼 클릭 시
+    View.OnClickListener noticeClickListener = v -> {
+        Intent intent = new Intent(getActivity(), NoticeActivity.class);
+        startActivity(intent);
+    };
+
+    // 문의 답변 확인하기 클릭 시
+    View.OnClickListener answerClickListener = v -> {
+        // 로그인이 되어있다면
+        if(!name.equals("null")) {
+            Intent intent = new Intent(getActivity(), InquiryListActivity.class);
             startActivity(intent);
         }
         else {
