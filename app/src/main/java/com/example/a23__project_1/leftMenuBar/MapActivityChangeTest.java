@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,16 +37,21 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.a23__project_1.MainActivity;
 import com.example.a23__project_1.R;
+import com.example.a23__project_1.SharedViewModel;
 import com.example.a23__project_1.data.DataMoreInfo;
 import com.example.a23__project_1.fragmentFirst.RecyclerFragFirstThemeAdapter;
 import com.example.a23__project_1.fragmentSecond.FragmentSecond;
+import com.example.a23__project_1.fragmentSecond.PlaceListAdapter;
 import com.example.a23__project_1.fragmentThird.FragmentThird;
+import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.PositionResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
@@ -83,7 +90,7 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
     private int main_ctr=0;
     private int marker_ctr = 0;
 
-    private static final String LOG_TAG = "MainActivity";
+    private static final String LOG_TAG = "MapActivityChangeTest";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION};
@@ -102,14 +109,27 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
     private LinearLayout linear_map_back_origin;
     private EditText editText1;
 
-
+    private View rootView = null;
+    OnFragmentInteractionListener mListener;
+    private SharedViewModel model;
+    private boolean isFragmentSecondStarted = false;
+    private int selectedTag = 1;
+    private boolean isFromMain = true;
+    private SharedPreferences sharedPreferences;
+    private static final String PREF_NAME = "userInfo";
+    private String email = "";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
         View rootView = inflater.inflate(R.layout.activity_mapchangetest, container, false);
+
         Log.d(TAG, "onCreateView");
+        positionList = new ArrayList<>();
+        positionIdList = new ArrayList<>();
         layout_menu = (LinearLayout) rootView.findViewById(R.id.layout_menu_map);
         layout_background = (FrameLayout) rootView.findViewById(R.id.layout_background_map);
         layout_card = (CardView)rootView.findViewById(R.id.cardview_activity_map);
@@ -120,77 +140,146 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
         recycler_under_background= (RecyclerView) rootView.findViewById(R.id.recycler_map_back_origin);
         recyclerViewMenu = (RecyclerView)rootView.findViewById(R.id.recycler_map_menu_origin);
         linear_map_back_origin = (LinearLayout)rootView.findViewById(R.id.linear_map_back_origin);
+        nowOnMap = rootView.findViewById(R.id.btn_now);
+
+//        Bundle bundle = getArguments();
+//        if (bundle != null) {
+//            isFromMain = true;
+//            Log.d("번들 받음",""+isFromMain);
+//            // 값 사용
+//        }else{
+//            isFromMain = false;
+//        }
+
+        model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
 
-        positionList = new ArrayList<>();
-        positionIdList = new ArrayList<>();
-
-
-
-        map_close1.setOnClickListener(new View.OnClickListener() {
+        model.getFromWhere().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
-            public void onClick(View v) {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    anim = AnimationUtils.loadAnimation(getActivity(), R.anim.nfc2_anim); //애니메이션설정파일
-                } else {
-                    Log.d("MapActivityChangeTest","error");
+            public void onChanged(@Nullable Integer fromWhere) {
+                Log.d("누구니","FromWhere: "+model.getFromWhere().getValue());
+                Log.d("받아온 값은","Item: "+model.getSelectedItem().getValue());
+
+                if (fromWhere == 1) {
+                    // fragmentSecond에서 호출되었을 때의 로직
+                    selectedTag = model.getSelectedItem().getValue();
+                    isFromMain = false;
+                } else if (fromWhere == 2) {
+                    // MainActivity에서 호출되었을 때의 로직
+                    marker_ctr = 0;
+                    main_ctr=0;
+                    background_ctr = 0;
+                    isFromMain = true;
                 }
-
-                layout_background.startAnimation(anim);
-                layout_menu.setClickable(false);
-                layout_menu.setVisibility(View.GONE);
-                layout_background.setClickable(false);
-                layout_background.setVisibility(View.GONE);
-
-                //menu_btn.setVisibility(View.VISIBLE);
-                map.setClickable(true);
-                background_ctr = 0;
-                main_ctr = 0;
-                marker_ctr = 0;
-                mapView.removeAllCircles();
-                mapView.getCircles();
-
             }
         });
+
+//        model.getSelectedItem().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+//            @Override
+//            public void onChanged(@Nullable Integer s) {
+//                Log.d("누구니","FromWhere: "+model.getFromWhere().getValue());
+//                Log.d("받아온 값은","Item: "+model.getSelectedItem().getValue());
+//                selectedTag = s;
+//                isFromMain = false;
+//            }
+//        });
+
+
+        // sharedPreference로 로그인 여부 판단.
+        sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        email = sharedPreferences.getString("email", "null");
+        /** 로그인이 되어있는지 여부 판단 **/
+        // 로그인 되어있지 않은 경우
+//        if(email.equals("null")) {
+//            getPlaceList();
+//        }
+//        // 로그인 되어있는 경우
+//        else {
+//            getLoginCategoryList();
+//        }
+
+
 
         btn_trdTosec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                FragmentSecond fragment = new FragmentSecond();
-//                /** 프래그먼트 이동 **/
-//                MainActivity mainActivity = (MainActivity) requireActivity();
-//                // 프래그먼트 이동 및 바텀 네비게이션 메뉴 변경
-//                mainActivity.navigateToFragment(fragment, R.id.secondItem);
+                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
+                bottomNavigationView.setSelectedItemId(R.id.secondItem);
+                //moveToFragmentSecond();
                 Log.d("MapActivityChangeTest","btnclicked");
 
             }
         });
 
+        map_close1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isFromMain){
+                    model.setFromWhere(2);
+                    ((MainActivity)getActivity()).setfromWhere(2);
+                    BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
+                    bottomNavigationView.setSelectedItemId(R.id.secondItem);
+
+                    isFromMain = true;
+                }else{
+                    Activity activity = getActivity();
+                    if (activity != null) {
+                        anim = AnimationUtils.loadAnimation(getActivity(), R.anim.nfc2_anim); //애니메이션설정파일
+                    } else {
+                        Log.d("MapActivityChangeTest","error");
+                    }
+
+                    layout_background.startAnimation(anim);
+                    layout_menu.setClickable(false);
+                    layout_menu.setVisibility(View.GONE);
+                    layout_background.setClickable(false);
+                    layout_background.setVisibility(View.GONE);
+
+                    //menu_btn.setVisibility(View.VISIBLE);
+                    map.setClickable(true);
+                    background_ctr = 0;
+                    main_ctr = 0;
+                    marker_ctr = 0;
+                    mapView.removeAllCircles();
+                    mapView.getCircles();
+                }
+
+
+            }
+        });
 
         map_close2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    anim = AnimationUtils.loadAnimation(getActivity(), R.anim.nfc2_anim); //애니메이션설정파일
-                } else {
-                    Log.d("MapActivityChangeTest","error");
-                }
-                layout_menu.startAnimation(anim);
-                layout_background.startAnimation(anim);
-                layout_menu.setClickable(false);
-                layout_menu.setVisibility(View.GONE);
-                layout_background.setClickable(false);
-                layout_background.setVisibility(View.GONE);
+                if (!isFromMain) {
+                    model.setFromWhere(2);
+                    ((MainActivity)getActivity()).setfromWhere(2);
+                    BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
+                    bottomNavigationView.setSelectedItemId(R.id.secondItem);
 
-                //menu_btn.setVisibility(View.VISIBLE);
-                map.setClickable(true);
-                background_ctr = 0;
-                main_ctr = 0;
-                marker_ctr = 0;
-                mapView.removeAllCircles();
-                mapView.getCircles();
+                    isFromMain = true;
+                } else {
+                    Activity activity = getActivity();
+                    if (activity != null) {
+                        anim = AnimationUtils.loadAnimation(getActivity(), R.anim.nfc2_anim); //애니메이션설정파일
+                    } else {
+                        Log.d("MapActivityChangeTest", "error");
+                    }
+                    layout_menu.startAnimation(anim);
+                    layout_background.startAnimation(anim);
+                    layout_menu.setClickable(false);
+                    layout_menu.setVisibility(View.GONE);
+                    layout_background.setClickable(false);
+                    layout_background.setVisibility(View.GONE);
+
+                    //menu_btn.setVisibility(View.VISIBLE);
+                    map.setClickable(true);
+                    background_ctr = 0;
+                    main_ctr = 0;
+                    marker_ctr = 0;
+                    mapView.removeAllCircles();
+                    mapView.getCircles();
+                }
             }
         });
 
@@ -220,22 +309,24 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
             }
         });
 
+        // 현재 내 위치 찾기
+        nowOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 현위치 트래킹 이벤트를 통보
+                mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+            }
+        });
 
+        Log.d("MapActivityChangeTest","here");
 
         Activity activity = getActivity();
         if (activity != null) {
             mapView = new MapView(getActivity());
         } else {
-            Log.d("MapActivityChangeTest","error");
+            Log.d("MapActivityChangeTest","getActivityerror");
         }
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            String value = bundle.getString("placeName");
-            Log.d("hi",value);
-
-
-        }
         mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
         mapView.setMapViewEventListener(this);
@@ -245,27 +336,6 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
         // 고해상도 지도 타일 사용
         mapView.setHDMapTileEnabled(true);
 
-//        Bundle bundle = getArguments();
-//
-//        if (activity != null) {
-//            if(bundle == null){
-//                mapView = new MapView(getActivity());
-//                mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map_view);
-//                mapViewContainer.addView(mapView);
-//                mapView.setMapViewEventListener(this);
-//
-//                // POIItemEventListener interface 리스너
-//                mapView.setPOIItemEventListener(this);
-//                // 고해상도 지도 타일 사용
-//                mapView.setHDMapTileEnabled(true);
-//            }else{
-//                String value = bundle.getString("placeName");
-//                Log.d("hi",value);
-//            }
-//
-//        } else {
-//            Log.d("MapActivityChangeTest","error");
-//        }
 
 
 
@@ -279,26 +349,59 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
         }
 
         //Map 마커및 혼잡도 원 등록
-        getPositionList();
-        //mapView.fitMapViewAreaToShowAllPOIItems();
-
-        // 현재 내 위치 찾기
-        nowOnMap = rootView.findViewById(R.id.btn_now);
-        nowOnMap.setOnClickListener(new View.OnClickListener() {
+        getPositionList(new CompletionCallback() {
             @Override
-            public void onClick(View v) {
-                // 현위치 트래킹 이벤트를 통보
-                mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+            public void onCompletion() {
+                // getPositionList()가 완료되면 이 코드가 실행됩니다.
+                Log.d("맵 생성시에",isFromMain+"");
+                if(!isFromMain){
+                    Log.d("클릭댐",isFromMain+"");
+                    MapPOIItem mappOIItem = mapView.findPOIItemByTag(selectedTag);
+                    mapView.setMapCenterPointAndZoomLevel(mappOIItem.getMapPoint(), 2, false);
+                    onPOIItemSelected(mapView,mappOIItem);
+ //                   isFromMain = false;
+                }
             }
         });
 
 
-
         return rootView;
+    }
+    public void setFromMain(boolean isit){
+        this.isFromMain = isit;
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+    }
+    @Override
+    public void onPause() {
+        mapViewContainer.removeView(mapView);
+        Log.d("hi","onpause동작");
+        super.onPause();
+    }
+    public void moveToFragmentSecond() {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(R.id.secondItem);
+        }
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+    // FragmentThird 내부에 인터페이스를 정의
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(int itemId);
     }
 
     /** 모든 장소 가져오기 API **/
-    public void getPositionList() {
+    public void getPositionList(CompletionCallback callback) {
 
         apiService = RetrofitClient.getApiService();
         allPlaceCall = apiService.getAllPosition();
@@ -320,6 +423,8 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
                         positionIdList.add(result.getPlaceId());
                     }
                     mapInit.init(mapView);
+
+                    callback.onCompletion();
                 }
                 else {
                     Log.d(TAG, "에러발생 .." + response.message());
@@ -332,7 +437,9 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
 
         });
     }
-
+    public interface CompletionCallback {
+        void onCompletion();
+    }
     @Override
     public void onCurrentLocationUpdate(MapView mapView, MapPoint currentLocation, float accuracyInMeters) {
         MapPoint.GeoCoordinate mapPointGeo = currentLocation.getMapPointGeoCoord();
@@ -351,7 +458,9 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
         Log.d("tag","name: "+name);
         marker_ctr += 1;
         mapView.setMapCenterPointAndZoomLevel(mapPOIItem.getMapPoint(), 2, false);
-
+        if(!isFromMain){
+            marker_ctr+=1;
+        }
         if(marker_ctr >= 2){
             mapInit.drawMapCircle(mapView);
             getPositionMapMenu(name,list_place);
@@ -420,7 +529,7 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
                 list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,false,popular,placeid));
             }
 
-            Log.d("fragfirstinfo", "placeID: " + placeid + ", Popular: " + popular + ", Name: " + name + ", ThemaName: " + themaName);
+//            Log.d("fragfirstinfo", "placeID: " + placeid + ", Popular: " + popular + ", Name: " + name + ", ThemaName: " + themaName);
             placeid_before = placeid;
         }
 
@@ -506,9 +615,11 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
         }
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.d(TAG,"onDestroy동작");
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
         mapView.setShowCurrentLocationMarker(false);
     }

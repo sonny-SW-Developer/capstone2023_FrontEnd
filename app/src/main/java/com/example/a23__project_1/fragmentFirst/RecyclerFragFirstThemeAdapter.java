@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -95,9 +96,11 @@ public class RecyclerFragFirstThemeAdapter extends RecyclerView.Adapter {
 
         boolean like_rate = dataModels.get(position).getBoolean_cart();
         if(like_rate)
-            myViewHolder.imgButton.setBackgroundResource(R.drawable.ic_heart_fill);
+            myViewHolder.imgButton.setBackground(context.getDrawable(R.drawable.ic_heart_fill));
         else
-            myViewHolder.imgButton.setBackgroundResource(R.drawable.ic_heart_no_fill);
+            myViewHolder.imgButton.setBackground(context.getDrawable(R.drawable.ic_heart_no_fill));
+
+
 
         setCart(dataModels.get(position).getBoolean_cart(), myViewHolder);
     }
@@ -434,6 +437,7 @@ public class RecyclerFragFirstThemeAdapter extends RecyclerView.Adapter {
             imgButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d("여기여기","clicked");
                     if(lcl != null) {
                         int position = getBindingAdapterPosition();
                         if(position != RecyclerView.NO_POSITION) {

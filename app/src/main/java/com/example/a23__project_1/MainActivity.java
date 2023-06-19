@@ -34,6 +34,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.a23__project_1.fragmentFifth.FragmentFifth;
 import com.example.a23__project_1.fragmentSecond.FragmentSecond;
@@ -61,7 +63,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements MapActivityChangeTest.OnFragmentInteractionListener, FragmentSecond.OnFragmentInteractionListener {
     private static final String TAG = "MainActivity";
     private RetrofitAPI apiService;
 
@@ -85,6 +87,14 @@ public class MainActivity extends AppCompatActivity{
     private static final String PREF_NAME = "userInfo";
     private ImageButton imgBtn_kakao_login;
     BottomNavigationView bottomNavigationView;
+    private SharedViewModel sharedViewModel;
+    private int fromWhere = 2;
+    public void setfromWhere(int index){
+        this.fromWhere = index;
+    }
+    public int getfromWhere(){
+        return fromWhere;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,7 +178,7 @@ public class MainActivity extends AppCompatActivity{
 //
 //        }
 
-
+        sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
         /**********************************************************
          *  main 액티비티 동작
          * ********************************************************/
@@ -275,7 +285,7 @@ public class MainActivity extends AppCompatActivity{
         //메뉴클릭 리스너 등록
         bottomNavigationView = findViewById(R.id.navigationView);
         bottomNavigationView.setSelectedItemId(R.id.thirdItem);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
+        bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener(2));
 
 
         //animation listener
@@ -301,7 +311,10 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
-
+    @Override
+    public void onFragmentInteraction(int itemId) {
+        bottomNavigationView.setSelectedItemId(itemId);
+    }
     //로딩 화면  메소드
     private void startLoading() {
         Handler handler = new Handler();
@@ -368,6 +381,11 @@ public class MainActivity extends AppCompatActivity{
     }
 
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
+        int from; // 0:default, 1:fragment, 2:activity
+        MainActivity activity;
+        public ItemSelectedListener(int i){
+            this.from = i;
+        }
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -383,6 +401,14 @@ public class MainActivity extends AppCompatActivity{
                     break;
 
                 case R.id.thirdItem:
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("placeName", 1);
+                    if(fromWhere == 1){
+                        sharedViewModel.setFromWhere(1); // MainActivity에서 호출됐음을 나타냄
+                        fromWhere = 2;
+                    }else if(fromWhere == 2){
+                        sharedViewModel.setFromWhere(2); // MainActivity에서 호출됐음을 나타냄
+                    }
                     transaction.replace(R.id.frameLayout_main, fragmentThird).commitAllowingStateLoss();
                     break;
 
@@ -398,7 +424,9 @@ public class MainActivity extends AppCompatActivity{
             return true;
         }
     }
-
+    public SharedViewModel getSharedViewModel() {
+        return sharedViewModel;
+    }
     public void navigateToFragment(Fragment fragment, int menuItemId) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frameLayout_main, fragment).commitAllowingStateLoss();

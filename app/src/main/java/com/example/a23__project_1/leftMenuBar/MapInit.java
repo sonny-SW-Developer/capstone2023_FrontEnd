@@ -72,7 +72,7 @@ public class MapInit extends AppCompatActivity {
             placeid = resultListIndex.getPlaceId();
             popular = resultListIndex.getPopular();
 
-            Log.d("init", "placeID: "+placeid+", Popular: "+popular+", Name: " + name + ", Latitude: " + latitude + ", Longitude: " + longitude + ", ThemaName: " + themaName);
+            //Log.d("init", "placeID: "+placeid+", Popular: "+popular+", Name: " + name + ", Latitude: " + latitude + ", Longitude: " + longitude + ", ThemaName: " + themaName);
 
             /*****************************************************
              *   마커 그리기

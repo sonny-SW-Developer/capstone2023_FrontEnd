@@ -23,11 +23,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a23__project_1.MainActivity;
 import com.example.a23__project_1.R;
+import com.example.a23__project_1.SharedViewModel;
 import com.example.a23__project_1.leftMenuBar.MapActivityChangeTest;
 import com.example.a23__project_1.request.LikeRequest;
 import com.example.a23__project_1.response.LikeResponse;
@@ -36,6 +38,7 @@ import com.example.a23__project_1.response.ThemaAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
 import com.example.a23__project_1.fragmentThird.FragmentThird;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.*;
 
@@ -80,7 +83,7 @@ public class FragmentSecond extends Fragment {
         search = view.findViewById(R.id.btn_search);
         search.setOnClickListener(searchClickListener);
         search.setClickable(false);
-
+        model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // 카테고리 리스트 가져오기
         recycler_category = view.findViewById(R.id.recycler_category);
         // 카테고리 모든 장소 가져오기
@@ -266,27 +269,15 @@ public class FragmentSecond extends Fragment {
                         }
                     });
 
+                    model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
                     /** 지도로 보기 버튼 클릭 리스너 설정 **/
                     placeListAdapter.setOnMapClickListener(new PlaceListAdapter.mapClickListener() {
                         @Override
                         public void mapButtonClick(List<PlaceAllResponse.Result> list, int position) {
-                            String placeName = list.get(position).getName();
-
-                            /** 이름 값 전달 **/
-                            Bundle bundle = new Bundle();
-                            bundle.putString("placeName", placeName);
-
-                            /** 3번째 프레그먼트로 값 전달 **/
-                            FragmentThird fragment = new FragmentThird();
-                            fragment.setArguments(bundle);
-                            /** 카카오 맵에 값 전달 **/
-//                            MapActivityChangeTest fragment = new MapActivityChangeTest();
-//                            fragment.setArguments(bundle);
-
-                            /** 프래그먼트 이동 **/
-                            MainActivity mainActivity = (MainActivity) requireActivity();
-                            // 프래그먼트 이동 및 바텀 네비게이션 메뉴 변경
-                            mainActivity.navigateToFragment(fragment, R.id.thirdItem);
+                            int placeId = Long.valueOf(list.get(position).getPlaceId()).intValue();
+                            model.selectItem(placeId,1);
+                            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
+                            bottomNavigationView.setSelectedItemId(R.id.thirdItem);
                         }
                     });
 
@@ -305,7 +296,16 @@ public class FragmentSecond extends Fragment {
             }
         });
     }
-
+    OnFragmentInteractionListener mListener;
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(int itemId);
+    }
+    private SharedViewModel model;
+    public void moveToFragmentThird() {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(R.id.thirdItem);
+        }
+    }
     /** 로그인 되어있지 않을 때 모든 장소 가져오기 API **/
     public void getPlaceList() {
         apiService = RetrofitClient.getApiService();
@@ -351,24 +351,19 @@ public class FragmentSecond extends Fragment {
                     placeListAdapter.setOnMapClickListener(new PlaceListAdapter.mapClickListener() {
                         @Override
                         public void mapButtonClick(List<PlaceAllResponse.Result> list, int position) {
-                            String placeName = list.get(position).getName();
-
-                            /** 이름 값 전달 **/
-                            Bundle bundle = new Bundle();
-                            bundle.putString("placeName", placeName);
-
-                            /** 3번째 프레그먼트로 값 전달 **/
-                            FragmentThird fragment = new FragmentThird();
-                            fragment.setArguments(bundle);
-                            /** 카카오 맵에 값 전달 **/
+//                            Bundle bundle = new Bundle();
+//                            bundle.putString("where", "fragSecond");
+//
+//                            /** 카카오 맵에 값 전달 **/
 //                            MapActivityChangeTest fragment = new MapActivityChangeTest();
 //                            fragment.setArguments(bundle);
+                            ((MainActivity)getActivity()).setfromWhere(1);
+                            int placeId = Long.valueOf(list.get(position).getPlaceId()).intValue();
+                            model.selectItem(placeId,1);
+                            model.setFromWhere(1);
+                            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
+                            bottomNavigationView.setSelectedItemId(R.id.thirdItem);
 
-
-                            /** 프래그먼트 이동 **/
-                            MainActivity mainActivity = (MainActivity) requireActivity();
-                            // 프래그먼트 이동 및 바텀 네비게이션 메뉴 변경
-                            mainActivity.navigateToFragment(fragment, R.id.thirdItem);
                         }
                     });
 
