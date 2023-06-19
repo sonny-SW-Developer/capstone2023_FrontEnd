@@ -115,6 +115,7 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
     private boolean isFragmentSecondStarted = false;
     private int selectedTag = 1;
     private boolean isFromMain = true;
+    private boolean isFromFourth = false;
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "userInfo";
     private String email = "";
@@ -164,12 +165,19 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
                     // fragmentSecond에서 호출되었을 때의 로직
                     selectedTag = model.getSelectedItem().getValue();
                     isFromMain = false;
+                    isFromFourth = false;
                 } else if (fromWhere == 2) {
                     // MainActivity에서 호출되었을 때의 로직
                     marker_ctr = 0;
                     main_ctr=0;
                     background_ctr = 0;
                     isFromMain = true;
+                    isFromFourth = false;
+                }else if (fromWhere==3) {
+                    // fragmentSecond에서 호출되었을 때의 로직
+                    selectedTag = model.getSelectedItem().getValue();
+                    isFromMain = false;
+                    isFromFourth = true;
                 }
             }
         });
@@ -219,7 +227,7 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
                     ((MainActivity)getActivity()).setfromWhere(2);
                     BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
                     bottomNavigationView.setSelectedItemId(R.id.secondItem);
-
+                    isFromFourth = false;
                     isFromMain = true;
                 }else{
                     Activity activity = getActivity();
@@ -251,12 +259,19 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
         map_close2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isFromMain) {
+                if (isFromFourth) {
+                    model.setFromWhere(2);
+                    ((MainActivity)getActivity()).setfromWhere(2);
+                    BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
+                    bottomNavigationView.setSelectedItemId(R.id.fourthItem);
+                    isFromFourth = false;
+                    isFromMain = true;
+                } else if (isFromMain) {
                     model.setFromWhere(2);
                     ((MainActivity)getActivity()).setfromWhere(2);
                     BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
                     bottomNavigationView.setSelectedItemId(R.id.secondItem);
-
+                    isFromFourth = false;
                     isFromMain = true;
                 } else {
                     Activity activity = getActivity();

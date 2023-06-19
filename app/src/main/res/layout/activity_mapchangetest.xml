@@ -93,11 +93,11 @@
                         <ImageButton
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:background="@drawable/ic_search"
-                            android:layout_toRightOf="@id/editText1"
-                            android:layout_marginLeft="8dp"
                             android:layout_centerVertical="true"
-                            android:clickable="false"/>
+                            android:layout_marginLeft="8dp"
+                            android:layout_toRightOf="@id/editText1"
+                            android:background="@drawable/ic_search"
+                            android:clickable="false" />
 
                     </RelativeLayout>
 

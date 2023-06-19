@@ -274,10 +274,19 @@ public class FragmentSecond extends Fragment {
                     placeListAdapter.setOnMapClickListener(new PlaceListAdapter.mapClickListener() {
                         @Override
                         public void mapButtonClick(List<PlaceAllResponse.Result> list, int position) {
+//                            Bundle bundle = new Bundle();
+//                            bundle.putString("where", "fragSecond");
+//
+//                            /** 카카오 맵에 값 전달 **/
+//                            MapActivityChangeTest fragment = new MapActivityChangeTest();
+//                            fragment.setArguments(bundle);
+                            ((MainActivity)getActivity()).setfromWhere(1);
                             int placeId = Long.valueOf(list.get(position).getPlaceId()).intValue();
                             model.selectItem(placeId,1);
+                            model.setFromWhere(1);
                             BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
                             bottomNavigationView.setSelectedItemId(R.id.thirdItem);
+
                         }
                     });
 
