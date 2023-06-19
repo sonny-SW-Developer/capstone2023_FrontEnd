@@ -111,7 +111,7 @@ public class FragmentSecond extends Fragment {
         }
         // 로그인 되어있는 경우
         else {
-            getLoginCategoryList();
+            getLoginPlaceList();
         }
         getCategoryList();
 
@@ -228,8 +228,8 @@ public class FragmentSecond extends Fragment {
         });
     }
 
-    /** 로그인 되어있을 때 카테고리 가져오는 API 통신 **/
-    private void getLoginCategoryList() {
+    /** 로그인 되어있을 때 목록 API 통신 **/
+    private void getLoginPlaceList() {
         apiService = RetrofitClient.getApiService();
         Call<PlaceAllResponse> call = apiService.getLoginPlaceList(email);
         call.enqueue(new Callback<PlaceAllResponse>() {

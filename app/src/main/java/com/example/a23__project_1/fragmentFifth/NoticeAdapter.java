@@ -17,7 +17,7 @@ import java.util.List;
 
 public class NoticeAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private final Context mainContext;
-    List<NoticeResponse> noticeList;
+    List<NoticeResponse.Result> noticeList;
 
     /** 아이템 클릭 리스너 **/
     private noticeClickListener ncl;
@@ -28,7 +28,7 @@ public class NoticeAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.ncl = ncl;
     }
 
-    public NoticeAdapter(Context mainContext, List<NoticeResponse> noticeList) {
+    public NoticeAdapter(Context mainContext, List<NoticeResponse.Result> noticeList) {
         this.mainContext = mainContext;
         this.noticeList = noticeList;
     }

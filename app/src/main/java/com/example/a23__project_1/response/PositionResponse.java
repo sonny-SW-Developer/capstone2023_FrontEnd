@@ -39,10 +39,14 @@ public class PositionResponse {
         @SerializedName("thema_name")
         private String thema_name;
         private Integer popular;
+
+        @SerializedName("like_yn")
+        private int likeYn;
+
         private double latitude;
         private double longitude;
 
-        public Result(Long placeId,Integer popular,String name,
+        public Result(Long placeId,Integer popular,int likeYn, String name,
                       double latitude,double longitude,String thema_name) {
             this.name = name;
             this.latitude = latitude;
@@ -50,7 +54,7 @@ public class PositionResponse {
             this.placeId = placeId;
             this.thema_name = thema_name;
             this.popular = popular;
-
+            this.likeYn = likeYn;
         }
 
         public String getName() {
@@ -75,5 +79,12 @@ public class PositionResponse {
             return popular;
         }
 
+        public int getLikeYn() {
+            return likeYn;
+        }
+
+        public void setLikeYn(int likeYn) {
+            this.likeYn = likeYn;
+        }
     }
 }

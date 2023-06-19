@@ -45,9 +45,6 @@ public class NoticeActivity extends AppCompatActivity {
         back.setOnClickListener(closeClickListener);
 
         recyclerView = findViewById(R.id.recycle_notice);
-        // LayoutManager 연결
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
 
         getNotice();
     }
@@ -60,12 +57,13 @@ public class NoticeActivity extends AppCompatActivity {
     /** 공지사항 목록 불러오는 API **/
     private void getNotice() {
         apiService = RetrofitClient.getApiService();
-        Call<List<NoticeResponse>> call = apiService.getNotice();
-        call.enqueue(new Callback<List<NoticeResponse>>() {
+        Call<NoticeResponse> call = apiService.getNotice();
+        call.enqueue(new Callback<NoticeResponse>() {
             @Override
-            public void onResponse(Call<List<NoticeResponse>> call, Response<List<NoticeResponse>> response) {
+            public void onResponse(Call<NoticeResponse> call, Response<NoticeResponse> response) {
                 if(response.isSuccessful()) {
-                    List<NoticeResponse> list = response.body();
+                    List<NoticeResponse.Result> list = response.body().getResult();
+
                     noticeAdapter = new NoticeAdapter(NoticeActivity.this, list);
 
                     /** 아이템 클릭 리스너 **/
@@ -81,14 +79,17 @@ public class NoticeActivity extends AppCompatActivity {
                     });
 
                     recyclerView.setAdapter(noticeAdapter);
+                    // LayoutManager 연결
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(NoticeActivity.this);
+                    recyclerView.setLayoutManager(layoutManager);
                     Log.d(TAG, "공지 연동 성공!");
 
                 }
-                Log.d(TAG, "공지 연동 실패 1..." + response.errorBody().toString());
+                //Log.d(TAG, "공지 연동 실패 1..." + response.errorBody().toString());
             }
 
             @Override
-            public void onFailure(Call<List<NoticeResponse>> call, Throwable t) {
+            public void onFailure(Call<NoticeResponse> call, Throwable t) {
                 Log.d(TAG, "공지 연동 실패 2..." + t.getMessage());
             }
         });

@@ -40,6 +40,9 @@ public interface RetrofitAPI {
     @GET("/place/position")
     Call<PositionResponse> getAllPosition();
 
+    @GET("/place/position/member")
+    Call<PositionResponse> getLoginAllPosition(@Query("member_id") String memberId);
+
     @GET("/place/thema")
     Call<GetThemeResponse> getThemePlace(@Query("theme_id") int theme_id);
 
@@ -69,7 +72,7 @@ public interface RetrofitAPI {
 
     /** 공지사항 **/
     @GET("/faq/notice")
-    Call<List<NoticeResponse>> getNotice();
+    Call<NoticeResponse> getNotice();
 
     /** 문의사항 목록 **/
     @GET("inquiry/all/{member_id}")
