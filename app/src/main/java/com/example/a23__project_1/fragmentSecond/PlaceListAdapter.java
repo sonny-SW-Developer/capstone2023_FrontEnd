@@ -102,7 +102,8 @@ public class PlaceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         int traffic_rate = resultList.get(position).getPopular();
         switch (traffic_rate) {
             case 0:
-                vh.traffic.setText("로딩중...");
+                //vh.traffic.setText("로딩중...");
+                vh.traffic.setText("보통");
                 break;
             case 1:
                 vh.traffic.setText("여유");
