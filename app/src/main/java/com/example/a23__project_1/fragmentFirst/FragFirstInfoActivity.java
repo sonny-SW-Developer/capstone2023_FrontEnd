@@ -109,7 +109,7 @@ public class FragFirstInfoActivity extends AppCompatActivity {
                 getPositionList("카페",list_place);
                 break;
             case "cardview7":
-                getPositionList("관광",list_place);
+                getPositionList("관광지",list_place);
                 break;
             case "cardview8":
                 getPositionList("골목 및 거리",list_place);
@@ -348,8 +348,12 @@ public class FragFirstInfoActivity extends AppCompatActivity {
         String themaName;
         long placeid;
         Integer popular;
+
         int likeYn;
         boolean CheckLike=false;
+
+        long placeid_before=-1;
+
         PositionResponse.Result resultListIndex;
 
         for (index = 0; index < resultList.size(); index++) {
@@ -357,6 +361,7 @@ public class FragFirstInfoActivity extends AppCompatActivity {
             name = resultListIndex.getName();
             placeid = resultListIndex.getPlaceId();
             popular = resultListIndex.getPopular();
+
             likeYn = resultListIndex.getLikeYn();
             if (likeYn == 1)
                 CheckLike = true;
@@ -443,7 +448,9 @@ public class FragFirstInfoActivity extends AppCompatActivity {
                     }
                     break;
 
+                }
             }
+            placeid_before=placeid;
 
         }
 
@@ -476,8 +483,14 @@ public class FragFirstInfoActivity extends AppCompatActivity {
                 if(placeid!=placeid_before){
                     list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,checkLike,popular,placeid));
                 }
+
             }else if(theme_id.equals(themaName)){
                 list_place.add(new DataMoreInfo(name,"아이템",R.drawable.yeouido ,checkLike,popular,placeid));
+
+            }else if(theme_id.equals(themaName)) {
+                list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
+            }else if((theme_id.equals("지하철·기차역")&&(themaName.equals("지하철")||theme_id.equals("기차역")))) {
+                list_place.add(new DataMoreInfo(name, "아이템", R.drawable.yeouido, false, popular, placeid));
             }
             placeid_before = placeid;
 

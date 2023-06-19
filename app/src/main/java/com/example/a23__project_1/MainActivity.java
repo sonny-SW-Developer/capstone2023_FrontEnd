@@ -408,6 +408,9 @@ public class MainActivity extends AppCompatActivity implements MapActivityChange
                         fromWhere = 2;
                     }else if(fromWhere == 2){
                         sharedViewModel.setFromWhere(2); // MainActivity에서 호출됐음을 나타냄
+                    }else if(fromWhere == 3){
+                        sharedViewModel.setFromWhere(3);
+                        fromWhere = 2;
                     }
                     transaction.replace(R.id.frameLayout_main, fragmentThird).commitAllowingStateLoss();
                     break;

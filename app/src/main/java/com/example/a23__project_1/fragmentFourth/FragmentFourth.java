@@ -21,11 +21,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a23__project_1.MainActivity;
 import com.example.a23__project_1.R;
+import com.example.a23__project_1.SharedViewModel;
 import com.example.a23__project_1.fragmentSecond.PlaceListAdapter;
 import com.example.a23__project_1.request.LikeRequest;
 import com.example.a23__project_1.response.LikeResponse;
@@ -33,6 +35,7 @@ import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
 import com.example.a23__project_1.fragmentThird.FragmentThird;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +61,7 @@ public class FragmentFourth extends Fragment {
     Button btn_cal;
     RecyclerView recyclerView;
     private Dialog cctvDialog, infoDialog;
+    private SharedViewModel model;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fourth, container, false);
@@ -66,6 +70,7 @@ public class FragmentFourth extends Fragment {
         btn_cal = view.findViewById(R.id.btn_calendar);
         btn_cal.setOnClickListener(checkPlanClickListener);
 
+        model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // sharedPreferences
         sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         name = sharedPreferences.getString("name", "null");
@@ -214,28 +219,23 @@ public class FragmentFourth extends Fragment {
                 startActivity(intent);
             }
         });
-
+        model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // 지도로 보기 버튼 클릭 시
         lookMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 아마도 placeId를 어떻게 가져올지 고민해야 할 것 같습니다.
+                // 이 부분은 클릭된 항목에 해당하는 placeId를 가져와야 하는데,
+                // 이 예제에서는 infoDialog에서 표시된 정보에 대한 placeId를 얻어야 합니다.
+                // 이 정보를 어디서 가져올지는 FragmentFourth의 전체 구조와 동작에 따라 다를 것입니다.
+                ((MainActivity)getActivity()).setfromWhere(1);
+                // 이름으로 placeID ??
+                int placeId = Long.valueOf(searchPlaceId(themaIdNameMap, name)).intValue();
+                model.selectItem(placeId, 3);
+                model.setFromWhere(3);
+                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
+                bottomNavigationView.setSelectedItemId(R.id.thirdItem);
                 infoDialog.dismiss();
-
-                /** 이름 값 전달 **/
-                Bundle bundle = new Bundle();
-                bundle.putString("placeName", name);
-
-                /** 3번째 프레그먼트로 값 전달 **/
-                FragmentThird fragment = new FragmentThird();
-                fragment.setArguments(bundle);
-                /** 카카오 맵에 값 전달 **/
-//                            MapActivityChangeTest fragment = new MapActivityChangeTest();
-//                            fragment.setArguments(bundle);
-
-                /** 프래그먼트 이동 **/
-                MainActivity mainActivity = (MainActivity) requireActivity();
-                // 프래그먼트 이동 및 바텀 네비게이션 메뉴 변경
-                mainActivity.navigateToFragment(fragment, R.id.thirdItem);
             }
         });
     }
