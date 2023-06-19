@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -144,29 +145,28 @@ public class PlanListActivity extends AppCompatActivity {
         // D-Day 날짜 설정
         String str_date = list.get(position).getStartDate();
         try {
+            TimeZone tz = TimeZone.getTimeZone("Asia/Seoul");
+            // 오늘 날짜
+            String todayFm = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = dateFormat.parse(str_date);
+            dateFormat.setTimeZone(tz);
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
+            Date date = new Date(dateFormat.parse(str_date).getTime());
+            Date today = new Date(dateFormat.parse(todayFm).getTime());
+            long calculate = date.getTime() - today.getTime();
 
-            Calendar today = Calendar.getInstance();
-
-            long diff = calendar.getTimeInMillis() - today.getTimeInMillis();
-            long days = diff / (24 * 60 * 60 * 1000); // 밀리초를 일로 변환
-
-            // D-Day 출력
-            if (days == 0) {
-                System.out.println("D-Day");
-                dDay.setText("D-Day");
-            } else if (days > 0) {
-                dDay.setText("D-" + (days + 1));
-
-            } else {
+            int Ddays = (int) (calculate / ( 24*60*60*1000));
+            if(Ddays <0) {
                 dDay.setText("종료된 일정입니다.");
             }
+            else if (Ddays == 0) {
+                dDay.setText("D-Day");
+            }
+            else
+                dDay.setText("D-" + String.valueOf(Ddays));
+
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         /** 카테고리 이미지 설정 **/
