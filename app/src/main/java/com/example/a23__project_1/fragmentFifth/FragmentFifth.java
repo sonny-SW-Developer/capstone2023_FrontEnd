@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,9 @@ public class FragmentFifth extends Fragment {
     private TextView tv_name, tv_name1,tv_email;
     private LinearLayout question, notice, answer;
 
+    // Test
+    private Button btn_test;
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fifth, container, false);
 
@@ -59,6 +63,10 @@ public class FragmentFifth extends Fragment {
         answer = view.findViewById(R.id.layout_answer);
         answer.setOnClickListener(answerClickListener);
 
+        /** 테스트 **/
+        btn_test = view.findViewById(R.id.btn_test);
+        btn_test.setOnClickListener(testClickListener);
+
         // 값이 존재한다면
         if (!name.equals("null")) {
             Log.d(TAG, name);
@@ -76,6 +84,12 @@ public class FragmentFifth extends Fragment {
         return view;
 
     }
+
+    // 사진 업로드 테스트
+    View.OnClickListener testClickListener = v -> {
+        Intent intent = new Intent(getActivity(), TestActivity.class);
+        startActivity(intent);
+    };
 
     // 문의사항 버튼 눌렀을 시
     View.OnClickListener questionClickListener = v -> {
