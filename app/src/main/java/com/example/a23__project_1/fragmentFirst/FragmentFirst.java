@@ -53,10 +53,12 @@ public class FragmentFirst extends Fragment implements View.OnClickListener{
     private LottieAnimationView animationView1_10;
     private LottieAnimationView animationView1_11;
     private LottieAnimationView animationView1_12;
+    private LottieAnimationView animationView_recommend;
     private int Anim_Rotate_num;
 
     private LinearLayout layout_btn_moreInfo;
     private LinearLayout layout_btn_placeInfo;
+    private LinearLayout layout_btn_recommend;
     private CardView cardView1;
     private CardView cardView2;
     private CardView cardView3;
@@ -106,7 +108,7 @@ public class FragmentFirst extends Fragment implements View.OnClickListener{
         animationView1_10 = (LottieAnimationView) view.findViewById(R.id.lottie_card1_10);
         animationView1_11 = (LottieAnimationView) view.findViewById(R.id.lottie_card1_11);
         animationView1_12 = (LottieAnimationView) view.findViewById(R.id.lottie_card1_12);
-
+        animationView_recommend = (LottieAnimationView) view.findViewById(R.id.lottie_recommend);
 
         //반복 횟수
         Anim_Rotate_num = 20;
@@ -147,11 +149,17 @@ public class FragmentFirst extends Fragment implements View.OnClickListener{
         animationView1_12.playAnimation();
         animationView1_12.setRepeatCount(Anim_Rotate_num);
 
+        animationView_recommend.playAnimation();
+        animationView_recommend.setRepeatCount(Anim_Rotate_num);
+
         layout_btn_moreInfo = (LinearLayout) view.findViewById(R.id.layout_btn_moreInfo);
         layout_btn_moreInfo.setOnClickListener(this);
 
         layout_btn_placeInfo = (LinearLayout) view.findViewById(R.id.layout_btn_placeInfo);
         layout_btn_placeInfo.setOnClickListener(this);
+
+        layout_btn_recommend = (LinearLayout) view.findViewById(R.id.layout_btn_recommend);
+        layout_btn_recommend.setOnClickListener(this);
 
         cardView1 = (CardView) view.findViewById(R.id.cardview1);
         cardView1.setOnClickListener(this);
@@ -247,6 +255,13 @@ public class FragmentFirst extends Fragment implements View.OnClickListener{
                 Log.d("frag","지역별 모두보기");
                 intent = new Intent(getActivity(), FragFirstInfoActivity.class);
                 intent.putExtra("elements","more_place");
+                startActivity(intent);
+                break;
+
+            case R.id.layout_btn_recommend:
+                Log.d("frag","일정추천");
+                intent = new Intent(getActivity(), MyRecommend.class);
+                intent.putExtra("elements","my_recommend");
                 startActivity(intent);
                 break;
 

@@ -33,6 +33,103 @@
             app:ci_margin="4dp"
             app:ci_width="7dp"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#50DCDCDC" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_margin="15dp"
+                android:columnCount="1"
+                android:rowCount="1">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_row="0"
+                    android:layout_rowWeight="1"
+                    android:layout_column="0"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="8dp"
+                    android:background="#FFFFFF"
+                    android:elevation="40dp"
+                    app:cardCornerRadius="15dp">
+
+                    <LinearLayout
+                        android:id="@+id/layout_btn_recommend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:orientation="horizontal">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/lottie_recommend"
+                            android:layout_width="100dp"
+                            android:layout_height="80dp"
+                            android:layout_margin="10dp"
+                            android:layout_gravity="center"
+                            app:lottie_autoPlay="true"
+                            app:lottie_fileName="ai.json"
+                            app:lottie_loop="true" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="지금 여기어때?"
+                                android:textSize="25sp"
+                                android:layout_gravity="center_vertical"
+                                android:fontFamily="@font/the_jamsil_2"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center|right">
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="15sp"
+                                    android:text="추천 일정 보러가기"
+                                    android:fontFamily="@font/the_jamsil_4"/>
+
+                                <ImageButton
+                                    android:layout_width="20dp"
+                                    android:layout_height="40dp"
+                                    android:src="@drawable/ic_baseline_gray_right_24"
+                                    android:background="@android:color/transparent"/>
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </GridLayout>
+
+
+        </LinearLayout>
 
     <LinearLayout
             android:layout_marginTop="20dp"
@@ -56,25 +153,23 @@
                     android:orientation="horizontal"
                     android:gravity="center|left"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:weightSum="3">
+                    android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="25sp"
                         android:layout_marginLeft="30dp"
                         android:text="테마별 모아보기"
-                        android:layout_weight="2"
                         android:gravity="left"
                         android:fontFamily="@font/the_jamsil_2"/>
 
                     <LinearLayout
                         android:id="@+id/layout_btn_moreInfo"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:layout_marginLeft="80dp"
                         android:gravity="center|right">
 
 
@@ -706,25 +801,23 @@
                     android:orientation="horizontal"
                     android:gravity="center|left"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:weightSum="3">
+                    android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="25sp"
                         android:layout_marginLeft="30dp"
                         android:text="지역별 모아보기"
                         android:gravity="left"
-                        android:layout_weight="2"
                         android:fontFamily="@font/the_jamsil_2"/>
 
                     <LinearLayout
                         android:id="@+id/layout_btn_placeInfo"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_weight="1"
+                        android:layout_marginLeft="100dp"
                         android:gravity="center|right">
 
 

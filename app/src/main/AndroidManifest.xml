@@ -19,6 +19,12 @@
         android:theme="@style/Theme.23Project1"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".fragmentFirst.MyRecommendResult"
+            android:exported="false" />
+        <activity
+            android:name=".fragmentFirst.MyRecommend"
+            android:exported="false" />
+        <activity
             android:name=".fragmentFifth.TestActivity"
             android:exported="false">
             <meta-data
