@@ -27,6 +27,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.a23__project_1.data.DataPage;
 import com.example.a23__project_1.data.DataPlace;
 import com.example.a23__project_1.R;
+import com.example.a23__project_1.fragmentFirst.recommend.MyRecommend;
 
 import me.relex.circleindicator.CircleIndicator3;
 

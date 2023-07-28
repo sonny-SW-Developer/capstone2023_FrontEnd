@@ -1,9 +1,8 @@
-package com.example.a23__project_1.fragmentFirst;
+package com.example.a23__project_1.fragmentFirst.recommend;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,12 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.a23__project_1.R;
 import com.example.a23__project_1.data.DataMoreInfo;
+import com.example.a23__project_1.fragmentFirst.RecyclerFragFirstThemeAdapter;
 import com.example.a23__project_1.leftMenuBar.SettingActivity;
 import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
@@ -27,7 +26,6 @@ import com.example.a23__project_1.retrofit.RetrofitAPI;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.relex.circleindicator.CircleIndicator3;
 import retrofit2.Call;
 
 public class MyRecommend extends AppCompatActivity {

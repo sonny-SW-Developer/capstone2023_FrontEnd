@@ -1,4 +1,4 @@
-package com.example.a23__project_1.fragmentFirst;
+package com.example.a23__project_1.fragmentFirst.recommend;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.a23__project_1.R;
@@ -20,12 +22,57 @@ public class MyRecommendResult extends AppCompatActivity {
     private AlertDialog alertDialog;
 
     private TextView testText;
+    private LinearLayout layout_recommend_result_main;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_recommend_result);
+
+//        intent = getIntent();
+//        if (intent.hasExtra("elements")) {
+//            messege = intent.getStringExtra("elements");
+//        }
+//        switch (messege) {
+//            case "tour":
+//                Log.d(TAG, messege);
+////                getPositionList("카테고리더보기",list_place);
+//                break;
+//            case "cafe":
+//                Log.d(TAG, messege);
+////                getPositionList("카테고리더보기",list_place);
+//                break;
+//            case "cook":
+//                Log.d(TAG, messege);
+////                getPositionList("카테고리더보기",list_place);
+//                break;
+//            case "shopping":
+//                Log.d(TAG, messege);
+////                getPositionList("카테고리더보기",list_place);
+//                break;
+//            case "park":
+//                Log.d(TAG, messege);
+////                getPositionList("카테고리더보기",list_place);
+//                break;
+//            case "street":
+//                Log.d(TAG, messege);
+////                getPositionList("카테고리더보기",list_place);
+//                break;
+//            case "activity":
+//                Log.d(TAG, messege);
+////                getPositionList("카테고리더보기",list_place);
+//                break;
+//            default:
+//                try {
+//
+//                    Integer.parseInt(messege);
+//                    Log.d(TAG, messege);
+//
+//                } catch (NumberFormatException e) {
+//                    Log.d(TAG, "error");
+//                }
+//        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -35,46 +82,6 @@ public class MyRecommendResult extends AppCompatActivity {
         alertDialog = builder.create();
 
         new MyAsyncTask().execute();
-
-//        intent = getIntent();
-//        if(intent.hasExtra("elements")){
-//            messege = intent.getStringExtra("elements");
-//        }
-//
-//        switch (messege){
-//            case "tour":
-//
-////                getPositionList("카테고리더보기",list_place);
-//                break;
-//            case "cafe":
-////                getPositionList("카테고리더보기",list_place);
-//                break;
-//            case "cook":
-////                getPositionList("카테고리더보기",list_place);
-//                break;
-//            case "shopping":
-////                getPositionList("카테고리더보기",list_place);
-//                break;
-//            case "park":
-////                getPositionList("카테고리더보기",list_place);
-//                break;
-//            case "street":
-////                getPositionList("카테고리더보기",list_place);
-//                break;
-//            case "activity":
-////                getPositionList("카테고리더보기",list_place);
-//                break;
-//            default:
-//                try {
-//
-//                    Integer.parseInt(messege);
-//                    Log.d(TAG,messege);
-//
-//                }catch(NumberFormatException e){
-//                    Log.d(TAG,"error");
-//                }
-//
-//        }
 
     }
 
@@ -103,36 +110,37 @@ public class MyRecommendResult extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result){
-            testText = (TextView) findViewById(R.id.test_text);
+            layout_recommend_result_main = (LinearLayout) findViewById(R.id.layout_recommend_result_main);
             alertDialog.dismiss(); // hide loading dialog
+            layout_recommend_result_main.setVisibility(View.VISIBLE);
             if (result != null) {
                 switch (messege) {
                     case "tour":
-                        testText.setText(messege);
+                        Log.d(TAG, messege);
 //                getPositionList("카테고리더보기",list_place);
                         break;
                    case "cafe":
-                            testText.setText(messege);
+                       Log.d(TAG, messege);
 //                getPositionList("카테고리더보기",list_place);
                        break;
                    case "cook":
-                       testText.setText(messege);
+                       Log.d(TAG, messege);
 //                getPositionList("카테고리더보기",list_place);
                        break;
                    case "shopping":
-                       testText.setText(messege);
+                       Log.d(TAG, messege);
 //                getPositionList("카테고리더보기",list_place);
                        break;
                    case "park":
-                       testText.setText(messege);
+                       Log.d(TAG, messege);
 //                getPositionList("카테고리더보기",list_place);
                        break;
                    case "street":
-                       testText.setText(messege);
+                       Log.d(TAG, messege);
 //                getPositionList("카테고리더보기",list_place);
                        break;
                    case "activity":
-                       testText.setText(messege);
+                       Log.d(TAG, messege);
 //                getPositionList("카테고리더보기",list_place);
                        break;
                    default:
