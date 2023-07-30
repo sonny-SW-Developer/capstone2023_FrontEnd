@@ -19,6 +19,9 @@
         android:theme="@style/Theme.23Project1"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".fragmentFirst.RecyclerFragFirstPlacesSpecific"
+            android:exported="false" />
+        <activity
             android:name=".fragmentFirst.recommend.MyRecommendResult"
             android:exported="false" />
         <activity

@@ -114,6 +114,7 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
     private SharedViewModel model;
     private boolean isFragmentSecondStarted = false;
     private int selectedTag = 1;
+    private boolean isFromSecond = false;
     private boolean isFromMain = true;
     private boolean isFromFourth = false;
     private SharedPreferences sharedPreferences;
@@ -143,18 +144,8 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
         linear_map_back_origin = (LinearLayout)rootView.findViewById(R.id.linear_map_back_origin);
         nowOnMap = rootView.findViewById(R.id.btn_now);
 
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//            isFromMain = true;
-//            Log.d("번들 받음",""+isFromMain);
-//            // 값 사용
-//        }else{
-//            isFromMain = false;
-//        }
 
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-
-
         model.getFromWhere().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer fromWhere) {
@@ -164,6 +155,7 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
                 if (fromWhere == 1) {
                     // fragmentSecond에서 호출되었을 때의 로직
                     selectedTag = model.getSelectedItem().getValue();
+                    isFromSecond = true;
                     isFromMain = false;
                     isFromFourth = false;
                 } else if (fromWhere == 2) {
@@ -171,27 +163,18 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
                     marker_ctr = 0;
                     main_ctr=0;
                     background_ctr = 0;
+                    isFromSecond = false;
                     isFromMain = true;
                     isFromFourth = false;
                 }else if (fromWhere==3) {
-                    // fragmentSecond에서 호출되었을 때의 로직
+                    // fragmentFourth에서 호출되었을 때의 로직
                     selectedTag = model.getSelectedItem().getValue();
+                    isFromSecond = false;
                     isFromMain = false;
                     isFromFourth = true;
                 }
             }
         });
-
-//        model.getSelectedItem().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-//            @Override
-//            public void onChanged(@Nullable Integer s) {
-//                Log.d("누구니","FromWhere: "+model.getFromWhere().getValue());
-//                Log.d("받아온 값은","Item: "+model.getSelectedItem().getValue());
-//                selectedTag = s;
-//                isFromMain = false;
-//            }
-//        });
-
 
         // sharedPreference로 로그인 여부 판단.
         sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -215,6 +198,9 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
                 bottomNavigationView.setSelectedItemId(R.id.secondItem);
                 //moveToFragmentSecond();
                 Log.d("MapActivityChangeTest","btnclicked");
+                isFromSecond = false;
+                isFromMain = true;
+                isFromFourth = false;
 
             }
         });
@@ -222,13 +208,24 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
         map_close1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isFromMain){
+                if(isFromSecond){
                     model.setFromWhere(2);
                     ((MainActivity)getActivity()).setfromWhere(2);
                     BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
                     bottomNavigationView.setSelectedItemId(R.id.secondItem);
+                    isFromSecond = false;
                     isFromFourth = false;
                     isFromMain = true;
+
+                }else if(isFromFourth){
+                    model.setFromWhere(2);
+                    ((MainActivity)getActivity()).setfromWhere(2);
+                    BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
+                    bottomNavigationView.setSelectedItemId(R.id.fourthItem);
+                    isFromSecond = false;
+                    isFromFourth = false;
+                    isFromMain = true;
+
                 }else{
                     Activity activity = getActivity();
                     if (activity != null) {
@@ -250,6 +247,9 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
                     marker_ctr = 0;
                     mapView.removeAllCircles();
                     mapView.getCircles();
+                    isFromSecond = false;
+                    isFromMain = true;
+                    isFromFourth = false;
                 }
 
 
@@ -264,15 +264,19 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
                     ((MainActivity)getActivity()).setfromWhere(2);
                     BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
                     bottomNavigationView.setSelectedItemId(R.id.fourthItem);
-                    isFromFourth = false;
+                    isFromSecond = false;
                     isFromMain = true;
-                } else if (isFromMain) {
+                    isFromFourth = false;
+
+                } else if (isFromSecond) {
                     model.setFromWhere(2);
                     ((MainActivity)getActivity()).setfromWhere(2);
                     BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
                     bottomNavigationView.setSelectedItemId(R.id.secondItem);
-                    isFromFourth = false;
+                    isFromSecond = false;
                     isFromMain = true;
+                    isFromFourth = false;
+
                 } else {
                     Activity activity = getActivity();
                     if (activity != null) {
@@ -294,6 +298,9 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
                     marker_ctr = 0;
                     mapView.removeAllCircles();
                     mapView.getCircles();
+                    isFromSecond = false;
+                    isFromMain = true;
+                    isFromFourth = false;
                 }
             }
         });
@@ -368,7 +375,8 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
             @Override
             public void onCompletion() {
                 // getPositionList()가 완료되면 이 코드가 실행됩니다.
-                Log.d("맵 생성시에",isFromMain+"");
+                Log.d("맵 생성시에",isFromMain+" isFromMain");
+                Log.d("맵 생성시에",isFromFourth+" isFromFourth");
                 if(!isFromMain){
                     Log.d("클릭댐",isFromMain+"");
                     MapPOIItem mappOIItem = mapView.findPOIItemByTag(selectedTag);
@@ -735,6 +743,15 @@ public class MapActivityChangeTest extends Fragment implements MapView.CurrentLo
 
                 break;
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        background_ctr = 0;
+        main_ctr=0;
+        marker_ctr = 0;
+        isFragmentSecondStarted = false;
+
     }
 
     @Override

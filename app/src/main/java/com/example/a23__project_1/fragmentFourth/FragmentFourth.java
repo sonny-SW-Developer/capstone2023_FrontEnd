@@ -224,11 +224,7 @@ public class FragmentFourth extends Fragment {
         lookMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 아마도 placeId를 어떻게 가져올지 고민해야 할 것 같습니다.
-                // 이 부분은 클릭된 항목에 해당하는 placeId를 가져와야 하는데,
-                // 이 예제에서는 infoDialog에서 표시된 정보에 대한 placeId를 얻어야 합니다.
-                // 이 정보를 어디서 가져올지는 FragmentFourth의 전체 구조와 동작에 따라 다를 것입니다.
-                ((MainActivity)getActivity()).setfromWhere(1);
+                ((MainActivity)getActivity()).setfromWhere(3);
                 // 이름으로 placeID ??
                 int placeId = Long.valueOf(searchPlaceId(themaIdNameMap, name)).intValue();
                 model.selectItem(placeId, 3);
