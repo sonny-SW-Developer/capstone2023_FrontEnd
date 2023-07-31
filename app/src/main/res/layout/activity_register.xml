@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragmentFifth.RegisterActivity">
+
+    <LinearLayout
+        android:id="@+id/lin1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:src="@drawable/baseline_keyboard_arrow_gray_left_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:text="회원가입하기"
+            android:textColor="@color/secondary_grey_black_14"
+            android:textSize="24dp"
+            android:layout_marginRight="32dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/lin1"
+        android:layout_marginHorizontal="16dp">
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이메일"
+            android:textSize="24dp"
+            android:textColor="@color/secondary_grey_black_14"
+            android:fontFamily="@font/pretendard_semi_bold" />
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="예 : herenow@naver.com"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/pretendard_medium" />
+
+        <TextView
+            android:id="@+id/tv_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="비밀번호"
+            android:textSize="24dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:layout_marginTop="24dp"/>
+
+        <EditText
+            android:id="@+id/et_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="최소 4자리 이상 입력해주세요."
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/pretendard_medium" />
+
+        <TextView
+            android:id="@+id/tv_role"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="권한"
+            android:textSize="24dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:layout_marginTop="24dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="- 관리자의 경우, 별도의 과정이 추가로 필요합니다."
+            android:textColor="@color/secondary_grey_black_10"
+            android:textSize="14dp"
+            android:layout_marginLeft="8dp"/>
+
+        <RadioGroup
+            android:layout_marginTop="16dp"
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_user"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="USER"
+                android:textSize="16dp"
+                android:textColor="@color/secondary_grey_black_14"
+                android:fontFamily="@font/pretendard_semi_bold" />
+
+            <RadioButton
+                android:id="@+id/rb_admin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ADMIN"
+                android:textSize="16dp"
+                android:textColor="@color/secondary_grey_black_14"
+                android:fontFamily="@font/pretendard_semi_bold" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:textSize="24dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:layout_marginTop="24dp"/>
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="이름을 입력해주세요."
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/pretendard_medium" />
+
+        <android.widget.Button
+            android:id="@+id/btn_complete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="회원가입 완료하기"
+            android:textColor="@color/secondary_grey_black_4"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:textSize="20dp"
+            android:background="@color/secondary_grey_black_9"/>
+
+    </LinearLayout>
+</RelativeLayout>

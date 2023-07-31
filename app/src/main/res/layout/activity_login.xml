@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragmentFifth.UserLoginActivity">
+
+    <LinearLayout
+        android:id="@+id/lin1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:src="@drawable/baseline_keyboard_arrow_gray_left_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:text="이메일 로그인하기"
+            android:textColor="@color/secondary_grey_black_14"
+            android:textSize="24dp"
+            android:layout_marginRight="32dp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/lin1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_background"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/our_app_definition" />
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_background"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:textSize="20dp"
+            android:hint="아이디를 입력하세요." />
+
+        <EditText
+            android:id="@+id/et_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_email"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:textSize="20dp"
+            android:hint="비밀번호를 입력하세요." />
+        
+        <LinearLayout
+            android:layout_below="@id/et_pw"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp">
+
+            <android.widget.Button
+                android:id="@+id/btn_register"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@color/secondary_grey_black_6"
+                android:text="회원가입하기"
+                android:textSize="20dp"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:textColor="@color/black" />
+
+            <android.widget.Button
+                android:id="@+id/btn_user_login"
+                android:layout_marginLeft="8dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@color/secondary_grey_black_6"
+                android:text="로그인하기"
+                android:textSize="20dp"
+                android:fontFamily="@font/pretendard_semi_bold"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

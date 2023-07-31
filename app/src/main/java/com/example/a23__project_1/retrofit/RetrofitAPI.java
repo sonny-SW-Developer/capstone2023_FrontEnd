@@ -2,11 +2,15 @@ package com.example.a23__project_1.retrofit;
 
 import com.example.a23__project_1.request.InquiryRequest;
 import com.example.a23__project_1.request.LikeRequest;
+import com.example.a23__project_1.request.LoginUserRequest;
+import com.example.a23__project_1.request.RegisterUserRequest;
 import com.example.a23__project_1.request.MakePlanRequest;
+import com.example.a23__project_1.response.ChangeJwtResponse;
 import com.example.a23__project_1.response.CommonResponse;
 import com.example.a23__project_1.response.GetThemeResponse;
 import com.example.a23__project_1.response.InquiryResponse;
 import com.example.a23__project_1.response.LikeResponse;
+import com.example.a23__project_1.response.LoginUserResponse;
 import com.example.a23__project_1.response.LoginResponse;
 import com.example.a23__project_1.response.NoticeResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
@@ -15,13 +19,12 @@ import com.example.a23__project_1.response.PlanListResponse;
 import com.example.a23__project_1.response.PositionResponse;
 import com.example.a23__project_1.response.ThemaAllResponse;
 
-import java.util.List;
-
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface RetrofitAPI {
@@ -77,4 +80,24 @@ public interface RetrofitAPI {
     /** 문의사항 목록 **/
     @GET("inquiry/all/{member_id}")
     Call<InquiryResponse> getInquiryList(@Query("member_id") String memberId);
+
+    /** 카카오톡 로그인 (수정) **/
+    @POST("/auth/kakao")
+    Call<LoginUserResponse> kakaoAuthLogin(@Body String token);
+
+    /** Jwt 갱신 **/
+    @POST("/auth/reissue")
+    Call<ChangeJwtResponse> changeJwt(@Header("Authorization") String token);
+
+    /** 자체 로그인 회원가입 **/
+    @POST("/auth/signUp")
+    Call<ResponseBody> userSignUp(@Body RegisterUserRequest request);
+
+    /** 자체 로그인 **/
+    @POST("/auth/signIn")
+    Call<LoginUserResponse> userAuthLogin(@Body LoginUserRequest request);
+
+    /** 로그아웃 **/
+    @POST("/auth/logout")
+    Call<ResponseBody> userLogout(@Header("Authorization") String token);
 }
