@@ -35,6 +35,7 @@ import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
 import com.example.a23__project_1.fragmentThird.FragmentThird;
+import com.example.a23__project_1.retrofit.RetrofitClientJwt;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -118,75 +119,77 @@ public class FragmentFourth extends Fragment {
 
     /** 찜리스트 가져오기 API **/
     public void getLikePlace() {
-        apiService = RetrofitClient.getApiService();
-        Call<PlaceAllResponse> call = apiService.getAllLikes(email);
+        String accessToken = sharedPreferences.getString("accessToken", "null");
+        if (!accessToken.equals("null")) {
+            apiService = RetrofitClientJwt.getApiService(accessToken);
+            Call<PlaceAllResponse> call = apiService.getAllLikes(email);
+            call.enqueue(new Callback<PlaceAllResponse>() {
+                @Override
+                public void onResponse(Call<PlaceAllResponse> call, Response<PlaceAllResponse> response) {
+                    if(response.isSuccessful()) {
+                        likeList = response.body().getResult();
+                        likeListAdapter = new LikeListAdapter(requireContext(), likeList);
 
-        call.enqueue(new Callback<PlaceAllResponse>() {
-            @Override
-            public void onResponse(Call<PlaceAllResponse> call, Response<PlaceAllResponse> response) {
-                if(response.isSuccessful()) {
-                    likeList = response.body().getResult();
-                    likeListAdapter = new LikeListAdapter(requireContext(), likeList);
-
-                    for (PlaceAllResponse.Result result : likeList) {
-                        // thema
-                        themaIdNameMap.put(result.getPlaceId(), result.getName());
-                    }
-
-                    /** CCTV 버튼 클릭 리스너 설정 **/
-                    likeListAdapter.setOnCCTVClickListener(new PlaceListAdapter.cctvClickListener() {
-                        @Override
-                        public void cctvButtonClick(List<PlaceAllResponse.Result> list , int position) {
-                            /** 모달 띄우기 **/
-                            String url = list.get(position).getCctv();
-                            showCCTV(url);
-
+                        for (PlaceAllResponse.Result result : likeList) {
+                            // thema
+                            themaIdNameMap.put(result.getPlaceId(), result.getName());
                         }
-                    });
 
-                    /** 찜 버튼 클릭 리스너 설정 **/
-                    likeListAdapter.setOnLikeClickListener(new PlaceListAdapter.likeClickListener() {
-                        @Override
-                        public void likeButtonClick(List<PlaceAllResponse.Result> list, int position) {
-                            // 버튼 클릭했을 때 API 통신
-                            String placeName = list.get(position).getName();
-                            Log.d(TAG, "placeName : " + placeName);
-                            // Position 반환
-                            Long placeId = searchPlaceId(themaIdNameMap, placeName);
-                            Log.d(TAG, "place_id 값1 : " + placeId);
+                        /** CCTV 버튼 클릭 리스너 설정 **/
+                        likeListAdapter.setOnCCTVClickListener(new PlaceListAdapter.cctvClickListener() {
+                            @Override
+                            public void cctvButtonClick(List<PlaceAllResponse.Result> list , int position) {
+                                /** 모달 띄우기 **/
+                                String url = list.get(position).getCctv();
+                                showCCTV(url);
 
-                            postLike(list, position, placeId);
-                        }
-                    });
+                            }
+                        });
 
-                    /** 자세히 보기 버튼 클릭 리스너 설정 **/
-                    likeListAdapter.setOnMapClickListener(new PlaceListAdapter.mapClickListener() {
-                        @Override
-                        public void mapButtonClick(List<PlaceAllResponse.Result> list, int position) {
-                            String placeName = list.get(position).getName();
-                            String rec = list.get(position).getRec();
+                        /** 찜 버튼 클릭 리스너 설정 **/
+                        likeListAdapter.setOnLikeClickListener(new PlaceListAdapter.likeClickListener() {
+                            @Override
+                            public void likeButtonClick(List<PlaceAllResponse.Result> list, int position) {
+                                // 버튼 클릭했을 때 API 통신
+                                String placeName = list.get(position).getName();
+                                Log.d(TAG, "placeName : " + placeName);
+                                // Position 반환
+                                Long placeId = searchPlaceId(themaIdNameMap, placeName);
+                                Log.d(TAG, "place_id 값1 : " + placeId);
 
-                            // 모달 띄우기
-                            getInfoModal(placeName, rec);
+                                postLike(list, position, placeId);
+                            }
+                        });
+
+                        /** 자세히 보기 버튼 클릭 리스너 설정 **/
+                        likeListAdapter.setOnMapClickListener(new PlaceListAdapter.mapClickListener() {
+                            @Override
+                            public void mapButtonClick(List<PlaceAllResponse.Result> list, int position) {
+                                String placeName = list.get(position).getName();
+                                String rec = list.get(position).getRec();
+
+                                // 모달 띄우기
+                                getInfoModal(placeName, rec);
 
 //                            /** 이름 넘기기 **/
 //                            Toast.makeText(requireContext(), placeName+"클릭!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            }
+                        });
 
-                    recyclerView.setAdapter(likeListAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                        recyclerView.setAdapter(likeListAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                    }
+                    else {
+                        Log.d(TAG, "에러발생(로그인) .." + response.message());
+                    }
                 }
-                else {
-                    Log.d(TAG, "에러발생(로그인) .." + response.message());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<PlaceAllResponse> call, Throwable t) {
-                Log.d(TAG, "onFalilure .. 로그인 시 장소리스트 연동 실패 ..., 메세지 : " + t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<PlaceAllResponse> call, Throwable t) {
+                    Log.d(TAG, "onFalilure .. 로그인 시 장소리스트 연동 실패 ..., 메세지 : " + t.getMessage());
+                }
+            });
+        }
     }
 
     /** 자세히 보기 모달 띄우기 **/

@@ -20,6 +20,7 @@ import com.example.a23__project_1.request.InquiryRequest;
 import com.example.a23__project_1.response.CommonResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
+import com.example.a23__project_1.retrofit.RetrofitClientJwt;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -98,13 +99,12 @@ public class QuestionActivity extends AppCompatActivity {
         else {
             ColorStateList colorStateList = ColorStateList.valueOf(getResources().getColor(R.color.secondary_grey_black_7));
             make_question.setBackgroundTintList(colorStateList);
-            make_question.setClickable(true);
+            make_question.setClickable(false);
         }
     }
 
     /** 문의사항 요청 API 메서드 **/
     public void requireInquiry() {
-        apiService = RetrofitClient.getApiService();
         // 사용자 정보 가져오기
         String email = sharedPreferences.getString("email", "null");
         // 사용자 정보가 존재하지 않는 경우
@@ -113,6 +113,9 @@ public class QuestionActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "로그인을 먼저 진행해주세요...", Toast.LENGTH_SHORT).show();
             return;
         }
+        String accessToken = sharedPreferences.getString("accessToken", "null");
+        apiService = RetrofitClientJwt.getApiService(accessToken);
+
         InquiryRequest.Member member = new InquiryRequest.Member(email);
         InquiryRequest request = new InquiryRequest(member, input.getText().toString(), title.getText().toString());
         call = apiService.doInquiry(request);
@@ -138,6 +141,5 @@ public class QuestionActivity extends AppCompatActivity {
                 Log.d(TAG, "문의사항 연동 실패 3 : " + t.getMessage());
             }
         });
-
     }
 }

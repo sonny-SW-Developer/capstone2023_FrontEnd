@@ -38,6 +38,7 @@ import com.example.a23__project_1.response.ThemaAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
 import com.example.a23__project_1.fragmentThird.FragmentThird;
+import com.example.a23__project_1.retrofit.RetrofitClientJwt;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.*;
@@ -69,7 +70,6 @@ public class FragmentSecond extends Fragment {
     private static final String PREF_NAME = "userInfo";
     private String email = "";
     private HashMap<Long, String> themaIdNameMap;
-
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -230,81 +230,85 @@ public class FragmentSecond extends Fragment {
 
     /** 로그인 되어있을 때 목록 API 통신 **/
     private void getLoginPlaceList() {
-        apiService = RetrofitClient.getApiService();
-        Call<PlaceAllResponse> call = apiService.getLoginPlaceList(email);
-        call.enqueue(new Callback<PlaceAllResponse>() {
-            @Override
-            public void onResponse(Call<PlaceAllResponse> call, Response<PlaceAllResponse> response) {
-                if(response.isSuccessful()) {
-                    placeList = response.body().getResult();
-                    placeListAdapter = new PlaceListAdapter(requireContext(), placeList);
+        String accessToken = sharedPreferences.getString("accessToken", "null");
+        if(!accessToken.equals("null")) {
+            apiService = RetrofitClientJwt.getApiService(accessToken);
+            Call<PlaceAllResponse> call = apiService.getLoginPlaceList(email);
+            call.enqueue(new Callback<PlaceAllResponse>() {
+                @Override
+                public void onResponse(Call<PlaceAllResponse> call, Response<PlaceAllResponse> response) {
+                    if(response.isSuccessful()) {
+                        placeList = response.body().getResult();
+                        placeListAdapter = new PlaceListAdapter(requireContext(), placeList);
 
-                    for (PlaceAllResponse.Result result : placeList) {
-                        // thema
-                        themaIdNameMap.put(result.getPlaceId(), result.getName());
-                    }
-
-                    /** CCTV 버튼 클릭 리스너 설정 **/
-                    placeListAdapter.setOnCCTVClickListener(new PlaceListAdapter.cctvClickListener() {
-                        @Override
-                        public void cctvButtonClick(List<PlaceAllResponse.Result> list ,int position) {
-                            /** 모달 띄우기 **/
-                            String url = list.get(position).getCctv();
-                            showCCTV(url);
+                        for (PlaceAllResponse.Result result : placeList) {
+                            // thema
+                            themaIdNameMap.put(result.getPlaceId(), result.getName());
                         }
-                    });
 
-                    /** 찜 버튼 클릭 리스너 설정 **/
-                    placeListAdapter.setOnLikeClickListener(new PlaceListAdapter.likeClickListener() {
-                        @Override
-                        public void likeButtonClick(List<PlaceAllResponse.Result> list, int position) {
-                            // 버튼 클릭했을 때 API 통신
-                            String placeName = list.get(position).getName();
-                            Log.d(TAG, "placeName : " + placeName);
-                            // Position 반환
-                            Long placeId = searchPlaceId(themaIdNameMap, placeName);
-                            Log.d(TAG, "place_id 값1 : " + placeId);
+                        /* CCTV 버튼 클릭 리스너 설정 */
+                        placeListAdapter.setOnCCTVClickListener(new PlaceListAdapter.cctvClickListener() {
+                            @Override
+                            public void cctvButtonClick(List<PlaceAllResponse.Result> list ,int position) {
+                                /** 모달 띄우기 **/
+                                String url = list.get(position).getCctv();
+                                showCCTV(url);
+                            }
+                        });
 
-                            postLike(list, position, placeId);
-                        }
-                    });
+                        /* 찜 버튼 클릭 리스너 설정 */
+                        placeListAdapter.setOnLikeClickListener(new PlaceListAdapter.likeClickListener() {
+                            @Override
+                            public void likeButtonClick(List<PlaceAllResponse.Result> list, int position) {
+                                // 버튼 클릭했을 때 API 통신
+                                String placeName = list.get(position).getName();
+                                Log.d(TAG, "placeName : " + placeName);
+                                // Position 반환
+                                Long placeId = searchPlaceId(themaIdNameMap, placeName);
+                                Log.d(TAG, "place_id 값1 : " + placeId);
 
-                    model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-                    /** 지도로 보기 버튼 클릭 리스너 설정 **/
-                    placeListAdapter.setOnMapClickListener(new PlaceListAdapter.mapClickListener() {
-                        @Override
-                        public void mapButtonClick(List<PlaceAllResponse.Result> list, int position) {
+                                postLike(list, position, placeId);
+                            }
+                        });
+
+                        model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+                        /* 지도로 보기 버튼 클릭 리스너 설정 */
+                        placeListAdapter.setOnMapClickListener(new PlaceListAdapter.mapClickListener() {
+                            @Override
+                            public void mapButtonClick(List<PlaceAllResponse.Result> list, int position) {
 //                            Bundle bundle = new Bundle();
 //                            bundle.putString("where", "fragSecond");
 //
 //                            /** 카카오 맵에 값 전달 **/
 //                            MapActivityChangeTest fragment = new MapActivityChangeTest();
 //                            fragment.setArguments(bundle);
-                            ((MainActivity)getActivity()).setfromWhere(1);
-                            int placeId = Long.valueOf(list.get(position).getPlaceId()).intValue();
-                            model.selectItem(placeId,1);
-                            model.setFromWhere(1);
-                            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
-                            bottomNavigationView.setSelectedItemId(R.id.thirdItem);
+                                ((MainActivity)getActivity()).setfromWhere(1);
+                                int placeId = Long.valueOf(list.get(position).getPlaceId()).intValue();
+                                model.selectItem(placeId,1);
+                                model.setFromWhere(1);
+                                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.navigationView);
+                                bottomNavigationView.setSelectedItemId(R.id.thirdItem);
 
-                        }
-                    });
+                            }
+                        });
 
-                    //placeListAdapter.notifyDataSetChanged();
-                    recycler_place.setAdapter(placeListAdapter);
-                    recycler_place.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                        //placeListAdapter.notifyDataSetChanged();
+                        recycler_place.setAdapter(placeListAdapter);
+                        recycler_place.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                    }
+                    else {
+                        Log.d(TAG, "에러발생(로그인) .." + response.message());
+                    }
                 }
-                else {
-                    Log.d(TAG, "에러발생(로그인) .." + response.message());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<PlaceAllResponse> call, Throwable t) {
-                Log.d(TAG, "onFalilure .. 로그인 시 장소리스트 연동 실패 ..., 메세지 : " + t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<PlaceAllResponse> call, Throwable t) {
+                    Log.d(TAG, "onFalilure .. 로그인 시 장소리스트 연동 실패 ..., 메세지 : " + t.getMessage());
+                }
+            });
+        }
     }
+
     OnFragmentInteractionListener mListener;
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(int itemId);
@@ -405,15 +409,15 @@ public class FragmentSecond extends Fragment {
 
     /** 찜 버튼 API 통신 **/
     public void postLike(List<PlaceAllResponse.Result> list, int pos, Long place_id) {
-        apiService = RetrofitClient.getApiService();
         String email = sharedPreferences.getString("email", "null");
         if (email.equals("null")) {
             /** 다이얼로그 출력해주기 **/
             Toast.makeText(requireContext(), "로그인을 먼저 진행해주세요...", Toast.LENGTH_SHORT).show();
             return;
         }
+        String accessToken = sharedPreferences.getString("accessToken", "null");
+        apiService = RetrofitClientJwt.getApiService(accessToken);
 
-        Log.d(TAG, "place_id 값2 : " + place_id);
         LikeRequest.Member member = new LikeRequest.Member(email);
         LikeRequest.Place place = new LikeRequest.Place(place_id);
         LikeRequest request = new LikeRequest(member, place);
@@ -447,7 +451,7 @@ public class FragmentSecond extends Fragment {
                     }
                 }
                 else {
-                    Log.d(TAG, "찜 버튼 연동 실패...");
+                    Log.d(TAG, "찜 버튼 연동 실패..." + response.body().getMessage());
                     Log.d(TAG, "오류 메세지 : " + response.errorBody().toString());
                 }
             }

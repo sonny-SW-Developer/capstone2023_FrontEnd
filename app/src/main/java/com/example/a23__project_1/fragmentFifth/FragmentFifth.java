@@ -317,6 +317,7 @@ public class FragmentFifth extends Fragment {
     }
 
     // 문의사항 버튼 눌렀을 시
+    /* 문의사항 남기기 */
     View.OnClickListener questionClickListener = v -> {
         // 로그인이 되어있다면
         if(!name.equals("null")) {
