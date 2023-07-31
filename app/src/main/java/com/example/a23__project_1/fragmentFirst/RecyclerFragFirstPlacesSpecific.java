@@ -19,7 +19,6 @@ import android.widget.Adapter;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.a23__project_1.data.DataMoreInfo;
 import com.example.a23__project_1.R;
 import com.example.a23__project_1.data.DataPlaceWithS3;
 import com.example.a23__project_1.leftMenuBar.SettingActivity;
@@ -65,7 +64,7 @@ public class RecyclerFragFirstPlacesSpecific extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler_frag_first_places_specific);
+        setContentView(R.layout.recycler_frag_first_places_specific);
         // sharedPreference로 로그인 여부 판단.
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         email = sharedPreferences.getString("email", "null");

@@ -34,7 +34,6 @@ import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
-import com.example.a23__project_1.fragmentThird.FragmentThird;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;

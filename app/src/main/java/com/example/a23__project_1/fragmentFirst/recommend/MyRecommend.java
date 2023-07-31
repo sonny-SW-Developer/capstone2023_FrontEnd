@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ImageButton;
@@ -16,6 +17,7 @@ import android.widget.ScrollView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.a23__project_1.R;
 import com.example.a23__project_1.data.DataMoreInfo;
+import com.example.a23__project_1.fragmentFirst.FragFirstInfoActivity;
 import com.example.a23__project_1.fragmentFirst.RecyclerFragFirstThemeAdapter;
 import com.example.a23__project_1.leftMenuBar.SettingActivity;
 import com.example.a23__project_1.response.LikeResponse;
@@ -76,7 +78,7 @@ public class MyRecommend extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_recommend);
+        setContentView(R.layout.activity_frag_first_my_recommend);
 
         intent = getIntent();
         if(intent.hasExtra("elements")){
@@ -190,7 +192,7 @@ public class MyRecommend extends AppCompatActivity {
 
 
 
-        //툴바 옆, setting 관련 코드
+ //툴바 옆, setting 관련 코드
         ImageButton btn_setting = (ImageButton) findViewById(R.id.btn_setting);
         btn_setting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,11 +205,11 @@ public class MyRecommend extends AppCompatActivity {
         });
 
         //menu 관련 코드
-        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_my_recommend_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_first_recommend_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
 
-
     }
+
 }

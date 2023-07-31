@@ -59,18 +59,6 @@
             android:name=".fragmentFirst.FragFirstInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".leftMenuBar.MapActivity"
-            android:exported="false" />
-        <activity
-            android:name=".leftMenuBar.MyplanActivity"
-            android:exported="false" />
-        <activity
-            android:name=".leftMenuBar.HistoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".leftMenuBar.UserinfoActivity"
-            android:exported="false" />
-        <activity
             android:name=".leftMenuBar.SettingActivity"
             android:exported="false" />
 

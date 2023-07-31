@@ -38,8 +38,6 @@
                 android:src="@drawable/ic_baseline_settings_24"
                 android:background="@color/white"
                 />
-            <!--            android:backgroundTint="#B4E5FF"-->
-
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -54,17 +52,6 @@
             android:background="@color/white"
             android:scrollbars="none" />
 
-        <!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--            android:id="@+id/navigationView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="?android:attr/windowBackground"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent"-->
-<!--            app:layout_constraintRight_toLeftOf="parent"-->
-<!--            app:menu="@menu/menu_bottomnavigationview">-->
-
-<!--        </com.google.android.material.bottomnavigation.BottomNavigationView>-->
 
     </LinearLayout>
 

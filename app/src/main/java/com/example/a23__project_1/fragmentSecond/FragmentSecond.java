@@ -30,14 +30,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a23__project_1.MainActivity;
 import com.example.a23__project_1.R;
 import com.example.a23__project_1.SharedViewModel;
-import com.example.a23__project_1.leftMenuBar.MapActivityChangeTest;
 import com.example.a23__project_1.request.LikeRequest;
 import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.ThemaAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
-import com.example.a23__project_1.fragmentThird.FragmentThird;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.*;

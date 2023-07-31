@@ -1,4 +1,4 @@
-package com.example.a23__project_1.fragmentThird;
+package com.example.a23__project_1.fragmentThirdTest;
 
 import android.os.Bundle;
 
@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MapActivityGoogle extends AppCompatActivity implements OnMapReadyCallback{
+public class GoogleMapForTesting extends AppCompatActivity implements OnMapReadyCallback{
 
     private SupportMapFragment supportMapFragment;
     private FragmentManager fragmentManager;
@@ -23,7 +23,7 @@ public class MapActivityGoogle extends AppCompatActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_google);
+        setContentView(R.layout.activity_google_map_for_testing);
 
         fragmentManager = getSupportFragmentManager();
         supportMapFragment = (SupportMapFragment)fragmentManager.findFragmentById(R.id.googleMap);
@@ -46,8 +46,6 @@ public class MapActivityGoogle extends AppCompatActivity implements OnMapReadyCa
         mMap.addMarker(markerOptions);
 
 
-
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(JungboIsland, 16));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(JungboIsland, 16));
     }
 

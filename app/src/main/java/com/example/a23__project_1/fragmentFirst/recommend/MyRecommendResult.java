@@ -13,16 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Adapter;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a23__project_1.R;
-import com.example.a23__project_1.data.DataMoreInfo;
 import com.example.a23__project_1.data.DataPlaceWithS3;
-import com.example.a23__project_1.fragmentFirst.FragFirstInfoActivity;
-import com.example.a23__project_1.fragmentFirst.RecyclerFragFirstThemeAdapter;
 import com.example.a23__project_1.request.LikeRequest;
 import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
@@ -70,7 +66,7 @@ public class MyRecommendResult extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_recommend_result);
+        setContentView(R.layout.activity_frag_first_my_recommend_result);
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
