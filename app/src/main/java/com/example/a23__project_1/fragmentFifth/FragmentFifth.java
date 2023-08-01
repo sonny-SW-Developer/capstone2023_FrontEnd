@@ -95,6 +95,7 @@ public class FragmentFifth extends Fragment {
         /** 테스트 **/
         btn_test = view.findViewById(R.id.btn_test);
         btn_test.setOnClickListener(testClickListener);
+        btn_test.setVisibility(View.GONE);
 
         changeUI();
 

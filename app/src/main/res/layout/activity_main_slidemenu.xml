@@ -199,7 +199,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/black"
-            android:text="로그인 및 회원 정보 확인"/>
+            android:text="로그인/회원 정보 조회"/>
 
     </LinearLayout>
 </LinearLayout>
