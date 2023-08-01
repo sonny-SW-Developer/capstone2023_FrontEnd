@@ -233,7 +233,7 @@ public class FragmentSecond extends Fragment {
         String accessToken = sharedPreferences.getString("accessToken", "null");
         if(!accessToken.equals("null")) {
             apiService = RetrofitClientJwt.getApiService(accessToken);
-            Call<PlaceAllResponse> call = apiService.getLoginPlaceList(email);
+            Call<PlaceAllResponse> call = apiService.getLoginPlaceList(accessToken, email);
             call.enqueue(new Callback<PlaceAllResponse>() {
                 @Override
                 public void onResponse(Call<PlaceAllResponse> call, Response<PlaceAllResponse> response) {
@@ -267,7 +267,7 @@ public class FragmentSecond extends Fragment {
                                 Long placeId = searchPlaceId(themaIdNameMap, placeName);
                                 Log.d(TAG, "place_id 값1 : " + placeId);
 
-                                postLike(list, position, placeId);
+                                postLike(list, position, placeId,accessToken);
                             }
                         });
 
@@ -356,7 +356,8 @@ public class FragmentSecond extends Fragment {
                             Long placeId = searchPlaceId(themaIdNameMap, placeName);
                             Log.d(TAG, "place_id 값1 : " + placeId);
 
-                            postLike(list, position, placeId);
+                            String accessToken = sharedPreferences.getString("accessToken", "null");
+                            postLike(list, position, placeId, accessToken);
                         }
                     });
 
@@ -408,20 +409,20 @@ public class FragmentSecond extends Fragment {
     }
 
     /** 찜 버튼 API 통신 **/
-    public void postLike(List<PlaceAllResponse.Result> list, int pos, Long place_id) {
+    public void postLike(List<PlaceAllResponse.Result> list, int pos, Long place_id, String accessToken) {
         String email = sharedPreferences.getString("email", "null");
         if (email.equals("null")) {
             /** 다이얼로그 출력해주기 **/
             Toast.makeText(requireContext(), "로그인을 먼저 진행해주세요...", Toast.LENGTH_SHORT).show();
             return;
         }
-        String accessToken = sharedPreferences.getString("accessToken", "null");
+
         apiService = RetrofitClientJwt.getApiService(accessToken);
 
         LikeRequest.Member member = new LikeRequest.Member(email);
         LikeRequest.Place place = new LikeRequest.Place(place_id);
         LikeRequest request = new LikeRequest(member, place);
-        likeCall = apiService.doLike(request);
+        likeCall = apiService.doLike(accessToken, request);
         likeCall.enqueue(new Callback<LikeResponse>() {
             @Override
             public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
@@ -433,10 +434,17 @@ public class FragmentSecond extends Fragment {
                         if (result instanceof String) {
                             String resultString = (String) result;
                             // 찜리스트 취소하는 경우
-                            if(resultString.equals("delete")) {
-                                Toast.makeText(requireContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
-                                list.get(pos).setLikeYn(0);
-                                Log.d(TAG, String.valueOf(list.get(pos).getLikeYn()));
+                            if(resultString.equals("update")) {
+                                if (list.get(pos).getLikeYn() == 1) {
+                                    Toast.makeText(requireContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                                    list.get(pos).setLikeYn(0);
+                                    Log.d(TAG, "찜리스트 좋아요 확인 : " + String.valueOf(list.get(pos).getLikeYn()));
+                                }
+                                else {
+                                    Toast.makeText(requireContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                                    list.get(pos).setLikeYn(1);
+                                    Log.d(TAG, "찜리스트 좋아요 확인 : " + String.valueOf(list.get(pos).getLikeYn()));
+                                }
 
                             }
                         }

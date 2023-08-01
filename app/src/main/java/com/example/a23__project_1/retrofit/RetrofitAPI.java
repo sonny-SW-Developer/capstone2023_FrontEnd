@@ -38,7 +38,7 @@ public interface RetrofitAPI {
     Call<PlaceAllResponse> getAllPlace();
 
     @POST("/like")
-    Call<LikeResponse> doLike(@Body LikeRequest likeRequest);
+    Call<LikeResponse> doLike(@Header("Authorization") String token, @Body LikeRequest likeRequest);
 
     @GET("/place/position")
     Call<PositionResponse> getAllPosition();
@@ -55,11 +55,11 @@ public interface RetrofitAPI {
 
     /** 찜리스트 가져오기 **/
     @GET("/like/all/{member_id}")
-    Call<PlaceAllResponse> getAllLikes(@Query("member_id") String memberId);
+    Call<PlaceAllResponse> getAllLikes(@Header("Authorization") String token, @Query("member_id") String memberId);
 
     /** 로그인 되어있을 때 모든 장소 리스트 가져오기 **/
     @GET("/place/member")
-    Call<PlaceAllResponse> getLoginPlaceList(@Query("member_id") String memberId);
+    Call<PlaceAllResponse> getLoginPlaceList(@Header("Authorization") String token, @Query("member_id") String memberId);
 
     /** 일정 추가 **/
     @POST("/schedule")
