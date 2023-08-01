@@ -34,6 +34,8 @@ import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
+import com.example.a23__project_1.fragmentThird.FragmentThird;
+import com.example.a23__project_1.retrofit.RetrofitClientJwt;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class FragmentFourth extends Fragment {
     private static final String TAG = "FragmentFourth";
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "userInfo";
-    private String name = "", email="";
+    private String name = "", email = "";
     private RetrofitAPI apiService;
     private List<PlaceAllResponse.Result> likeList;
     private LikeListAdapter likeListAdapter;
@@ -83,7 +85,7 @@ public class FragmentFourth extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_likePlace);
 
         //로그인 되어있지 않은 경우
-        if(name.equals("null")) {
+        if (name.equals("null")) {
             tv_login.setVisibility(View.VISIBLE);
             tv_name.setVisibility(View.GONE);
             btn_cal.setVisibility(View.GONE);
@@ -109,86 +111,93 @@ public class FragmentFourth extends Fragment {
         return view;
     }
 
-    /** 일정 확인하기 버튼 클릭 시 **/
+    /**
+     * 일정 확인하기 버튼 클릭 시
+     **/
     View.OnClickListener checkPlanClickListener = v -> {
         Intent intent = new Intent(getActivity(), PlanListActivity.class);
         startActivity(intent);
     };
 
-    /** 찜리스트 가져오기 API **/
+    /**
+     * 찜리스트 가져오기 API
+     **/
     public void getLikePlace() {
-        apiService = RetrofitClient.getApiService();
-        Call<PlaceAllResponse> call = apiService.getAllLikes(email);
+        String accessToken = sharedPreferences.getString("accessToken", "null");
+        if (!accessToken.equals("null")) {
+            apiService = RetrofitClientJwt.getApiService(accessToken);
+            Call<PlaceAllResponse> call = apiService.getAllLikes(accessToken, email);
+            call.enqueue(new Callback<PlaceAllResponse>() {
+                @Override
+                public void onResponse(Call<PlaceAllResponse> call, Response<PlaceAllResponse> response) {
+                    if (response.isSuccessful()) {
+                        likeList = response.body().getResult();
+                        likeListAdapter = new LikeListAdapter(requireContext(), likeList);
 
-        call.enqueue(new Callback<PlaceAllResponse>() {
-            @Override
-            public void onResponse(Call<PlaceAllResponse> call, Response<PlaceAllResponse> response) {
-                if(response.isSuccessful()) {
-                    likeList = response.body().getResult();
-                    likeListAdapter = new LikeListAdapter(requireContext(), likeList);
-
-                    for (PlaceAllResponse.Result result : likeList) {
-                        // thema
-                        themaIdNameMap.put(result.getPlaceId(), result.getName());
-                    }
-
-                    /** CCTV 버튼 클릭 리스너 설정 **/
-                    likeListAdapter.setOnCCTVClickListener(new PlaceListAdapter.cctvClickListener() {
-                        @Override
-                        public void cctvButtonClick(List<PlaceAllResponse.Result> list , int position) {
-                            /** 모달 띄우기 **/
-                            String url = list.get(position).getCctv();
-                            showCCTV(url);
-
+                        for (PlaceAllResponse.Result result : likeList) {
+                            // thema
+                            themaIdNameMap.put(result.getPlaceId(), result.getName());
                         }
-                    });
 
-                    /** 찜 버튼 클릭 리스너 설정 **/
-                    likeListAdapter.setOnLikeClickListener(new PlaceListAdapter.likeClickListener() {
-                        @Override
-                        public void likeButtonClick(List<PlaceAllResponse.Result> list, int position) {
-                            // 버튼 클릭했을 때 API 통신
-                            String placeName = list.get(position).getName();
-                            Log.d(TAG, "placeName : " + placeName);
-                            // Position 반환
-                            Long placeId = searchPlaceId(themaIdNameMap, placeName);
-                            Log.d(TAG, "place_id 값1 : " + placeId);
+                        /** CCTV 버튼 클릭 리스너 설정 **/
+                        likeListAdapter.setOnCCTVClickListener(new PlaceListAdapter.cctvClickListener() {
+                            @Override
+                            public void cctvButtonClick(List<PlaceAllResponse.Result> list, int position) {
+                                /** 모달 띄우기 **/
+                                String url = list.get(position).getCctv();
+                                showCCTV(url);
 
-                            postLike(list, position, placeId);
-                        }
-                    });
+                            }
+                        });
 
-                    /** 자세히 보기 버튼 클릭 리스너 설정 **/
-                    likeListAdapter.setOnMapClickListener(new PlaceListAdapter.mapClickListener() {
-                        @Override
-                        public void mapButtonClick(List<PlaceAllResponse.Result> list, int position) {
-                            String placeName = list.get(position).getName();
-                            String rec = list.get(position).getRec();
+                        /** 찜 버튼 클릭 리스너 설정 **/
+                        likeListAdapter.setOnLikeClickListener(new PlaceListAdapter.likeClickListener() {
+                            @Override
+                            public void likeButtonClick(List<PlaceAllResponse.Result> list, int position) {
+                                // 버튼 클릭했을 때 API 통신
+                                String placeName = list.get(position).getName();
+                                Log.d(TAG, "placeName : " + placeName);
+                                // Position 반환
+                                Long placeId = searchPlaceId(themaIdNameMap, placeName);
+                                Log.d(TAG, "place_id 값1 : " + placeId);
 
-                            // 모달 띄우기
-                            getInfoModal(placeName, rec);
+                                postLike(list, position, placeId, accessToken);
+                            }
+                        });
+
+                        /** 자세히 보기 버튼 클릭 리스너 설정 **/
+                        likeListAdapter.setOnMapClickListener(new PlaceListAdapter.mapClickListener() {
+                            @Override
+                            public void mapButtonClick(List<PlaceAllResponse.Result> list, int position) {
+                                String placeName = list.get(position).getName();
+                                String rec = list.get(position).getRec();
+
+                                // 모달 띄우기
+                                getInfoModal(placeName, rec);
 
 //                            /** 이름 넘기기 **/
 //                            Toast.makeText(requireContext(), placeName+"클릭!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            }
+                        });
 
-                    recyclerView.setAdapter(likeListAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                        recyclerView.setAdapter(likeListAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                    } else {
+                        Log.d(TAG, "에러발생(로그인) .." + response.message());
+                    }
                 }
-                else {
-                    Log.d(TAG, "에러발생(로그인) .." + response.message());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<PlaceAllResponse> call, Throwable t) {
-                Log.d(TAG, "onFalilure .. 로그인 시 장소리스트 연동 실패 ..., 메세지 : " + t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<PlaceAllResponse> call, Throwable t) {
+                    Log.d(TAG, "onFalilure .. 로그인 시 장소리스트 연동 실패 ..., 메세지 : " + t.getMessage());
+                }
+            });
+        }
     }
 
-    /** 자세히 보기 모달 띄우기 **/
+    /**
+     * 자세히 보기 모달 띄우기
+     **/
     private void getInfoModal(String name, String rec) {
         infoDialog.show();
 
@@ -224,6 +233,7 @@ public class FragmentFourth extends Fragment {
             @Override
             public void onClick(View v) {
                 ((MainActivity)getActivity()).setfromWhere(3);
+              
                 // 이름으로 placeID ??
                 int placeId = Long.valueOf(searchPlaceId(themaIdNameMap, name)).intValue();
                 model.selectItem(placeId, 3);
@@ -235,9 +245,11 @@ public class FragmentFourth extends Fragment {
         });
     }
 
-    /** 해당하는 찜 리스트에 대한 position 가져오는 메서드 **/
+    /**
+     * 해당하는 찜 리스트에 대한 position 가져오는 메서드
+     **/
     public Long searchPlaceId(HashMap<Long, String> map, String name) {
-        Set<Map.Entry<Long,String>> entrySet = map.entrySet();
+        Set<Map.Entry<Long, String>> entrySet = map.entrySet();
         for (Map.Entry<Long, String> entry : entrySet) {
             if (entry.getValue().equals(name)) {
                 return entry.getKey();
@@ -247,50 +259,62 @@ public class FragmentFourth extends Fragment {
         return -1L;
     }
 
-    /** 찜 버튼 API 통신 **/
-    public void postLike(List<PlaceAllResponse.Result> list, int pos, Long place_id) {
-        apiService = RetrofitClient.getApiService();
-        String email = sharedPreferences.getString("email", "null");
-        if (email.equals("null")) {
-            /** 다이얼로그 출력해주기 **/
+    /**
+     * 찜 버튼 API 통신
+     **/
+    public void postLike(List<PlaceAllResponse.Result> list, int pos, Long place_id, String accessToken) {
+        Log.d(TAG, "PostLike를 실행합니다1..");
+
+        if (accessToken.equals("null")) {
+            /* 토스트문구 출력해주기 */
             Toast.makeText(requireContext(), "로그인을 먼저 진행해주세요...", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        apiService = RetrofitClientJwt.getApiService(accessToken);
         Log.d(TAG, "place_id 값2 : " + place_id);
         LikeRequest.Member member = new LikeRequest.Member(email);
         LikeRequest.Place place = new LikeRequest.Place(place_id);
         LikeRequest request = new LikeRequest(member, place);
-        Call<LikeResponse> call = apiService.doLike(request);
+        Call<LikeResponse> call = apiService.doLike(accessToken, request);
         call.enqueue(new Callback<LikeResponse>() {
             @Override
             public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
-                if(response.isSuccessful()) {
-                    /** 요청에 성공했을 때 **/
-                    if(response.body().getCode() == 200 && response.body().getMessage().contains("성공")) {
-                        Object result = response.body().getResult();
-                        // 문자열로 온 경우
-                        if (result instanceof String) {
-                            String resultString = (String) result;
-                            // 찜리스트 취소하는 경우
-                            if(resultString.equals("delete")) {
+                if (response.isSuccessful()) {
+                    Object result = response.body().getResult();
+
+                    // 문자열로 온 경우
+                    if(result instanceof String) {
+                        String resultString = (String) result;
+
+                        if(resultString.equals("update")) {
+                            // 찜 리스트를 취소하는 경우
+                            if(list.get(pos).getLikeYn() == 1) {
                                 Toast.makeText(requireContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
                                 list.get(pos).setLikeYn(0);
-                                Log.d(TAG, String.valueOf(list.get(pos).getLikeYn()));
-
+                                Log.d(TAG, "찜리스트 좋아요 확인 : " + String.valueOf(list.get(pos).getLikeYn()));
+                            }
+                            // 찜 리스트 추가하는 경우
+                            else {
+                                Toast.makeText(requireContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                                list.get(pos).setLikeYn(1);
+                                Log.d(TAG, "찜리스트 좋아요 확인 : " + String.valueOf(list.get(pos).getLikeYn()));
                             }
                         }
-                        else {
-                            //찜 리스트 추가하는 경우
-                            Toast.makeText(requireContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();
-                            list.get(pos).setLikeYn(1);
-                            Log.d(TAG, String.valueOf(list.get(pos).getLikeYn()));
-                        }
-                        /** 변경 감지 **/
-                        likeListAdapter.notifyDataSetChanged();
                     }
-                }
-                else {
+
+                    // 객체로 들어오는 경우
+                    else {
+                        //찜 리스트 추가하는 경우
+                        Toast.makeText(requireContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                        list.get(pos).setLikeYn(1);
+                        Log.d(TAG, String.valueOf(list.get(pos).getLikeYn()));
+                    }
+
+                    /* 변경 감지 */
+                    likeListAdapter.notifyDataSetChanged();
+
+                } else {
                     Log.d(TAG, "찜 버튼 연동 실패...");
                     Log.d(TAG, "오류 메세지 : " + response.errorBody().toString());
                 }
@@ -304,7 +328,9 @@ public class FragmentFourth extends Fragment {
         });
     }
 
-    /** CCTV 모달 띄우기 **/
+    /**
+     * CCTV 모달 띄우기
+     **/
     public void showCCTV(String url) {
         cctvDialog.show();
 
@@ -324,7 +350,9 @@ public class FragmentFourth extends Fragment {
 
     }
 
-    /** CCTV 웹뷰 구현 **/
+    /**
+     * CCTV 웹뷰 구현
+     **/
     private class WebViewClientClass extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {

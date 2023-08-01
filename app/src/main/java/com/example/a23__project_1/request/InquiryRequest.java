@@ -24,14 +24,14 @@ public class InquiryRequest {
     }
 
     public static class Member {
-        private String member_id;
+        private String email;
 
-        public Member(String member_id) {
-            this.member_id = member_id;
+        public Member(String email) {
+            this.email = email;
         }
 
         public String getMember_id() {
-            return member_id;
+            return email;
         }
     }
 }
