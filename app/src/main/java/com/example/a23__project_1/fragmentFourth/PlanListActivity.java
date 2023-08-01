@@ -24,6 +24,7 @@ import com.example.a23__project_1.response.PlaceInfoResponse;
 import com.example.a23__project_1.response.PlanListResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
+import com.example.a23__project_1.retrofit.RetrofitClientJwt;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -81,8 +82,9 @@ public class PlanListActivity extends AppCompatActivity {
 
     // 리스트 가져오기
     private void getPlanList() {
-        apiService = RetrofitClient.getApiService();
-        Call<PlanListResponse> call = apiService.getPlanList(email);
+        String accessToken = sharedPreferences.getString("accessToken", "null");
+        apiService = RetrofitClientJwt.getApiService(accessToken);
+        Call<PlanListResponse> call = apiService.getPlanList(accessToken, email);
         call.enqueue(new Callback<PlanListResponse>() {
             @Override
             public void onResponse(Call<PlanListResponse> call, Response<PlanListResponse> response) {

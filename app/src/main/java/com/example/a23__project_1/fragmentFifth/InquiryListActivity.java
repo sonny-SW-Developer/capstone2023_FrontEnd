@@ -17,6 +17,7 @@ import com.example.a23__project_1.R;
 import com.example.a23__project_1.response.InquiryResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
+import com.example.a23__project_1.retrofit.RetrofitClientJwt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +68,9 @@ public class InquiryListActivity extends AppCompatActivity {
 
     /** 문의사항 목록 가져오기 API **/
     private void getInquiry() {
-        apiService = RetrofitClient.getApiService();
-        Call<InquiryResponse> call = apiService.getInquiryList(email);
+        String accessToken = sharedPreferences.getString("accessToken", "null");
+        apiService = RetrofitClientJwt.getApiService(accessToken);
+        Call<InquiryResponse> call = apiService.getInquiryList(accessToken, email);
         call.enqueue(new Callback<InquiryResponse>() {
             @Override
             public void onResponse(Call<InquiryResponse> call, Response<InquiryResponse> response) {

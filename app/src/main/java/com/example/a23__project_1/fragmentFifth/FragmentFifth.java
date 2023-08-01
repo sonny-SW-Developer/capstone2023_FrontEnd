@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.a23__project_1.MainActivity;
 import com.example.a23__project_1.R;
 import com.example.a23__project_1.response.LoginUserResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
@@ -176,6 +177,12 @@ public class FragmentFifth extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 logout();
+
+                // MainActivity - SliderNavigationBuilder 변경
+                MainActivity mainActivity = (MainActivity) getActivity();
+                if(mainActivity != null && mainActivity.kakaoName != null) {
+                    mainActivity.kakaoName.setText("name");
+                }
             }
         });
 
@@ -204,7 +211,7 @@ public class FragmentFifth extends Fragment {
                         sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.clear();
-                        editor.commit();
+                        editor.apply();
                         Toast.makeText(getContext(), "로그아웃이 성공적으로 완료되었습니다.", Toast.LENGTH_SHORT).show();
                         changeUI();
                     }
@@ -279,6 +286,12 @@ public class FragmentFifth extends Fragment {
                         Toast.makeText(getContext(), "로그인이 성공적으로 완료되었습니다.", Toast.LENGTH_SHORT).show();
                         changeUI();
 
+                        // MainActivity - SliderNavigationBuilder 변경
+                        MainActivity mainActivity = (MainActivity) getActivity();
+                        if(mainActivity != null && mainActivity.kakaoName != null) {
+                            mainActivity.kakaoName.setText(user_name);
+                        }
+
                         // 이름 설정
                         tv_name.setText(user_name);
                         changeTextStyle(user_name);
@@ -342,7 +355,7 @@ public class FragmentFifth extends Fragment {
 
     // 이름만 색깔, 크기 변경하는 메서드
     private void changeTextStyle(String name) {
-        String text = "반갑습니다 " + name + "님";
+        String text = "반갑습니다 " + name + " 님";
         SpannableString spannableString = new SpannableString(text);
         int start = text.indexOf(name);
         int end = start + name.length();
@@ -352,6 +365,5 @@ public class FragmentFifth extends Fragment {
         spannableString.setSpan(new RelativeSizeSpan(1.1f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         tv_name1.setText(spannableString);
-
     }
 }
