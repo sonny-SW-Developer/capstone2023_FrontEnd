@@ -27,6 +27,7 @@ import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.PositionResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
+import com.example.a23__project_1.retrofit.RetrofitClientJwt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +93,7 @@ public class FragFirstInfoActivity extends AppCompatActivity {
                 getPositionList("쇼핑몰",list_place);
                 break;
             case "cardview2":
-                getPositionList("지하철·기차역",list_place);
+                getPositionList("지하철",list_place);
                 break;
             case "cardview3":
                 getPositionList("음식점",list_place);
@@ -107,7 +108,7 @@ public class FragFirstInfoActivity extends AppCompatActivity {
                 getPositionList("카페",list_place);
                 break;
             case "cardview7":
-                getPositionList("관광",list_place);
+                getPositionList("관광지",list_place);
                 break;
             case "cardview8":
                 getPositionList("골목 및 거리",list_place);
@@ -287,12 +288,13 @@ public class FragFirstInfoActivity extends AppCompatActivity {
 
     /** 찜 누르기 메서드 구현 **/
     private void postLike(int pos) {
-        apiService = RetrofitClient.getApiService();
+
         if(email.equals("null")) {
             Toast.makeText(getApplicationContext(), "로그인을 먼저 진행해주세요...", Toast.LENGTH_SHORT).show();
             return;
         }
         String accessToken = sharedPreferences.getString("accessToken", "null");
+        apiService = RetrofitClientJwt.getApiService(accessToken);
         LikeRequest.Member member = new LikeRequest.Member(email);
         LikeRequest.Place place = new LikeRequest.Place(positionIdList.get(pos));
         LikeRequest request = new LikeRequest(member, place);
@@ -306,17 +308,27 @@ public class FragFirstInfoActivity extends AppCompatActivity {
                     // 문자열로 온 경우
                     if (result instanceof String) {
                         String resultString = (String) result;
-                        // 찜리스트 취소하는 경우
-                        if(resultString.equals("delete")) {
-                            Toast.makeText(getApplicationContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
-                            list_place.get(pos).setBoolean_cart(false);
+
+                        if(resultString.equals("update")) {
+                            // 찜리스트 취소하는 경우
+                            if(list_place.get(pos).getBoolean_cart()) {
+                                Toast.makeText(getApplicationContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                                list_place.get(pos).setBoolean_cart(false);
+                            }
+                            // 찜 리스트 추가하는 경우
+                            else {
+                                Toast.makeText(getApplicationContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                                list_place.get(pos).setBoolean_cart(true);
+                            }
                         }
                     }
+                    // 객체로 들어오는 경우
                     else {
                         //찜 리스트 추가하는 경우
                         Toast.makeText(getApplicationContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();
                         list_place.get(pos).setBoolean_cart(true);
                     }
+
                     /** 변경 감지 **/
                     themeAdapter.notifyItemChanged(pos);
                 }
