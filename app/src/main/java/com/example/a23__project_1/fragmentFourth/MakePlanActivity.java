@@ -27,6 +27,7 @@ import com.example.a23__project_1.response.CommonResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
+import com.example.a23__project_1.retrofit.RetrofitClientJwt;
 
 import java.util.Calendar;
 
@@ -201,12 +202,14 @@ public class MakePlanActivity extends AppCompatActivity {
 
     /** 일정 생성 API **/
     private void doMakePlan() {
-        apiService = RetrofitClient.getApiService();
+        String accessToken = sharedPreferences.getString("accessToken", "null");
+        apiService = RetrofitClientJwt.getApiService(accessToken);
+
         MakePlanRequest.Member member = new MakePlanRequest.Member(email);
         MakePlanRequest request = new MakePlanRequest(member, placeName,
                 btn_calendar.getText().toString(), btn_time.getText().toString(), title.getText().toString());
 
-        Call<CommonResponse> call = apiService.makePlan(request);
+        Call<CommonResponse> call = apiService.makePlan(accessToken, request);
         call.enqueue(new Callback<CommonResponse>() {
             @Override
             public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {

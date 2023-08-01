@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.a23__project_1.data.DataMoreInfo;
 import com.example.a23__project_1.R;
+import com.example.a23__project_1.response.PositionResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 /*
   어댑터의 동작원리 및 순서
   1.(getItemCount) 데이터 개수를 세어 어댑터가 만들어야 할 총 아이템 개수를 얻는다.
@@ -37,7 +39,7 @@ public class RecyclerFragFirstThemeAdapter extends RecyclerView.Adapter {
     /** 찜 버튼 클릭 리스너 **/
     private likeClickListener lcl;
     public interface likeClickListener {
-        void likeButtonClick(int pos);
+        void likeButtonClick(ArrayList<DataMoreInfo> dataModels, int pos);
     }
     public void setOnLikeClickListener(likeClickListener listener) {this.lcl = listener;}
 
@@ -438,7 +440,7 @@ public class RecyclerFragFirstThemeAdapter extends RecyclerView.Adapter {
                     if(lcl != null) {
                         int position = getBindingAdapterPosition();
                         if(position != RecyclerView.NO_POSITION) {
-                            lcl.likeButtonClick(position);
+                            lcl.likeButtonClick(dataModels, position);
                         }
                     }
                 }

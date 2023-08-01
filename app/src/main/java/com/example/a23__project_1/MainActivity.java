@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -68,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements FragmentThird.OnF
     private Animation animFlip;
     private ConstraintLayout layout_loading;
     private LinearLayout layout_main;
-    private TextView txtTitle, txtSubtitle, kakaoName;
+    private TextView txtTitle, txtSubtitle;
+    public TextView kakaoName;
 
     //Fragment
     private FragmentManager fragmentManager = getSupportFragmentManager();
@@ -81,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements FragmentThird.OnF
 
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "userInfo";
-    private ImageButton imgBtn_kakao_login;
     BottomNavigationView bottomNavigationView;
     private SharedViewModel sharedViewModel;
     private int fromWhere = 2;
@@ -91,8 +92,10 @@ public class MainActivity extends AppCompatActivity implements FragmentThird.OnF
     public int getfromWhere(){
         return fromWhere;
     }
+    private String user_name = "";
 
     private SlidingRootNav slidingRootNav;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,18 +104,13 @@ public class MainActivity extends AppCompatActivity implements FragmentThird.OnF
 
         // user 정보 저장
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        // 처음에는 값을 지운다.
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove("name");
-        editor.remove("email");
-        editor.remove("profile");
-        editor.apply();
 
         // API 통신
         apiService = RetrofitClient.getApiService();
 
         // 해시키 값 확인
-        Log.d("keyHash : ", getKeyHash());
+        // Log.d("keyHash : ", getKeyHash());
+
         txtTitle = (TextView)findViewById(R.id.txt_title);
         txtSubtitle = (TextView)findViewById(R.id.txt_subtitle);
         layout_loading = (ConstraintLayout)findViewById(R.id.layout_mainloading);
@@ -167,6 +165,11 @@ public class MainActivity extends AppCompatActivity implements FragmentThird.OnF
 
         // 사용자 이름 받기
         kakaoName = findViewById(R.id.personal_name);
+        user_name = sharedPreferences.getString("name", "null");
+        Log.d(TAG, "onCreate에서 user_name : " + user_name);
+
+        // 이름 여부에 따라 이름 배치
+        kakaoName.setText(!user_name.equals("null") ? user_name : "name");
 
 
         //장소 추천받기
@@ -210,31 +213,6 @@ public class MainActivity extends AppCompatActivity implements FragmentThird.OnF
             }
         });
 
-        // 현석 - 카카오 계정 로그인하기
-        imgBtn_kakao_login = (ImageButton) findViewById(R.id.btn_kakao_login);
-        imgBtn_kakao_login.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(MainActivity.this)) {
-                    login();
-                }
-                else {
-                    accountLogin();
-                }
-            }
-        });
-
-        // 카카오 계정 로그아웃하기.
-        LinearLayout btn_out = (LinearLayout) findViewById(R.id.btn_menulogout);
-        btn_out.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View v) {
-                showMessage();
-            }
-        });
-
         /**********************************************************
          *  main 액티비티 동작 - 프래그먼트
          * ********************************************************/
@@ -272,6 +250,18 @@ public class MainActivity extends AppCompatActivity implements FragmentThird.OnF
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        String userName = sharedPreferences.getString("name", "null");
+        // kakaoName.setText(!user_name.equals("null") ? user_name : "name");
+        if(!userName.equals("null")) {
+            kakaoName.setText(userName);
+        } else kakaoName.setText("name");
+    }
+
     @Override
     public void onFragmentInteraction(int itemId) {
         bottomNavigationView.setSelectedItemId(itemId);
@@ -305,39 +295,6 @@ public class MainActivity extends AppCompatActivity implements FragmentThird.OnF
             presstime = tempTime;
             Toast.makeText(getApplicationContext(), "한번더 누르시면 앱이 종료됩니다", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void showMessage() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("안내");
-        builder.setMessage("로그아웃할 시 앱이 종료됩니다. \n로그아웃 하시겠습니까?");
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-
-        //로그아웃 "예"
-        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(), "로그아웃이 완료되었습니다.\n앱을 종료합니다.", Toast.LENGTH_SHORT).show();
-                finish();
-//                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
-//                    @Override
-//                    public void onCompleteLogout() {
-//                        finish(); // 현재 액티비티 종료
-//                    }
-//                });
-            }
-        });
-
-        //로그아웃 "아니오"
-        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                builder.setNegativeButton("아니오", null);
-            }
-        });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -388,101 +345,25 @@ public class MainActivity extends AppCompatActivity implements FragmentThird.OnF
         }
     }
 
-    //kakao get key Hash
-    private String getKeyHash() {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md;
-                md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String something = new String(Base64.encode(md.digest(), 0));
-                Log.e("Hash key", something);
-                return something;
-            }
-        } catch (Exception e) {
-            Log.e("name not found", e.toString());
-        }
-        return "";
-    }
+    //카카오 키 해시 값 얻기 (key Hash)
+//    private String getKeyHash() {
+//        try {
+//            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+//            for (Signature signature : info.signatures) {
+//                MessageDigest md;
+//                md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                String something = new String(Base64.encode(md.digest(), 0));
+//                Log.e("Hash key", something);
+//                return something;
+//            }
+//        } catch (Exception e) {
+//            Log.e("name not found", e.toString());
+//        }
+//        return "";
+//    }
 
-    // 카카오 계정이 있는 경우 바로 로그인
-    public void login(){
-        String TAG = "login()";
-        UserApiClient.getInstance().loginWithKakaoTalk(MainActivity.this,(oAuthToken, error) -> {
-            if (error != null) {
-                Log.e(TAG, "로그인 실패", error);
-            } else if (oAuthToken != null) {
-                Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
-                /** API 요청 실행 **/
-                //loginAPI(oAuthToken.getAccessToken());
-                getUserInfo();
-            }
-            return null;
-        });
-    }
-
-    // 없는 경우 직접 계정으로 로그인
-    public void accountLogin(){
-        String TAG = "accountLogin()";
-        UserApiClient.getInstance().loginWithKakaoAccount(MainActivity.this,(oAuthToken, error) -> {
-            if (error != null) {
-                Log.e(TAG, "로그인 실패", error);
-            } else if (oAuthToken != null) {
-                Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
-                /** API 요청 수행 **/
-                //loginAPI(oAuthToken.getAccessToken());
-                getUserInfo();
-            }
-            return null;
-        });
-    }
-
-    /** 로그인 연동 API **/
-    public void loginAPI(String token) {
-        Call<LoginResponse> call = apiService.kakaoLogin(token);
-        call.enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if(response.isSuccessful()) {
-                    LoginResponse.Result data = response.body().getResult();
-                    String accessToken = data.getAccessToken();
-                    String refreshToken = data.getRefreshToken();
-                    Log.d(TAG, "accessToken : " + accessToken);
-                    Log.d(TAG, "refreshToken : " + refreshToken);
-                    Toast.makeText(getApplicationContext(), "로그인 성공!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.d(TAG, "로그인 연동 실패  ... ");
-            }
-        });
-    }
-
-    /** 사용자 정보 불러오기 **/
-    public void getUserInfo() {
-        UserApiClient.getInstance().me((user, meError) -> {
-            if(meError != null) {
-                Log.e(TAG, "사용자 정보 요청 실패", meError);
-            }
-            else {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("name", user.getKakaoAccount().getProfile().getNickname());
-                Log.d(TAG, "name " + user.getKakaoAccount().getProfile().getNickname());
-                editor.putString("email", user.getKakaoAccount().getEmail());
-                editor.putString("profile", user.getKakaoAccount().getProfile().getProfileImageUrl());
-                editor.apply();
-                Toast.makeText(getApplicationContext(), "로그인이 성공적으로 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                imgBtn_kakao_login.setVisibility(View.GONE);
-                kakaoName.setText(user.getKakaoAccount().getProfile().getNickname());
-            }
-            return null;
-        });
-    }
-
-    //leftmenu fragment 변경 함수
+    // leftmenu fragment 변경 함수
     private void switchFragment(Fragment fragment,@IdRes int bottomNavItemId) {
         getSupportFragmentManager()
                 .beginTransaction()

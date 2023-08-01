@@ -33,23 +33,41 @@
             android:textSize="22dp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/lin_noplan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/nestedScrollView2"
+        app:layout_constraintTop_toTopOf="@+id/lin_first">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="아직 생성된 일정이 없습니다.\n 일정을 생성해보아요!"
+            android:textSize="18dp"
+            android:textColor="@color/secondary_grey_black_7"
+            android:fontFamily="@font/pretendard_medium"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+    </LinearLayout>
+
     <androidx.core.widget.NestedScrollView
-        android:layout_marginTop="32dp"
         android:id="@+id/nestedScrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lin_first" >
+        app:layout_constraintTop_toBottomOf="@+id/lin_first">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_plan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:nestedScrollingEnabled="false" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_plan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:nestedScrollingEnabled="false" />
 
     </androidx.core.widget.NestedScrollView>
 

@@ -37,13 +37,12 @@
 
     <ImageButton
         android:id="@+id/iv_cctv"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:background="@drawable/ic_cctv"
-        android:layout_toRightOf="@id/tv_content"
+        android:layout_toLeftOf="@+id/tv_traffic"
         android:layout_below="@id/tv_title"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="8dp"/>
+        android:layout_marginRight="16dp" />
 
     <TextView
         android:id="@+id/tv_map"

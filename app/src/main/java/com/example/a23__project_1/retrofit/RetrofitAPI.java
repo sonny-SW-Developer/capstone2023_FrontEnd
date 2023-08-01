@@ -26,12 +26,13 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface RetrofitAPI {
-    @POST("/login")
-    Call<LoginResponse> kakaoLogin(@Body String token);
+//    @POST("/login")
+//    Call<LoginResponse> kakaoLogin(@Body String token);
 
     @GET("/thema")
     Call<ThemaAllResponse> getAllThema();
@@ -65,11 +66,11 @@ public interface RetrofitAPI {
 
     /** 일정 추가 **/
     @POST("/schedule")
-    Call<CommonResponse> makePlan(@Body MakePlanRequest request);
+    Call<CommonResponse> makePlan(@Header("Authorization") String token, @Body MakePlanRequest request);
 
     /** 일정 확인 **/
     @GET("/schedule/all/{member_id}")
-    Call<PlanListResponse> getPlanList(@Query("member_id") String memberId);
+    Call<PlanListResponse> getPlanList(@Header("Authorization") String token, @Query("member_id") String memberId);
 
     /** 장소 이름으로 검색 **/
     @GET("/place/name")
@@ -81,7 +82,7 @@ public interface RetrofitAPI {
 
     /** 문의사항 목록 **/
     @GET("inquiry/all/{member_id}")
-    Call<InquiryResponse> getInquiryList(@Query("member_id") String memberId);
+    Call<InquiryResponse> getInquiryList(@Header("Authorization") String token, @Query("member_id") String memberId);
 
     /** 카카오톡 로그인 (수정) **/
     @POST("/auth/kakao")
@@ -102,6 +103,10 @@ public interface RetrofitAPI {
     /** 로그아웃 **/
     @POST("/auth/logout")
     Call<ResponseBody> userLogout(@Header("Authorization") String token);
+
+    /** 일정 삭제 **/
+    @PATCH("/schedule/sche/{shce_id}")
+    Call<CommonResponse> deleteSchedule(@Header("Authorization") String token, @Query("sche_id") Long sche_id);
 
     /** 장소추천 **/
     @POST("http://13.124.202.241:8080/place/csv")

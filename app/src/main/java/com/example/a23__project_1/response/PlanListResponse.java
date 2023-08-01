@@ -29,7 +29,7 @@ public class PlanListResponse {
         private String title;
 
         @SerializedName("sche_id")
-        private int scheId;
+        private Long scheId;
 
         @SerializedName("place_name")
         private String placeName;
@@ -41,7 +41,7 @@ public class PlanListResponse {
         @SerializedName("start_time")
         private String startTime;
 
-        public Result(String memberId, String title, int scheId, String placeName, List<String> thema,
+        public Result(String memberId, String title, Long scheId, String placeName, List<String> thema,
                       String startDate, String startTime) {
             this.memberId = memberId;
             this.title = title;
@@ -64,7 +64,7 @@ public class PlanListResponse {
             return title;
         }
 
-        public int getScheId() {
+        public Long getScheId() {
             return scheId;
         }
 
