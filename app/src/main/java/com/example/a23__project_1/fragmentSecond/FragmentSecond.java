@@ -30,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a23__project_1.MainActivity;
 import com.example.a23__project_1.R;
 import com.example.a23__project_1.SharedViewModel;
-import com.example.a23__project_1.leftMenuBar.MapActivityChangeTest;
 import com.example.a23__project_1.request.LikeRequest;
 import com.example.a23__project_1.response.LikeResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;

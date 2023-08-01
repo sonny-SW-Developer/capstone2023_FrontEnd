@@ -46,8 +46,11 @@ public class PositionResponse {
         private double latitude;
         private double longitude;
 
-        public Result(Long placeId,Integer popular,int likeYn, String name,
-                      double latitude,double longitude,String thema_name) {
+        @SerializedName("image_url")
+        private String imageURL;
+
+        public Result(Long placeId,Integer popular,String name,int likeYn,
+                     String image_url,double latitude,double longitude,String thema_name) {
             this.name = name;
             this.latitude = latitude;
             this.longitude = longitude;
@@ -55,6 +58,7 @@ public class PositionResponse {
             this.thema_name = thema_name;
             this.popular = popular;
             this.likeYn = likeYn;
+            this.imageURL = image_url;
         }
 
         public String getName() {
@@ -78,6 +82,8 @@ public class PositionResponse {
         public Integer getPopular() {
             return popular;
         }
+
+        public String getImageURL(){return imageURL;}
 
         public int getLikeYn() {
             return likeYn;

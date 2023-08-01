@@ -12,7 +12,7 @@
         android:visibility="visible">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/activity_my_recommend_toolbar"
+            android:id="@+id/activity_first_recommend_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize">
@@ -22,6 +22,7 @@
                 android:layout_height="wrap_content"
                 android:text="지금 여기 어때"
                 android:layout_gravity="center"
+                android:id="@+id/toolbar_title"
                 android:fontFamily="@font/the_jamsil_3"
                 android:textSize="25sp"
                 />
@@ -35,7 +36,6 @@
                 android:src="@drawable/ic_baseline_settings_24"
                 android:background="@color/white"
                 />
-            <!--            android:backgroundTint="#B4E5FF"-->
 
         </androidx.appcompat.widget.Toolbar>
 

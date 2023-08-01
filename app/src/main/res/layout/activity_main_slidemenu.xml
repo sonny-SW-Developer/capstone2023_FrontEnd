@@ -63,13 +63,9 @@
 
 </LinearLayout>
 
-    <Space
-    android:layout_width="match_parent"
-    android:layout_height="30sp"/>
-
 
     <LinearLayout
-    android:id="@+id/btn_userInfo"
+    android:id="@+id/btn_recommend"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -78,7 +74,7 @@
     android:background="@color/white">
 
     <ImageView
-        android:id="@+id/imageView_userInfo"
+        android:id="@+id/imageView_recommend"
         android:layout_marginLeft="20sp"
         android:layout_width="30sp"
         android:layout_height="30sp"
@@ -87,21 +83,21 @@
         />
 
     <TextView
-        android:id="@+id/textView_userInfo"
+        android:id="@+id/textView_recommend"
         android:layout_marginLeft="20sp"
         android:layout_marginTop="5sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:textColor="@color/black"
-        android:text="나의 회원정보"/>
+        android:text="테마별 장소 추천"/>
 
 
 </LinearLayout>
 
     <Space
     android:layout_width="match_parent"
-    android:layout_height="30sp"/>
+    android:layout_height="25sp"/>
 
     <LinearLayout
     android:id="@+id/btn_history"
@@ -118,7 +114,7 @@
         android:layout_width="30sp"
         android:layout_height="30sp"
         android:backgroundTint="@color/black"
-        android:background="@drawable/ic_baseline_history_24"
+        android:background="@drawable/ic_baseline_face_24"
         />
 
     <TextView
@@ -129,15 +125,46 @@
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:textColor="@color/black"
-        android:text="과거 여정 확인"/>
+        android:text="실시간 장소 검색"/>
 
 
 </LinearLayout>
 
     <Space
     android:layout_width="match_parent"
-    android:layout_height="30sp"/>
+    android:layout_height="25sp"/>
 
+    <LinearLayout
+        android:id="@+id/btn_mymap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_marginTop="10sp"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/image_mymap"
+            android:layout_marginLeft="20sp"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:backgroundTint="@color/black"
+            android:background="@drawable/ic_baseline_map_24"
+            />
+
+        <TextView
+            android:id="@+id/text_mymap"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="5sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="지도에서 살펴보기"/>
+    </LinearLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25sp"/>
     <LinearLayout
     android:id="@+id/btn_myplan"
     android:layout_width="wrap_content"
@@ -153,7 +180,7 @@
         android:layout_width="30sp"
         android:layout_height="30sp"
         android:backgroundTint="@color/black"
-        android:background="@drawable/ic_baseline_face_24"
+        android:background="@drawable/ic_baseline_history_24"
         />
 
     <TextView
@@ -164,17 +191,49 @@
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:textColor="@color/black"
-        android:text="나의 일정 정보"/>
+        android:text="나의 일정 확인"/>
 
 
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25sp"/>
 
 
+    <LinearLayout
+        android:id="@+id/btn_support"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_marginTop="10sp"
+        android:orientation="horizontal"
+        android:background="@color/white">
 
-</LinearLayout>
+        <ImageView
+            android:layout_marginLeft="20sp"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:backgroundTint="@color/black"
+            android:background="@drawable/baseline_support_agent_24"
+            />
+
+        <TextView
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="5sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="회원 정보 확인"/>
+
+
+    </LinearLayout>
+
 
     <Space
     android:layout_width="match_parent"
-    android:layout_height="30sp"/>
+    android:layout_height="25sp"/>
 
     <LinearLayout
     android:id="@+id/btn_menulogout"
@@ -213,51 +272,6 @@
     <Space
     android:layout_width="match_parent"
     android:layout_height="30sp"/>
-
-    <LinearLayout
-        android:id="@+id/btn_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:layout_marginTop="10sp"
-        android:orientation="horizontal"
-        android:background="@color/white">
-
-        <ImageView
-            android:id="@+id/image_map"
-            android:layout_marginLeft="20sp"
-            android:layout_width="30sp"
-            android:layout_height="30sp"
-            android:backgroundTint="@color/black"
-            android:background="@drawable/ic_baseline_map_24"
-            />
-
-        <TextView
-            android:id="@+id/text_map"
-            android:layout_marginLeft="20sp"
-            android:layout_marginTop="5sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="현재 지도 확인"/>
-    </LinearLayout>
-
-<!--    <Space-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_weight="1"/>-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btn_close"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="메뉴 닫기"-->
-<!--        android:fontFamily="@font/ddcoding"-->
-<!--        android:background="#a1aef6"/>-->
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30sp"/>
 
     <LinearLayout
         android:id="@+id/lin_kakao"

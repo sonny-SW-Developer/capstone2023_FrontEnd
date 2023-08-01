@@ -1,5 +1,6 @@
 package com.example.a23__project_1;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -34,7 +35,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.a23__project_1.fragmentFifth.FragmentFifth;
@@ -42,18 +42,15 @@ import com.example.a23__project_1.fragmentSecond.FragmentSecond;
 
 import com.example.a23__project_1.fragmentFirst.FragmentFirst;
 import com.example.a23__project_1.fragmentFourth.FragmentFourth;
-import com.example.a23__project_1.leftMenuBar.HistoryActivity;
-import com.example.a23__project_1.leftMenuBar.MapActivity;
-import com.example.a23__project_1.leftMenuBar.MapActivityChangeTest;
-import com.example.a23__project_1.leftMenuBar.MyplanActivity;
-import com.example.a23__project_1.leftMenuBar.UserinfoActivity;
+import com.example.a23__project_1.fragmentThird.FragmentThird;
 
+import com.example.a23__project_1.fragmentThirdTest.FragmentThirdTest;
 import com.example.a23__project_1.response.LoginResponse;
 import com.example.a23__project_1.retrofit.RetrofitAPI;
 import com.example.a23__project_1.retrofit.RetrofitClient;
-import com.example.a23__project_1.fragmentThird.FragmentThird;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kakao.sdk.user.UserApiClient;
+import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
 import java.security.MessageDigest;
@@ -63,7 +60,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity implements MapActivityChangeTest.OnFragmentInteractionListener, FragmentSecond.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements FragmentThird.OnFragmentInteractionListener, FragmentSecond.OnFragmentInteractionListener {
     private static final String TAG = "MainActivity";
     private RetrofitAPI apiService;
 
@@ -72,14 +69,13 @@ public class MainActivity extends AppCompatActivity implements MapActivityChange
     private ConstraintLayout layout_loading;
     private LinearLayout layout_main;
     private TextView txtTitle, txtSubtitle, kakaoName;
-    private FrameLayout layout_slidingRootNav;
 
     //Fragment
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FragmentFirst fragmentFirst = new FragmentFirst();
     private FragmentSecond fragmentSecond = new FragmentSecond();
-    //private MapActivityChangeTest fragmentThird = new MapActivityChangeTest(); //원래 코드
-    private FragmentThird fragmentThird = new FragmentThird();  //테스트용 코드
+    //private FragmentThird fragmentThird = new FragmentThird(); //원래 코드
+    private FragmentThirdTest fragmentThird = new FragmentThirdTest();  //테스트용 코드
     private FragmentFourth fragmentFourth = new FragmentFourth();
     private FragmentFifth fragmentFifth = new FragmentFifth();
 
@@ -95,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements MapActivityChange
     public int getfromWhere(){
         return fromWhere;
     }
+
+    private SlidingRootNav slidingRootNav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements MapActivityChange
         layout_loading = (ConstraintLayout)findViewById(R.id.layout_mainloading);
         layout_main=(LinearLayout) findViewById(R.id.layout_main);
         animationView = (LottieAnimationView) findViewById(R.id.lottie);
-        //layout_slidingRootNav = (FrameLayout) findViewById(R.id.activity_slidingRootNav);
 
         animFlip = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.flip);
@@ -133,54 +130,15 @@ public class MainActivity extends AppCompatActivity implements MapActivityChange
         txtSubtitle.startAnimation(animFlip);
         txtTitle.startAnimation(animFlip);
 
-        //animationView.setAnimation("loading.json");
         // lottie 애니메이션 동작 코드
         animationView.playAnimation();
         animationView.setRepeatCount(1);
 
         startLoading();
-
-        /**********************************************************
-         *  수정 필요 코드
-         * ********************************************************/
-//        Intent intent = getIntent();
-//        String messege = "";
-//        FragmentTransaction transaction3 = null;
-//        if(intent.hasExtra("key")){
-//            messege = intent.getStringExtra("key");
-//            //transaction3= fragmentManager.beginTransaction();
-//        }
-//
-//
-//        switch (messege){
-//            case "firstFragment":
-//                fragNum=0;
-//                //transaction3.replace(R.id.frameLayout_main, fragmentFirst).commitAllowingStateLoss();
-//                break;
-//            case "secondFragment":
-//                fragNum=1;
-//                //transaction3.replace(R.id.frameLayout_main, fragmentSecond).commitAllowingStateLoss();
-//                break;
-//            case "thirdFragment":
-//                fragNum=2;
-//                //transaction3.replace(R.id.frameLayout_main, fragmentThird).commitAllowingStateLoss();
-//                break;
-//            case "fourthFragment":
-//                fragNum=3;
-//                //transaction3.replace(R.id.frameLayout_main, fragmentFourth).commitAllowingStateLoss();
-//                break;
-//            case "fifthFragment":
-//                fragNum=4;
-//                //transaction3.replace(R.id.frameLayout_main, fragmentFifth).commitAllowingStateLoss();
-//                break;
-//            default:
-//                isAnim = true;
-//
-//        }
-
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+
         /**********************************************************
-         *  main 액티비티 동작
+         *  toolbar
          * ********************************************************/
 
         //툴바 옆, setting 관련 코드
@@ -201,44 +159,54 @@ public class MainActivity extends AppCompatActivity implements MapActivityChange
 
         setSupportActionBar(toolbar);
 
-        new SlidingRootNavBuilder(this)
+        slidingRootNav = new SlidingRootNavBuilder(this)
                 .withToolbarMenuToggle(toolbar)
                 .withMenuOpened(false)
-                .withMenuLayout(R.layout.activity_menu)
+                .withMenuLayout(R.layout.activity_main_slidemenu)
                 .inject();
 
         // 사용자 이름 받기
         kakaoName = findViewById(R.id.personal_name);
 
-        //사용자 정보 확인
-        LinearLayout btn_userInfo = (LinearLayout) findViewById(R.id.btn_userInfo);
-        btn_userInfo.setOnClickListener(new View.OnClickListener() {
+
+        //장소 추천받기
+        findViewById(R.id.btn_recommend).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = new Intent(MainActivity.this, UserinfoActivity.class);
-                startActivity(intent);
+                switchFragment(fragmentFirst,R.id.firstItem);
             }
         });
 
-        //나의 여정 기록 확인
-        LinearLayout btn_history = (LinearLayout) findViewById(R.id.btn_history);
-        btn_history.setOnClickListener(new View.OnClickListener() {
+
+        //혼잡도 리스트 검색
+        findViewById(R.id.btn_history).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
-                startActivity(intent);
+                switchFragment(fragmentSecond,R.id.secondItem);
             }
         });
 
-        //나의 일정 정보
-        LinearLayout btn_myplan = (LinearLayout) findViewById(R.id.btn_myplan);
-        btn_myplan.setOnClickListener(new View.OnClickListener() {
+        //지도에서 보기
+        findViewById(R.id.btn_mymap).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MyplanActivity.class);
-                //intent.putExtra("profile", image_profile);
-                startActivity(intent);
+                switchFragment(fragmentThird,R.id.thirdItem);
+            }
+        });
+
+        //일정 기록 확인
+        findViewById(R.id.btn_myplan).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchFragment(fragmentFourth,R.id.fourthItem);
+            }
+        });
+
+        //사용자 정보
+        findViewById(R.id.btn_support).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchFragment(fragmentFifth,R.id.fifthItem);
             }
         });
 
@@ -267,16 +235,9 @@ public class MainActivity extends AppCompatActivity implements MapActivityChange
             }
         });
 
-        //지도 확인
-        LinearLayout btn_map = (LinearLayout) findViewById(R.id.btn_map);
-        btn_map.setOnClickListener(new View.OnClickListener() {
-            //@RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                startActivity(intent);
-            }
-        });
+        /**********************************************************
+         *  main 액티비티 동작 - 프래그먼트
+         * ********************************************************/
 
         //화면 추가할 프래그먼트 추가
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -322,7 +283,6 @@ public class MainActivity extends AppCompatActivity implements MapActivityChange
             @Override
             public void run() {
                 layout_loading.setVisibility(View.GONE);
-                //               layout_slidingRootNav.setVisibility(View.VISIBLE);
                 layout_main.setVisibility(View.VISIBLE);
 
             }
@@ -427,16 +387,6 @@ public class MainActivity extends AppCompatActivity implements MapActivityChange
             return true;
         }
     }
-    public SharedViewModel getSharedViewModel() {
-        return sharedViewModel;
-    }
-    public void navigateToFragment(Fragment fragment, int menuItemId) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frameLayout_main, fragment).commitAllowingStateLoss();
-
-        // 바텀 네비게이션 메뉴 변경
-        bottomNavigationView.setSelectedItemId(menuItemId);
-    }
 
     //kakao get key Hash
     private String getKeyHash() {
@@ -530,5 +480,15 @@ public class MainActivity extends AppCompatActivity implements MapActivityChange
             }
             return null;
         });
+    }
+
+    //leftmenu fragment 변경 함수
+    private void switchFragment(Fragment fragment,@IdRes int bottomNavItemId) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frameLayout_main, fragment)
+                .commit();
+        slidingRootNav.closeMenu(true);
+        bottomNavigationView.setSelectedItemId(bottomNavItemId);
     }
 }
