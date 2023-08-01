@@ -3,6 +3,7 @@ package com.example.a23__project_1.retrofit;
 import com.example.a23__project_1.request.InquiryRequest;
 import com.example.a23__project_1.request.LikeRequest;
 import com.example.a23__project_1.request.LoginUserRequest;
+import com.example.a23__project_1.request.RecommendRequest;
 import com.example.a23__project_1.request.RegisterUserRequest;
 import com.example.a23__project_1.request.MakePlanRequest;
 import com.example.a23__project_1.response.ChangeJwtResponse;
@@ -17,6 +18,7 @@ import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.PlaceInfoResponse;
 import com.example.a23__project_1.response.PlanListResponse;
 import com.example.a23__project_1.response.PositionResponse;
+import com.example.a23__project_1.response.RecommendResponse;
 import com.example.a23__project_1.response.ThemaAllResponse;
 
 import okhttp3.ResponseBody;
@@ -100,4 +102,8 @@ public interface RetrofitAPI {
     /** 로그아웃 **/
     @POST("/auth/logout")
     Call<ResponseBody> userLogout(@Header("Authorization") String token);
+
+    /** 장소추천 **/
+    @POST("http://13.124.202.241:8080/place/csv")
+    Call<RecommendResponse> userRecommend(@Header("Authorization") String token, @Body RecommendRequest recommendRequest);
 }
