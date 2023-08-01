@@ -142,11 +142,24 @@
         android:layout_marginTop="8dp" />
 
     <android.widget.Button
-        android:id="@+id/btn_close"
+        android:id="@+id/btn_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_time"
         android:layout_marginTop="24dp"
+        android:text="삭제하기"
+        android:textColor="@color/secondary_grey_black_14"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:textSize="20dp"
+        android:background="@color/main_dark_50"
+        android:layout_marginBottom="24dp"/>
+
+    <android.widget.Button
+        android:id="@+id/btn_close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_delete"
+        android:layout_marginTop="8dp"
         android:text="닫기"
         android:textColor="@color/secondary_grey_black_14"
         android:fontFamily="@font/pretendard_semi_bold"

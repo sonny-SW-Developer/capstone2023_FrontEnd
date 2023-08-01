@@ -5,8 +5,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,10 +17,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a23__project_1.MainActivity;
 import com.example.a23__project_1.R;
+import com.example.a23__project_1.response.CommonResponse;
 import com.example.a23__project_1.response.PlaceAllResponse;
 import com.example.a23__project_1.response.PlaceInfoResponse;
 import com.example.a23__project_1.response.PlanListResponse;
@@ -51,6 +56,11 @@ public class PlanListActivity extends AppCompatActivity {
     private PlanListAdapter planListAdapter;
     private Dialog planInfoDialog;
     private List<String> planThemaList;
+    private List<String> planName;
+    private List<Long> scheIdList;
+    private LinearLayout linText;
+
+    List<PlanListResponse.Result> results;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +73,19 @@ public class PlanListActivity extends AppCompatActivity {
 
         close = findViewById(R.id.btn_back);
         close.setOnClickListener(closeClickListener);
+        linText = findViewById(R.id.lin_noplan);
+
         recyclerView = findViewById(R.id.recycler_plan);
         resultList = new ArrayList<>();
         planThemaList = new ArrayList<>();
+        scheIdList = new ArrayList<>();
+        planName = new ArrayList<>();
+        results = new ArrayList<>();
 
         getPlanList();
+
+        // 리스트가 없으면 해당 문구가 보이도록 설정.
+        linText.setVisibility((planName.size() == 0) ? View.VISIBLE : View.GONE);
 
         // Dialog
         planInfoDialog = new Dialog(this);
@@ -80,6 +98,15 @@ public class PlanListActivity extends AppCompatActivity {
         finish();
     };
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.d(TAG, "onResume 호출 :");
+        // 리스트가 없으면 해당 문구가 보이도록 설정.
+        linText.setVisibility((planName.size() == 0) ? View.VISIBLE : View.GONE);
+    }
+
     // 리스트 가져오기
     private void getPlanList() {
         String accessToken = sharedPreferences.getString("accessToken", "null");
@@ -89,15 +116,21 @@ public class PlanListActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<PlanListResponse> call, Response<PlanListResponse> response) {
                 if (response.isSuccessful() && response.body().getMessage().contains("성공")) {
-                    List<PlanListResponse.Result> results = response.body().getResult();
+                    results = response.body().getResult();
+
+                    // 리스트가 없으면 해당 문구가 보이도록 설정.
+                    linText.setVisibility((results.size() == 0) ? View.VISIBLE : View.GONE);
 
                     List<String> themaList = new ArrayList<>();
                     for (PlanListResponse.Result result : results) {
+                        planName.add(result.getTitle());
+
                         themaList = result.getThema();
                         for (String thema : themaList)
                             cate += thema + ", ";
                         cate = cate.substring(0, cate.length() - 2); // 카테고리 문자열로 출력
                         planThemaList.add(cate);
+                        scheIdList.add(result.getScheId());
                     }
 
                     planListAdapter = new PlanListAdapter(getApplicationContext(), results);
@@ -135,11 +168,14 @@ public class PlanListActivity extends AppCompatActivity {
         TextView tv_cate = planInfoDialog.findViewById(R.id.tv_cate);
         TextView tv_date = planInfoDialog.findViewById(R.id.tv_date);
         TextView tv_time = planInfoDialog.findViewById(R.id.tv_time);
+
         tv_rec = planInfoDialog.findViewById(R.id.tv_rec);
         Button close = planInfoDialog.findViewById(R.id.btn_close);
+        Button delete = planInfoDialog.findViewById(R.id.btn_delete);
 
         plan_title.setText(list.get(position).getTitle());
         place.setText(list.get(position).getPlaceName());
+        Long scheduleId = list.get(position).getScheId();
 
         /** 한가한 시간을 추천받는다. **/
         getPlaceInform(list.get(position).getPlaceName());
@@ -204,6 +240,75 @@ public class PlanListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 planInfoDialog.dismiss();
+            }
+        });
+
+        // 삭제하기 버튼 클릭 시
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(PlanListActivity.this);
+                builder.setTitle("일정 삭제");
+                builder.setMessage("해당 일정을 정말 삭제하시겠습니까?");
+                builder.setIcon(R.drawable.ic_caution);
+
+                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteSchedule(scheduleId, position);
+                        planInfoDialog.dismiss();
+
+                        // 해당 리스트 삭제
+                        planName.remove(plan_title.getText().toString());
+                        // 리스트가 없으면 해당 문구가 보이도록 설정.
+                        linText.setVisibility((planName.size() == 0) ? View.VISIBLE : View.GONE);
+
+                    }
+                });
+
+                builder.setNeutralButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                // 다이얼로그 표시
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+    }
+
+    /** 삭제 API **/
+    private void deleteSchedule(Long scheduleId, int position) {
+        String accessToken = sharedPreferences.getString("accessToken", "null");
+        apiService = RetrofitClientJwt.getApiService(accessToken);
+        Call<CommonResponse> call = apiService.deleteSchedule(accessToken, scheduleId);
+        call.enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+                if(response.isSuccessful()) {
+                    Object result = response.body().getResult();
+                    if (result instanceof String) {
+                        String resultString = (String) result;
+                        // 삭제 성공!
+                        if(resultString.equals("update")) {
+                            Toast.makeText(getApplicationContext(), "해당 일정이 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                            results.remove(position);
+                            planListAdapter.notifyDataSetChanged();
+                        }
+                    }
+                    else
+                        Log.d(TAG, "일정 삭제 오류 1..." + response.message());
+                }
+                else
+                    Log.d(TAG, "일정 삭제 오류 2..." + response.code() + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
+                Log.d(TAG, "일정 삭제 오류 3..." + t.getMessage());
             }
         });
     }

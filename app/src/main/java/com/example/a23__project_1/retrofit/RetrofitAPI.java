@@ -24,6 +24,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -100,4 +101,8 @@ public interface RetrofitAPI {
     /** 로그아웃 **/
     @POST("/auth/logout")
     Call<ResponseBody> userLogout(@Header("Authorization") String token);
+
+    /** 일정 삭제 **/
+    @PATCH("/schedule/sche/{shce_id}")
+    Call<CommonResponse> deleteSchedule(@Header("Authorization") String token, @Query("sche_id") Long sche_id);
 }
