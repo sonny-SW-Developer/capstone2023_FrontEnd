@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements FragmentThird.OnF
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FragmentFirst fragmentFirst = new FragmentFirst();
     private FragmentSecond fragmentSecond = new FragmentSecond();
-    //private FragmentThird fragmentThird = new FragmentThird(); //원래 코드
-    private FragmentThirdTest fragmentThird = new FragmentThirdTest();  //테스트용 코드
+    private FragmentThird fragmentThird = new FragmentThird(); //원래 코드
+    //private FragmentThirdTest fragmentThird = new FragmentThirdTest();  //테스트용 코드
     private FragmentFourth fragmentFourth = new FragmentFourth();
     private FragmentFifth fragmentFifth = new FragmentFifth();
 

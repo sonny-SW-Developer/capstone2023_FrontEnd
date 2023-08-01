@@ -56,7 +56,7 @@ public class RecyclerMyRecommendAdapter  extends RecyclerView.Adapter{
 
         //자신이 만든 itemview를 inflate한 다음 뷰홀더 생성
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_frag_first_places_specific, parent, false);
+                .inflate(R.layout.item_recycler_frag_first_places_specific, parent, false);
         RecyclerMyRecommendAdapter.MyViewHolder viewHolder = new RecyclerMyRecommendAdapter.MyViewHolder(view);
 
         //생선된 뷰홀더를 리턴하여 onBindViewHolder에 전달한다.

@@ -1,6 +1,8 @@
 package com.example.a23__project_1.fragmentFirst;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -72,7 +75,9 @@ public class FragmentFirst extends Fragment implements View.OnClickListener{
     private CardView cardView10;
     private CardView cardView11;
     private CardView cardView12;
-
+    private SharedPreferences sharedPreferences;
+    private static final String PREF_NAME = "userInfo";
+    private String email = "";
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Initialize view
@@ -261,9 +266,17 @@ public class FragmentFirst extends Fragment implements View.OnClickListener{
 
             case R.id.layout_btn_recommend:
                 Log.d("frag","일정추천");
-                intent = new Intent(getActivity(), MyRecommend.class);
-                intent.putExtra("elements","my_recommend");
-                startActivity(intent);
+                sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                String email = sharedPreferences.getString("email", "null");
+                if (email.equals("null")) {
+                    /** 다이얼로그 출력해주기 **/
+                    Toast.makeText(requireContext(), "로그인을 먼저 진행해주세요...", Toast.LENGTH_SHORT).show();
+                }else{
+                    intent = new Intent(getActivity(), MyRecommend.class);
+                    intent.putExtra("elements","my_recommend");
+                    startActivity(intent);
+                }
+
                 break;
 
 
