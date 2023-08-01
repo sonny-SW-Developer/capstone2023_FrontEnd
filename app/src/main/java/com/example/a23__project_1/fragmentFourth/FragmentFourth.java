@@ -268,8 +268,7 @@ public class FragmentFourth extends Fragment {
     public void postLike(List<PlaceAllResponse.Result> list, int pos, Long place_id, String accessToken) {
         Log.d(TAG, "PostLike를 실행합니다1..");
 
-        String email = sharedPreferences.getString("email", "null");
-        if (email.equals("null")) {
+        if (accessToken.equals("null")) {
             /* 토스트문구 출력해주기 */
             Toast.makeText(requireContext(), "로그인을 먼저 진행해주세요...", Toast.LENGTH_SHORT).show();
             return;
@@ -285,21 +284,29 @@ public class FragmentFourth extends Fragment {
             @Override
             public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
                 if (response.isSuccessful()) {
-                    /** 요청에 성공했을 때 **/
-                    Log.d(TAG, "응답 성공!");
-                    Log.d(TAG, "result 값 : " + response.body().getResult().toString());
+                    Object result = response.body().getResult();
 
-                    // 찜 좋아요 취소인 경우
-                    if (response.body().isResultString()) {
-                        String resultString = response.body().getResultAsString();
-                        if (resultString.equals("update")) {
-                            Toast.makeText(requireContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
-                            list.get(pos).setLikeYn(0);
-                            Log.d(TAG, String.valueOf(list.get(pos).getLikeYn()));
+                    // 문자열로 온 경우
+                    if(result instanceof String) {
+                        String resultString = (String) result;
+
+                        if(resultString.equals("update")) {
+                            // 찜 리스트를 취소하는 경우
+                            if(list.get(pos).getLikeYn() == 1) {
+                                Toast.makeText(requireContext(), "찜 리스트에 정상적으로 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                                list.get(pos).setLikeYn(0);
+                                Log.d(TAG, "찜리스트 좋아요 확인 : " + String.valueOf(list.get(pos).getLikeYn()));
+                            }
+                            // 찜 리스트 추가하는 경우
+                            else {
+                                Toast.makeText(requireContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                                list.get(pos).setLikeYn(1);
+                                Log.d(TAG, "찜리스트 좋아요 확인 : " + String.valueOf(list.get(pos).getLikeYn()));
+                            }
                         }
                     }
 
-                    // 찜 좋아요를 요청한 경우
+                    // 객체로 들어오는 경우
                     else {
                         //찜 리스트 추가하는 경우
                         Toast.makeText(requireContext(), "찜 리스트에 정상적으로 추가되었습니다.", Toast.LENGTH_SHORT).show();

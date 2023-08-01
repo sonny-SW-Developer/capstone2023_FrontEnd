@@ -51,7 +51,7 @@ public interface RetrofitAPI {
 
     /** 문의사항 생성하기 **/
     @POST("/inquiry")
-    Call<CommonResponse> doInquiry(@Body InquiryRequest request);
+    Call<CommonResponse> doInquiry(@Header("Authorization") String token, @Body InquiryRequest request);
 
     /** 찜리스트 가져오기 **/
     @GET("/like/all/{member_id}")

@@ -123,7 +123,8 @@ public class FragmentFifth extends Fragment {
             loginYN.setVisibility(View.GONE);
             logout.setVisibility(View.VISIBLE);
             tv_name.setText(name);
-            tv_name1.setText(name);
+
+            changeTextStyle(name);
             tv_email.setText(email);
         }
         else {
@@ -218,6 +219,7 @@ public class FragmentFifth extends Fragment {
             });
         }
     }
+
     // 로그인 기능 구현
     // 카카오 계정이 있는 경우 바로 로그인
     public void login(){
@@ -279,16 +281,7 @@ public class FragmentFifth extends Fragment {
 
                         // 이름 설정
                         tv_name.setText(user_name);
-                        String text = "반갑습니다 " + user_name + "님";
-                        SpannableString spannableString = new SpannableString(text);
-                        int start = text.indexOf(user_name);
-                        int end = start + user_name.length();
-
-                        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#FF6200EE")), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        spannableString.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        spannableString.setSpan(new RelativeSizeSpan(1.1f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                        tv_name1.setText(spannableString);
+                        changeTextStyle(user_name);
                         tv_email.setText(user_email);
 
                         //프로필 이미지 사진 set
@@ -346,4 +339,19 @@ public class FragmentFifth extends Fragment {
             Toast.makeText(requireContext(), "로그인을 먼저 진행해주세요...", Toast.LENGTH_SHORT).show();
         }
     };
+
+    // 이름만 색깔, 크기 변경하는 메서드
+    private void changeTextStyle(String name) {
+        String text = "반갑습니다 " + name + "님";
+        SpannableString spannableString = new SpannableString(text);
+        int start = text.indexOf(name);
+        int end = start + name.length();
+
+        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#FF6200EE")), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new RelativeSizeSpan(1.1f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        tv_name1.setText(spannableString);
+
+    }
 }

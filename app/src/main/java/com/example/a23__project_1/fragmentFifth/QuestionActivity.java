@@ -118,7 +118,7 @@ public class QuestionActivity extends AppCompatActivity {
 
         InquiryRequest.Member member = new InquiryRequest.Member(email);
         InquiryRequest request = new InquiryRequest(member, input.getText().toString(), title.getText().toString());
-        call = apiService.doInquiry(request);
+        call = apiService.doInquiry(accessToken, request);
         call.enqueue(new Callback<CommonResponse>() {
             @Override
             public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
