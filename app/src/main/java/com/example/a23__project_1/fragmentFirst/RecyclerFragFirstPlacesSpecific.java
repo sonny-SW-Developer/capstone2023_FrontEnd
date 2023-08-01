@@ -298,7 +298,9 @@ public class RecyclerFragFirstPlacesSpecific extends AppCompatActivity {
         LikeRequest.Member member = new LikeRequest.Member(email);
         LikeRequest.Place place = new LikeRequest.Place(positionIdList.get(pos));
         LikeRequest request = new LikeRequest(member, place);
-        likeCall = apiService.doLike(request);
+
+        String accessToken = sharedPreferences.getString("accessToken", "null");
+        likeCall = apiService.doLike(accessToken, request);
         likeCall.enqueue(new Callback<LikeResponse>() {
             @Override
             public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
